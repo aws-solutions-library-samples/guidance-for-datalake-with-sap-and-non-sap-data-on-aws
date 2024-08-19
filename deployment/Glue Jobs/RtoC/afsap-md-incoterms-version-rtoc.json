@@ -1,0 +1,535 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-incoterms-version-rtoc",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-incoterms-version-rtoc.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": false,
+		"sparkConfiguration": "standard",
+		"jobParameters": [
+			{
+				"key": "--conf",
+				"value": "spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog  --conf spark.sql.catalog.AwsDataCatalog.warehouse=s3://afsapenriched/  --conf spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog  --conf spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.iceberg.handle-timestamp-without-timezone=true",
+				"existing": false
+			},
+			{
+				"key": "--datalake-formats",
+				"value": "iceberg",
+				"existing": false
+			}
+		],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-05T05:15:49.048Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1722339523745": {
+			"nodeId": "node-1722339523745",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1722339523745",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/raw/cds_incoterms_version/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/raw/cds_incoterms_version/loaddt=2024-08-05/run-AmazonS3_node1711298687208-1-part-r-00000",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "incotermsversion",
+						"fullPath": [
+							"incotermsversion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "language",
+						"fullPath": [
+							"language"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermsversionname",
+						"fullPath": [
+							"incotermsversionname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722339666383": {
+			"nodeId": "node-1722339666383",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722339635256"
+			],
+			"name": "RemoveDuplicates",
+			"generatedNodeName": "RemoveDuplicates_node1722339666383",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1722339635256",
+					"alias": "cdf"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "companycode",
+						"fullPath": [
+							"companycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "companycodename",
+						"fullPath": [
+							"companycodename"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cityname",
+						"fullPath": [
+							"cityname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "currency",
+						"fullPath": [
+							"currency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "language",
+						"fullPath": [
+							"language"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "chartofaccounts",
+						"fullPath": [
+							"chartofaccounts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalyearvariant",
+						"fullPath": [
+							"fiscalyearvariant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "company",
+						"fullPath": [
+							"company"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creditcontrolarea",
+						"fullPath": [
+							"creditcontrolarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "countrychartofaccounts",
+						"fullPath": [
+							"countrychartofaccounts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialmanagementarea",
+						"fullPath": [
+							"financialmanagementarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "addressid",
+						"fullPath": [
+							"addressid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxableentity",
+						"fullPath": [
+							"taxableentity"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatregistration",
+						"fullPath": [
+							"vatregistration"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "extendedwhldgtaxisactive",
+						"fullPath": [
+							"extendedwhldgtaxisactive"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingarea",
+						"fullPath": [
+							"controllingarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fieldstatusvariant",
+						"fullPath": [
+							"fieldstatusvariant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nontaxabletransactiontaxcode",
+						"fullPath": [
+							"nontaxabletransactiontaxcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "docdateisusedfortaxdetn",
+						"fullPath": [
+							"docdateisusedfortaxdetn"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxrptgdateisactive",
+						"fullPath": [
+							"taxrptgdateisactive"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cashdiscountbaseamtisnetamt",
+						"fullPath": [
+							"cashdiscountbaseamtisnetamt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "timestamp",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "is_latest",
+						"fullPath": [
+							"is_latest"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "SELECT\n  *\nFROM\n  (\n    SELECT\n      *,\n       ROW_NUMBER() OVER (PARTITION BY incotermsversion, language ORDER BY loadts DESC, counter DESC) as is_latest\n    FROM\n      cdf\n  )\nWHERE\n  is_latest = 1;",
+			"codeGenVersion": 2
+		},
+		"node-1722339635256": {
+			"nodeId": "node-1722339635256",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722339523745"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1722339635256",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "incotermsversion",
+					"fromPath": [
+						"incotermsversion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "language",
+					"fromPath": [
+						"language"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "incotermsversionname",
+					"fromPath": [
+						"incotermsversionname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_changemode",
+					"fromPath": [
+						"odq_changemode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_entitycntr",
+					"fromPath": [
+						"odq_entitycntr"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadts",
+					"fromPath": [
+						"loadts"
+					],
+					"toType": "timestamp",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "counter",
+					"fromPath": [
+						"counter"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722339771608": {
+			"nodeId": "node-1722339771608",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722339666383"
+			],
+			"name": "MergeToTarget",
+			"generatedNodeName": "MergeToTarget_node1722339771608",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1722339666383",
+					"alias": "sdf"
+				}
+			],
+			"outputSchemas": [
+				[]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "MERGE INTO AwsDataCatalog.<your_curated_glue_catalog_db>.cds_incoterms_version t\nUSING (SELECT * FROM sdf) s on s.incotermsversion = t.incotermsversion AND s.language = t.language\nWHEN MATCHED THEN UPDATE SET * WHEN NOT MATCHED THEN INSERT *",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

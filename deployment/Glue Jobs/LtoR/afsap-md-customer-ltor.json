@@ -1,0 +1,1975 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-customer-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-customer-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-02T09:29:54.548Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_customer/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "CUSTOMER",
+						"fullPath": [
+							"CUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERNAME",
+						"fullPath": [
+							"CUSTOMERNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERFULLNAME",
+						"fullPath": [
+							"CUSTOMERFULLNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSID",
+						"fullPath": [
+							"ADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERCLASSIFICATION",
+						"fullPath": [
+							"CUSTOMERCLASSIFICATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATREGISTRATION",
+						"fullPath": [
+							"VATREGISTRATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERACCOUNTGROUP",
+						"fullPath": [
+							"CUSTOMERACCOUNTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AUTHORIZATIONGROUP",
+						"fullPath": [
+							"AUTHORIZATIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYISBLOCKED",
+						"fullPath": [
+							"DELIVERYISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTINGISBLOCKED",
+						"fullPath": [
+							"POSTINGISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BILLINGISBLOCKEDFORCUSTOMER",
+						"fullPath": [
+							"BILLINGISBLOCKEDFORCUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORDERISBLOCKEDFORCUSTOMER",
+						"fullPath": [
+							"ORDERISBLOCKEDFORCUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER1",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISONETIMEACCOUNT",
+						"fullPath": [
+							"ISONETIMEACCOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRY",
+						"fullPath": [
+							"INDUSTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBERTYPE",
+						"fullPath": [
+							"TAXNUMBERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER1",
+						"fullPath": [
+							"TAXNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER2",
+						"fullPath": [
+							"TAXNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER3",
+						"fullPath": [
+							"TAXNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER4",
+						"fullPath": [
+							"TAXNUMBER4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER5",
+						"fullPath": [
+							"TAXNUMBER5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER6",
+						"fullPath": [
+							"TAXNUMBER6"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERCORPORATEGROUP",
+						"fullPath": [
+							"CUSTOMERCORPORATEGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "NIELSENREGION",
+						"fullPath": [
+							"NIELSENREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE1",
+						"fullPath": [
+							"INDUSTRYCODE1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE2",
+						"fullPath": [
+							"INDUSTRYCODE2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE3",
+						"fullPath": [
+							"INDUSTRYCODE3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE4",
+						"fullPath": [
+							"INDUSTRYCODE4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE5",
+						"fullPath": [
+							"INDUSTRYCODE5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME1",
+						"fullPath": [
+							"ORGANIZATIONBPNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME2",
+						"fullPath": [
+							"ORGANIZATIONBPNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNAME",
+						"fullPath": [
+							"CITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTALCODE",
+						"fullPath": [
+							"POSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETNAME",
+						"fullPath": [
+							"STREETNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SORTFIELD",
+						"fullPath": [
+							"SORTFIELD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FAXNUMBER",
+						"fullPath": [
+							"FAXNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BR_SUFRAMACODE",
+						"fullPath": [
+							"BR_SUFRAMACODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGION",
+						"fullPath": [
+							"REGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TELEPHONENUMBER1",
+						"fullPath": [
+							"TELEPHONENUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TELEPHONENUMBER2",
+						"fullPath": [
+							"TELEPHONENUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYERACCOUNT",
+						"fullPath": [
+							"ALTERNATIVEPAYERACCOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DATAMEDIUMEXCHANGEINDICATOR",
+						"fullPath": [
+							"DATAMEDIUMEXCHANGEINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATLIABILITY",
+						"fullPath": [
+							"VATLIABILITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISBUSINESSPURPOSECOMPLETED",
+						"fullPath": [
+							"ISBUSINESSPURPOSECOMPLETED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RESPONSIBLETYPE",
+						"fullPath": [
+							"RESPONSIBLETYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FISCALADDRESS",
+						"fullPath": [
+							"FISCALADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "NFPARTNERISNATURALPERSON",
+						"fullPath": [
+							"NFPARTNERISNATURALPERSON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELETIONINDICATOR",
+						"fullPath": [
+							"DELETIONINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LANGUAGE",
+						"fullPath": [
+							"LANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRADINGPARTNER",
+						"fullPath": [
+							"TRADINGPARTNER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYDATETYPERULE",
+						"fullPath": [
+							"DELIVERYDATETYPERULE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EXPRESSTRAINSTATIONNAME",
+						"fullPath": [
+							"EXPRESSTRAINSTATIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRAINSTATIONNAME",
+						"fullPath": [
+							"TRAINSTATIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER2",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER3",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYCODE",
+						"fullPath": [
+							"CITYCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTY",
+						"fullPath": [
+							"COUNTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERHASUNLOADINGPOINT",
+						"fullPath": [
+							"CUSTOMERHASUNLOADINGPOINT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERWORKINGTIMECALENDAR",
+						"fullPath": [
+							"CUSTOMERWORKINGTIMECALENDAR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISCOMPETITOR",
+						"fullPath": [
+							"ISCOMPETITOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXINVOICEREPRESENTATIVENAME",
+						"fullPath": [
+							"TAXINVOICEREPRESENTATIVENAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BUSINESSTYPE",
+						"fullPath": [
+							"BUSINESSTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYTYPE",
+						"fullPath": [
+							"INDUSTRYTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TW_COLLVBILLINGISSUPPORTED",
+						"fullPath": [
+							"TW_COLLVBILLINGISSUPPORTED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYEEISALLOWED",
+						"fullPath": [
+							"ALTERNATIVEPAYEEISALLOWED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE01",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE01"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE02",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE02"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE03",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE03"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE04",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE04"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE05",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE05"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE06",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE06"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE07",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE07"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE08",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE08"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE09",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE09"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE10",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE10"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTREASON",
+						"fullPath": [
+							"PAYMENTREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISSALESPROSPECT",
+						"fullPath": [
+							"ISSALESPROSPECT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTISBLOCKEDFORCUSTOMER",
+						"fullPath": [
+							"PAYMENTISBLOCKEDFORCUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "CUSTOMER",
+						"fullPath": [
+							"CUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERNAME",
+						"fullPath": [
+							"CUSTOMERNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERFULLNAME",
+						"fullPath": [
+							"CUSTOMERFULLNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSID",
+						"fullPath": [
+							"ADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERCLASSIFICATION",
+						"fullPath": [
+							"CUSTOMERCLASSIFICATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATREGISTRATION",
+						"fullPath": [
+							"VATREGISTRATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERACCOUNTGROUP",
+						"fullPath": [
+							"CUSTOMERACCOUNTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AUTHORIZATIONGROUP",
+						"fullPath": [
+							"AUTHORIZATIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYISBLOCKED",
+						"fullPath": [
+							"DELIVERYISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTINGISBLOCKED",
+						"fullPath": [
+							"POSTINGISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BILLINGISBLOCKEDFORCUSTOMER",
+						"fullPath": [
+							"BILLINGISBLOCKEDFORCUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORDERISBLOCKEDFORCUSTOMER",
+						"fullPath": [
+							"ORDERISBLOCKEDFORCUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER1",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISONETIMEACCOUNT",
+						"fullPath": [
+							"ISONETIMEACCOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRY",
+						"fullPath": [
+							"INDUSTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBERTYPE",
+						"fullPath": [
+							"TAXNUMBERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER1",
+						"fullPath": [
+							"TAXNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER2",
+						"fullPath": [
+							"TAXNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER3",
+						"fullPath": [
+							"TAXNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER4",
+						"fullPath": [
+							"TAXNUMBER4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER5",
+						"fullPath": [
+							"TAXNUMBER5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER6",
+						"fullPath": [
+							"TAXNUMBER6"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERCORPORATEGROUP",
+						"fullPath": [
+							"CUSTOMERCORPORATEGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "NIELSENREGION",
+						"fullPath": [
+							"NIELSENREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE1",
+						"fullPath": [
+							"INDUSTRYCODE1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE2",
+						"fullPath": [
+							"INDUSTRYCODE2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE3",
+						"fullPath": [
+							"INDUSTRYCODE3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE4",
+						"fullPath": [
+							"INDUSTRYCODE4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYCODE5",
+						"fullPath": [
+							"INDUSTRYCODE5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME1",
+						"fullPath": [
+							"ORGANIZATIONBPNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME2",
+						"fullPath": [
+							"ORGANIZATIONBPNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNAME",
+						"fullPath": [
+							"CITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTALCODE",
+						"fullPath": [
+							"POSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETNAME",
+						"fullPath": [
+							"STREETNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SORTFIELD",
+						"fullPath": [
+							"SORTFIELD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FAXNUMBER",
+						"fullPath": [
+							"FAXNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BR_SUFRAMACODE",
+						"fullPath": [
+							"BR_SUFRAMACODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGION",
+						"fullPath": [
+							"REGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TELEPHONENUMBER1",
+						"fullPath": [
+							"TELEPHONENUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TELEPHONENUMBER2",
+						"fullPath": [
+							"TELEPHONENUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYERACCOUNT",
+						"fullPath": [
+							"ALTERNATIVEPAYERACCOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DATAMEDIUMEXCHANGEINDICATOR",
+						"fullPath": [
+							"DATAMEDIUMEXCHANGEINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATLIABILITY",
+						"fullPath": [
+							"VATLIABILITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISBUSINESSPURPOSECOMPLETED",
+						"fullPath": [
+							"ISBUSINESSPURPOSECOMPLETED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RESPONSIBLETYPE",
+						"fullPath": [
+							"RESPONSIBLETYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FISCALADDRESS",
+						"fullPath": [
+							"FISCALADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "NFPARTNERISNATURALPERSON",
+						"fullPath": [
+							"NFPARTNERISNATURALPERSON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELETIONINDICATOR",
+						"fullPath": [
+							"DELETIONINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LANGUAGE",
+						"fullPath": [
+							"LANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRADINGPARTNER",
+						"fullPath": [
+							"TRADINGPARTNER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYDATETYPERULE",
+						"fullPath": [
+							"DELIVERYDATETYPERULE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EXPRESSTRAINSTATIONNAME",
+						"fullPath": [
+							"EXPRESSTRAINSTATIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRAINSTATIONNAME",
+						"fullPath": [
+							"TRAINSTATIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER2",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER3",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYCODE",
+						"fullPath": [
+							"CITYCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTY",
+						"fullPath": [
+							"COUNTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERHASUNLOADINGPOINT",
+						"fullPath": [
+							"CUSTOMERHASUNLOADINGPOINT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMERWORKINGTIMECALENDAR",
+						"fullPath": [
+							"CUSTOMERWORKINGTIMECALENDAR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISCOMPETITOR",
+						"fullPath": [
+							"ISCOMPETITOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXINVOICEREPRESENTATIVENAME",
+						"fullPath": [
+							"TAXINVOICEREPRESENTATIVENAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BUSINESSTYPE",
+						"fullPath": [
+							"BUSINESSTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYTYPE",
+						"fullPath": [
+							"INDUSTRYTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TW_COLLVBILLINGISSUPPORTED",
+						"fullPath": [
+							"TW_COLLVBILLINGISSUPPORTED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYEEISALLOWED",
+						"fullPath": [
+							"ALTERNATIVEPAYEEISALLOWED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE01",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE01"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE02",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE02"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE03",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE03"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE04",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE04"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE05",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE05"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE06",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE06"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE07",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE07"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE08",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE08"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE09",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE09"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FREEDEFINEDATTRIBUTE10",
+						"fullPath": [
+							"FREEDEFINEDATTRIBUTE10"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTREASON",
+						"fullPath": [
+							"PAYMENTREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISSALESPROSPECT",
+						"fullPath": [
+							"ISSALESPROSPECT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTISBLOCKEDFORCUSTOMER",
+						"fullPath": [
+							"PAYMENTISBLOCKEDFORCUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_customer/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_customer/2024/08/05/05/35cbee13-57f6-3b85-af1f-3b97e88c372e-2024-08-05T05:11:50/1593403538-2024-08-05T05:11:49",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "customer",
+						"fullPath": [
+							"customer"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customername",
+						"fullPath": [
+							"customername"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customerfullname",
+						"fullPath": [
+							"customerfullname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string"
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addressid",
+						"fullPath": [
+							"addressid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customerclassification",
+						"fullPath": [
+							"customerclassification"
+						],
+						"type": "string"
+					},
+					{
+						"key": "vatregistration",
+						"fullPath": [
+							"vatregistration"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customeraccountgroup",
+						"fullPath": [
+							"customeraccountgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "authorizationgroup",
+						"fullPath": [
+							"authorizationgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "deliveryisblocked",
+						"fullPath": [
+							"deliveryisblocked"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postingisblocked",
+						"fullPath": [
+							"postingisblocked"
+						],
+						"type": "string"
+					},
+					{
+						"key": "billingisblockedforcustomer",
+						"fullPath": [
+							"billingisblockedforcustomer"
+						],
+						"type": "string"
+					},
+					{
+						"key": "orderisblockedforcustomer",
+						"fullPath": [
+							"orderisblockedforcustomer"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationallocationnumber1",
+						"fullPath": [
+							"internationallocationnumber1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isonetimeaccount",
+						"fullPath": [
+							"isonetimeaccount"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxjurisdiction",
+						"fullPath": [
+							"taxjurisdiction"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industry",
+						"fullPath": [
+							"industry"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumbertype",
+						"fullPath": [
+							"taxnumbertype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber1",
+						"fullPath": [
+							"taxnumber1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber2",
+						"fullPath": [
+							"taxnumber2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber3",
+						"fullPath": [
+							"taxnumber3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber4",
+						"fullPath": [
+							"taxnumber4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber5",
+						"fullPath": [
+							"taxnumber5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber6",
+						"fullPath": [
+							"taxnumber6"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customercorporategroup",
+						"fullPath": [
+							"customercorporategroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "nielsenregion",
+						"fullPath": [
+							"nielsenregion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrycode1",
+						"fullPath": [
+							"industrycode1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrycode2",
+						"fullPath": [
+							"industrycode2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrycode3",
+						"fullPath": [
+							"industrycode3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrycode4",
+						"fullPath": [
+							"industrycode4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrycode5",
+						"fullPath": [
+							"industrycode5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationbpname1",
+						"fullPath": [
+							"organizationbpname1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationbpname2",
+						"fullPath": [
+							"organizationbpname2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "cityname",
+						"fullPath": [
+							"cityname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postalcode",
+						"fullPath": [
+							"postalcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetname",
+						"fullPath": [
+							"streetname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "sortfield",
+						"fullPath": [
+							"sortfield"
+						],
+						"type": "string"
+					},
+					{
+						"key": "faxnumber",
+						"fullPath": [
+							"faxnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "br_suframacode",
+						"fullPath": [
+							"br_suframacode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string"
+					},
+					{
+						"key": "telephonenumber1",
+						"fullPath": [
+							"telephonenumber1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "telephonenumber2",
+						"fullPath": [
+							"telephonenumber2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "alternativepayeraccount",
+						"fullPath": [
+							"alternativepayeraccount"
+						],
+						"type": "string"
+					},
+					{
+						"key": "datamediumexchangeindicator",
+						"fullPath": [
+							"datamediumexchangeindicator"
+						],
+						"type": "string"
+					},
+					{
+						"key": "vatliability",
+						"fullPath": [
+							"vatliability"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isbusinesspurposecompleted",
+						"fullPath": [
+							"isbusinesspurposecompleted"
+						],
+						"type": "string"
+					},
+					{
+						"key": "responsibletype",
+						"fullPath": [
+							"responsibletype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "fiscaladdress",
+						"fullPath": [
+							"fiscaladdress"
+						],
+						"type": "string"
+					},
+					{
+						"key": "nfpartnerisnaturalperson",
+						"fullPath": [
+							"nfpartnerisnaturalperson"
+						],
+						"type": "string"
+					},
+					{
+						"key": "deletionindicator",
+						"fullPath": [
+							"deletionindicator"
+						],
+						"type": "string"
+					},
+					{
+						"key": "language",
+						"fullPath": [
+							"language"
+						],
+						"type": "string"
+					},
+					{
+						"key": "tradingpartner",
+						"fullPath": [
+							"tradingpartner"
+						],
+						"type": "string"
+					},
+					{
+						"key": "deliverydatetyperule",
+						"fullPath": [
+							"deliverydatetyperule"
+						],
+						"type": "string"
+					},
+					{
+						"key": "expresstrainstationname",
+						"fullPath": [
+							"expresstrainstationname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "trainstationname",
+						"fullPath": [
+							"trainstationname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationallocationnumber2",
+						"fullPath": [
+							"internationallocationnumber2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationallocationnumber3",
+						"fullPath": [
+							"internationallocationnumber3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "citycode",
+						"fullPath": [
+							"citycode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "county",
+						"fullPath": [
+							"county"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customerhasunloadingpoint",
+						"fullPath": [
+							"customerhasunloadingpoint"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customerworkingtimecalendar",
+						"fullPath": [
+							"customerworkingtimecalendar"
+						],
+						"type": "string"
+					},
+					{
+						"key": "iscompetitor",
+						"fullPath": [
+							"iscompetitor"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxinvoicerepresentativename",
+						"fullPath": [
+							"taxinvoicerepresentativename"
+						],
+						"type": "string"
+					},
+					{
+						"key": "businesstype",
+						"fullPath": [
+							"businesstype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrytype",
+						"fullPath": [
+							"industrytype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "tw_collvbillingissupported",
+						"fullPath": [
+							"tw_collvbillingissupported"
+						],
+						"type": "string"
+					},
+					{
+						"key": "alternativepayeeisallowed",
+						"fullPath": [
+							"alternativepayeeisallowed"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute01",
+						"fullPath": [
+							"freedefinedattribute01"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute02",
+						"fullPath": [
+							"freedefinedattribute02"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute03",
+						"fullPath": [
+							"freedefinedattribute03"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute04",
+						"fullPath": [
+							"freedefinedattribute04"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute05",
+						"fullPath": [
+							"freedefinedattribute05"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute06",
+						"fullPath": [
+							"freedefinedattribute06"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute07",
+						"fullPath": [
+							"freedefinedattribute07"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute08",
+						"fullPath": [
+							"freedefinedattribute08"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute09",
+						"fullPath": [
+							"freedefinedattribute09"
+						],
+						"type": "string"
+					},
+					{
+						"key": "freedefinedattribute10",
+						"fullPath": [
+							"freedefinedattribute10"
+						],
+						"type": "string"
+					},
+					{
+						"key": "paymentreason",
+						"fullPath": [
+							"paymentreason"
+						],
+						"type": "string"
+					},
+					{
+						"key": "issalesprospect",
+						"fullPath": [
+							"issalesprospect"
+						],
+						"type": "string"
+					},
+					{
+						"key": "paymentisblockedforcustomer",
+						"fullPath": [
+							"paymentisblockedforcustomer"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

@@ -1,0 +1,1296 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: |
+  Helping customers break down data silos with AWS Integration services
+
+Parameters:
+  ConnectionName:
+    Description: The name of the SAP source system connection
+    Type: String
+
+  AppFlowSAPStartTime:
+    Description: EPOCH date of first run for flow
+    Type: Number
+
+  DestinationS3BucketName:
+    Description: Name of the Destination S3 Bucket = afsaplakeraw-<accountID>
+    Type: String
+
+Resources:
+  # Purchase Order Header
+  PurchaseOrderHeadertoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_po_header
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for C_PurchaseOrderDEX
+        Purchase Order Header
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PO_HEADER_SRV/FactsOfCMMPURORDDEX
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchase Order Items
+  PurchaseOrderItemstoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_po_item
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for C_PurchaseOrderItemDEX
+        Purchase Order Items
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PO_ITEM_SRV/FactsOfCMMPOITMDX
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchase Order Schedule Lines
+  PurchaseOrderScheduleLinestoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_po_schedule_line
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for C_PurOrdScheduleLineDEX
+        Purchase Order Schedule Lines
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PO_SCH_LINE_SRV/FactsOfCMMPURORDSLDEX
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Supplier Invoices
+  SupplierInvoicestoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_supplier_invoice
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for C_SUPPLIERINVOICEITEMDEX
+        Supplier Invoices
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_SUPPLIER_INVOICE_SRV/FactsOfCMMSUPINVCITMDEX
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchasing Organization
+  PurchasingOrganizationtoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchasing_organisation
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for
+        C_PURCHASINGORGANIZATIONDEX Purchasing Organization
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_ORG_SRV/AttrOfCMMPURORGDX
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Address
+  AddresstoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_address
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_ADDRESS_2 Address
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_ADDRESS_SRV/AttrOfIADDRESS2
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Company Code
+  CompanyCodetoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_company_code
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_COMPANYCODE Company Code
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_COMP_CODE_SRV/AttrOfIFICOMPANYCODE
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Country Attributes
+  CountryAttributestoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_country_attr
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_COUNTRY Country Attributes
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_COUNTRY_ATTR_SRV/AttrOfIFICOUNTRY
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Country Texts
+  CountryTextstoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_country_text
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_COUNTRYTEXT Country Texts
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_COUNTRY_TEXT_SRV/TextsOfIFICOUNTRYTEXT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Currency Attributes
+  CurrencyAttributestoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_currency_attr
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_CURRENCY Currency Attributes
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_CURRENCY_ATTR_SRV/AttrOfIFICURRENCY
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Currency Texts
+  CurrencyTextstoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_currency_text
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_CURRENCYTEXT Currency Texts
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_CURRENCY_TEXT_SRV/TextsOfIFICURRENCYTEXT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Supplier
+  SuppliertoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_supplier
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_SUPPLIER Supplier
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_SUPPLIER_SRV/AttrOfI_SUPPLIER_CDS
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Material Attributes
+  MaterialAttributestoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_material_attr
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PRODUCT Material Attributes
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_MATERIAL_ATTR_SRV/AttrOfIPRODUCT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Material Texts
+  MaterialTextstoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_material_text
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PRODUCTDESCRIPTION
+        Material Texts
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_MATERIAL_TEXT_SRV/AttrOfIPRDDESCR
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Plant
+  PlanttoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_plant
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PLANT Plant
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PLANT_SRV/AttrOfIPLANT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Material Group
+  MaterialGrouptoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_material_group
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PRODUCTGROUPTEXT_2
+        Material Group
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_MATERIAL_GROUP_SRV/TextsOfIPRODGRPTXT2
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Customer
+  CustomertoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_customer
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_CUSTOMER Customer
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Incremental
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(5minutes)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_CUSTOMER_SRV/AttrOfI_CUSTOMER_CDS
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Incoterms Classification
+  IncotermsClassificationtoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_incoterms_classification
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for
+        I_INCOTERMSCLASSIFICATIONTEXT Incoterms Classification
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_INCO_CLASS_SRV/TextsOfISDINCOTERMCLSST
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Incoterms Version
+  IncotermsVersiontoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_incoterms_version
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_INCOTERMSVERSIONTEXT
+        Incoterms Version
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_INCO_VERS_SRV/TextsOfIINCOTERMSVT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Payment Terms
+  PaymentTermstoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_payment_terms
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PAYMENTTERMSTEXT Payment Terms
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PAYM_TERMS_SRV/TextsOfIFIPAYMENTTERMST
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchasing Document Category
+  PurchasingDocumentCategorytoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchasing_document_category
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PURGDOCUMENTCATEGORYTEXT
+        Purchasing Document Category
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_DOC_CAT_SRV/TextsOfIMMPURDOCCATT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchasing Document Origin
+  PurchasingDocumentOrigintoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchasing_document_origin
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for
+        I_PURCHASINGDOCUMENTORIGINTEXT Purchasing Document Origin
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_DOC_ORIG_SRV/TextsOfIMMPURGDOCORGTXT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchase Order Type
+  PurchaseOrderTypetoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchase_order_type
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for
+        I_PURCHASINGDOCUMENTTYPETEXT Purchase Order Type
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_ORD_TYPE_SRV/TextsOfIMMPURGDOCTYPTXT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchasing Group
+  PurchasingGrouptoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchasing_group
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PURCHASINGGROUP
+        Purchasing Group
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_GROUP_SRV/AttrOfIMMPURCHGROUP
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Control indicator for purchasing document type
+  ControlindicatorforpurchasingdocumenttypetoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchase_order_subtype
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PURGDOCUMENTSUBTYPETEXT
+        Control indicator for purchasing document type
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_ORD_SUBTYPE_SRV/TextsOfIMMPURDOCSUBTXT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Purchasing Document Processing State
+  PurchasingDocumentProcessingStatetoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_purchasing_processing_status
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_PURGPROCESSINGSTATUSTEXT
+        Purchasing Document Processing State
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_PUR_PROC_STATUS_SRV/TextsOfIMMPURGPROCSTATT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Storage Location
+  StorageLocationtoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_storage_location
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_STORAGELOCATION Storage
+        Location
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_STOR_LOC_SRV/AttrOfISTORAGELOCATION
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Unit of Measure
+  UnitofMeasuretoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_uom_attr
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_UNITOFMEASURE Unit of Measure
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_UOM_ATTR_SRV/AttrOfIUNITOFMEASURE
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Unit of Measure Text
+  UnitofMeasureTexttoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_uom_text
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for I_UNITOFMEASURETEXT Unit
+        of Measure Text
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_UOM_TEXT_SRV/TextsOfIUNITOFMEASTEXT
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP
+  # Invoice document status
+  InvoicedocumentstatustoS3:
+    Type: AWS::AppFlow::Flow
+    Properties:
+      FlowName: cds_invoice_status
+      FlowStatus: Active
+      Description: Pull data from SAP and saves into S3 for
+        I_SUPPLIERINVCSTATUSTXTAPI01 Invoice document status
+      TriggerConfig:
+        TriggerType: Scheduled
+        TriggerProperties:
+          DataPullMode: Complete
+          ## If you wish to extract the transaction data at a different frequency, update here
+          ScheduleExpression: rate(1days)
+          ScheduleStartTime: !Ref AppFlowSAPStartTime
+      SourceFlowConfig:
+        ConnectorProfileName: !Ref ConnectionName
+        ConnectorType: SAPOData
+        SourceConnectorProperties:
+          SAPOData:
+            #  Change this to your ObjectPath
+            ObjectPath: /sap/opu/odata/SAP/ZCDS_INVOICE_STATUS_SRV/TextsOfISUPLRINVSTSTAPI
+      DestinationFlowConfigList:
+        - ConnectorType: S3
+          DestinationConnectorProperties:
+            S3:
+              BucketName: !Ref DestinationS3BucketName
+              BucketPrefix: landing
+              S3OutputFormatConfig:
+                FileType: JSON
+                AggregationConfig:
+                  aggregationType: None
+                PrefixConfig:
+                  PrefixFormat: HOUR
+                  PrefixType: PATH_AND_FILENAME
+      Tasks:
+        - TaskType: Map_all
+          SourceFields: []
+          TaskProperties:
+            - Key: EXCLUDE_SOURCE_FIELDS_LIST
+              Value: '[]'
+          ConnectorOperator:
+            SAPOData: NO_OP

@@ -1,0 +1,861 @@
+{
+	"jobConfig": {
+		"name": "afsap-p2p-supplier-invoice-etoc",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-p2p-supplier-invoice-etoc.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [
+			{
+				"key": "--conf",
+				"value": "spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.AwsDataCatalog.warehouse=s3://afsapcurated/ --conf spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.iceberg.handle-timestamp-without-timezone=true",
+				"existing": false
+			}
+		],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-09T01:39:24.701Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-disable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1720195476327": {
+			"nodeId": "node-1720195476327",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1721075170335"
+			],
+			"name": "MergeToTarget",
+			"generatedNodeName": "MergeToTarget_node1720195476327",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1721075170335",
+					"alias": "sdf"
+				}
+			],
+			"outputSchemas": [
+				[]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "MERGE INTO AwsDataCatalog.<your_curated_glue_catalog_db>.cds_supplier_invoice t\nUSING (SELECT * FROM sdf) s on s.supplierinvoice = t.supplierinvoice AND s.fiscalyear = t.fiscalyear and s.supplierinvoiceitem = t.supplierinvoiceitem\nWHEN MATCHED AND s.odq_changemode = 'D' THEN delete\nWHEN MATCHED AND s.odq_changemode <> 'D' THEN UPDATE SET * \nWHEN NOT MATCHED AND s.odq_changemode <> 'D' THEN INSERT *",
+			"codeGenVersion": 2
+		},
+		"node-1722906262011": {
+			"nodeId": "node-1722906262011",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722907194885"
+			],
+			"name": "Select_Updated_Source_Data",
+			"generatedNodeName": "Select_Updated_Source_Data_node1722906262011",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "max_timestamp = spark.sql(\"\"\"\n        SELECT MAX(loadts) AS max_load_timestamp FROM AwsDataCatalog.<your_curated_glue_catalog_db>.cds_supplier_invoice\n    \"\"\").collect()[0][\"max_load_timestamp\"]\nif max_timestamp is None:\n    max_timestamp = \"1970-01-01 00:00:00\"\nfiltered_data = spark.sql(f\"\"\"\n        SELECT *\n        FROM AwsDataCatalog.<your_enriched_glue_catalog_db>.cds_supplier_invoice\n        WHERE loadts > cast('{max_timestamp}'as timestamp) \"\"\")       \ndyf = DynamicFrame.fromDF(filtered_data, glueContext, \"filtered_data\")\nreturn DynamicFrameCollection({\"Select_Updated_Source_Data\": dyf}, glueContext)\n\n\n\n\n",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "supplierinvoice",
+						"fullPath": [
+							"supplierinvoice"
+						],
+						"type": "string"
+					},
+					{
+						"key": "fiscalyear",
+						"fullPath": [
+							"fiscalyear"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceitem",
+						"fullPath": [
+							"supplierinvoiceitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "qtyinpurchaseorderpriceunit",
+						"fullPath": [
+							"qtyinpurchaseorderpriceunit"
+						],
+						"type": "double"
+					},
+					{
+						"key": "purchaseorderpriceunit",
+						"fullPath": [
+							"purchaseorderpriceunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderquantityunit",
+						"fullPath": [
+							"purchaseorderquantityunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorder",
+						"fullPath": [
+							"purchaseorder"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitem",
+						"fullPath": [
+							"purchaseorderitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prmthbreferencedocument",
+						"fullPath": [
+							"prmthbreferencedocument"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prmthbreferencedocumentfsclyr",
+						"fullPath": [
+							"prmthbreferencedocumentfsclyr"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prmthbreferencedocumentitem",
+						"fullPath": [
+							"prmthbreferencedocumentitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitemmaterial",
+						"fullPath": [
+							"purchaseorderitemmaterial"
+						],
+						"type": "string"
+					},
+					{
+						"key": "quantityinpurchaseorderunit",
+						"fullPath": [
+							"quantityinpurchaseorderunit"
+						],
+						"type": "double"
+					},
+					{
+						"key": "suplrinvcitmhasqualityvariance",
+						"fullPath": [
+							"suplrinvcitmhasqualityvariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasordprcqtyvarc",
+						"fullPath": [
+							"suplrinvcitemhasordprcqtyvarc"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasqtyvariance",
+						"fullPath": [
+							"suplrinvcitemhasqtyvariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhaspricevariance",
+						"fullPath": [
+							"suplrinvcitemhaspricevariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasothervariance",
+						"fullPath": [
+							"suplrinvcitemhasothervariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasamountoutsdtol",
+						"fullPath": [
+							"suplrinvcitemhasamountoutsdtol"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasdatevariance",
+						"fullPath": [
+							"suplrinvcitemhasdatevariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "issubsequentdebitcredit",
+						"fullPath": [
+							"issubsequentdebitcredit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "plant",
+						"fullPath": [
+							"plant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentcurrency",
+						"fullPath": [
+							"documentcurrency"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceitemamount",
+						"fullPath": [
+							"supplierinvoiceitemamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "suplrinvcautomreducedamount",
+						"fullPath": [
+							"suplrinvcautomreducedamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "unplanneddeliverycost",
+						"fullPath": [
+							"unplanneddeliverycost"
+						],
+						"type": "double"
+					},
+					{
+						"key": "documentheadertext",
+						"fullPath": [
+							"documentheadertext"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentdate",
+						"fullPath": [
+							"documentdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postingdate",
+						"fullPath": [
+							"postingdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "companycode",
+						"fullPath": [
+							"companycode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceorigin",
+						"fullPath": [
+							"supplierinvoiceorigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "invoicingparty",
+						"fullPath": [
+							"invoicingparty"
+						],
+						"type": "string"
+					},
+					{
+						"key": "unplanneddeliverycosttaxcode",
+						"fullPath": [
+							"unplanneddeliverycosttaxcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "reversedocument",
+						"fullPath": [
+							"reversedocument"
+						],
+						"type": "string"
+					},
+					{
+						"key": "reversedocumentfiscalyear",
+						"fullPath": [
+							"reversedocumentfiscalyear"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceidbyinvcgparty",
+						"fullPath": [
+							"supplierinvoiceidbyinvcgparty"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isinvoice",
+						"fullPath": [
+							"isinvoice"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoicestatus",
+						"fullPath": [
+							"supplierinvoicestatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "double"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "timestamp"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1721075170335": {
+			"nodeId": "node-1721075170335",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722906721636"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1721075170335",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "supplierinvoice",
+					"fromPath": [
+						"supplierinvoice"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fiscalyear",
+					"fromPath": [
+						"fiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierinvoiceitem",
+					"fromPath": [
+						"supplierinvoiceitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "qtyinpurchaseorderpriceunit",
+					"fromPath": [
+						"qtyinpurchaseorderpriceunit"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchaseorderpriceunit",
+					"fromPath": [
+						"purchaseorderpriceunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchaseorderquantityunit",
+					"fromPath": [
+						"purchaseorderquantityunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchaseorder",
+					"fromPath": [
+						"purchaseorder"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchaseorderitem",
+					"fromPath": [
+						"purchaseorderitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prmthbreferencedocument",
+					"fromPath": [
+						"prmthbreferencedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prmthbreferencedocumentfsclyr",
+					"fromPath": [
+						"prmthbreferencedocumentfsclyr"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prmthbreferencedocumentitem",
+					"fromPath": [
+						"prmthbreferencedocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchaseorderitemmaterial",
+					"fromPath": [
+						"purchaseorderitemmaterial"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "quantityinpurchaseorderunit",
+					"fromPath": [
+						"quantityinpurchaseorderunit"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitmhasqualityvariance",
+					"fromPath": [
+						"suplrinvcitmhasqualityvariance"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitemhasordprcqtyvarc",
+					"fromPath": [
+						"suplrinvcitemhasordprcqtyvarc"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitemhasqtyvariance",
+					"fromPath": [
+						"suplrinvcitemhasqtyvariance"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitemhaspricevariance",
+					"fromPath": [
+						"suplrinvcitemhaspricevariance"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitemhasothervariance",
+					"fromPath": [
+						"suplrinvcitemhasothervariance"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitemhasamountoutsdtol",
+					"fromPath": [
+						"suplrinvcitemhasamountoutsdtol"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcitemhasdatevariance",
+					"fromPath": [
+						"suplrinvcitemhasdatevariance"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "issubsequentdebitcredit",
+					"fromPath": [
+						"issubsequentdebitcredit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plant",
+					"fromPath": [
+						"plant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "documentcurrency",
+					"fromPath": [
+						"documentcurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierinvoiceitemamount",
+					"fromPath": [
+						"supplierinvoiceitemamount"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrinvcautomreducedamount",
+					"fromPath": [
+						"suplrinvcautomreducedamount"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unplanneddeliverycost",
+					"fromPath": [
+						"unplanneddeliverycost"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "documentheadertext",
+					"fromPath": [
+						"documentheadertext"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "documentdate",
+					"fromPath": [
+						"documentdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "postingdate",
+					"fromPath": [
+						"postingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "companycode",
+					"fromPath": [
+						"companycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierinvoiceorigin",
+					"fromPath": [
+						"supplierinvoiceorigin"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "invoicingparty",
+					"fromPath": [
+						"invoicingparty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unplanneddeliverycosttaxcode",
+					"fromPath": [
+						"unplanneddeliverycosttaxcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "reversedocument",
+					"fromPath": [
+						"reversedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "reversedocumentfiscalyear",
+					"fromPath": [
+						"reversedocumentfiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierinvoiceidbyinvcgparty",
+					"fromPath": [
+						"supplierinvoiceidbyinvcgparty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isinvoice",
+					"fromPath": [
+						"isinvoice"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierinvoicestatus",
+					"fromPath": [
+						"supplierinvoicestatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_changemode",
+					"fromPath": [
+						"odq_changemode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_entitycntr",
+					"fromPath": [
+						"odq_entitycntr"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadts",
+					"fromPath": [
+						"loadts"
+					],
+					"toType": "timestamp",
+					"fromType": "timestamp",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "counter",
+					"fromPath": [
+						"counter"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722906721636": {
+			"nodeId": "node-1722906721636",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722906262011"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1722906721636",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722907194885": {
+			"nodeId": "node-1722907194885",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Supplier_Invoice",
+			"generatedNodeName": "Supplier_Invoice_node1722907194885",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "<your_enriched_glue_catalog_db>",
+			"table": "cds_supplier_invoice",
+			"format": "iceberg",
+			"additionalIcebergOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

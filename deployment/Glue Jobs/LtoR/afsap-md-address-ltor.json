@@ -1,0 +1,1408 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-address-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-address-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-05T04:38:12.954Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_address/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "ADDRESSID",
+						"fullPath": [
+							"ADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSPERSONID",
+						"fullPath": [
+							"ADDRESSPERSONID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSREPRESENTATIONCODE",
+						"fullPath": [
+							"ADDRESSREPRESENTATIONCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSOBJECTTYPE",
+						"fullPath": [
+							"ADDRESSOBJECTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CORRESPONDENCELANGUAGE",
+						"fullPath": [
+							"CORRESPONDENCELANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRFRDCOMMMEDIUMTYPE",
+						"fullPath": [
+							"PRFRDCOMMMEDIUMTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSEEFULLNAME",
+						"fullPath": [
+							"ADDRESSEEFULLNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PERSONGIVENNAME",
+						"fullPath": [
+							"PERSONGIVENNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PERSONFAMILYNAME",
+						"fullPath": [
+							"PERSONFAMILYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME1",
+						"fullPath": [
+							"ORGANIZATIONNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME2",
+						"fullPath": [
+							"ORGANIZATIONNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME3",
+						"fullPath": [
+							"ORGANIZATIONNAME3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME4",
+						"fullPath": [
+							"ORGANIZATIONNAME4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSSEARCHTERM1",
+						"fullPath": [
+							"ADDRESSSEARCHTERM1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSSEARCHTERM2",
+						"fullPath": [
+							"ADDRESSSEARCHTERM2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNUMBER",
+						"fullPath": [
+							"CITYNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNAME",
+						"fullPath": [
+							"CITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DISTRICTNAME",
+						"fullPath": [
+							"DISTRICTNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VILLAGENAME",
+						"fullPath": [
+							"VILLAGENAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTALCODE",
+						"fullPath": [
+							"POSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COMPANYPOSTALCODE",
+						"fullPath": [
+							"COMPANYPOSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREET",
+						"fullPath": [
+							"STREET"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETNAME",
+						"fullPath": [
+							"STREETNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETADDRNONDELIVERABLEREASON",
+						"fullPath": [
+							"STREETADDRNONDELIVERABLEREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETPREFIXNAME1",
+						"fullPath": [
+							"STREETPREFIXNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETPREFIXNAME2",
+						"fullPath": [
+							"STREETPREFIXNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETSUFFIXNAME1",
+						"fullPath": [
+							"STREETSUFFIXNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETSUFFIXNAME2",
+						"fullPath": [
+							"STREETSUFFIXNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HOUSENUMBER",
+						"fullPath": [
+							"HOUSENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HOUSENUMBERSUPPLEMENTTEXT",
+						"fullPath": [
+							"HOUSENUMBERSUPPLEMENTTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BUILDING",
+						"fullPath": [
+							"BUILDING"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FLOOR",
+						"fullPath": [
+							"FLOOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ROOMNUMBER",
+						"fullPath": [
+							"ROOMNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGION",
+						"fullPath": [
+							"REGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FORMOFADDRESS",
+						"fullPath": [
+							"FORMOFADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPORTZONE",
+						"fullPath": [
+							"TRANSPORTZONE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOX",
+						"fullPath": [
+							"POBOX"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXADDRNONDELIVERABLEREASON",
+						"fullPath": [
+							"POBOXADDRNONDELIVERABLEREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXISWITHOUTNUMBER",
+						"fullPath": [
+							"POBOXISWITHOUTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXPOSTALCODE",
+						"fullPath": [
+							"POBOXPOSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXLOBBYNAME",
+						"fullPath": [
+							"POBOXLOBBYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXDEVIATINGCITYNAME",
+						"fullPath": [
+							"POBOXDEVIATINGCITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXDEVIATINGREGION",
+						"fullPath": [
+							"POBOXDEVIATINGREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXDEVIATINGCOUNTRY",
+						"fullPath": [
+							"POBOXDEVIATINGCOUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CAREOFNAME",
+						"fullPath": [
+							"CAREOFNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYSERVICETYPECODE",
+						"fullPath": [
+							"DELIVERYSERVICETYPECODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYSERVICENUMBER",
+						"fullPath": [
+							"DELIVERYSERVICENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSTIMEZONE",
+						"fullPath": [
+							"ADDRESSTIMEZONE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SECONDARYREGION",
+						"fullPath": [
+							"SECONDARYREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SECONDARYREGIONNAME",
+						"fullPath": [
+							"SECONDARYREGIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TERTIARYREGION",
+						"fullPath": [
+							"TERTIARYREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TERTIARYREGIONNAME",
+						"fullPath": [
+							"TERTIARYREGIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGIONALSTRUCTURECHECKSTATUS",
+						"fullPath": [
+							"REGIONALSTRUCTURECHECKSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSGROUP",
+						"fullPath": [
+							"ADDRESSGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "ADDRESSID",
+						"fullPath": [
+							"ADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSPERSONID",
+						"fullPath": [
+							"ADDRESSPERSONID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSREPRESENTATIONCODE",
+						"fullPath": [
+							"ADDRESSREPRESENTATIONCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSOBJECTTYPE",
+						"fullPath": [
+							"ADDRESSOBJECTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CORRESPONDENCELANGUAGE",
+						"fullPath": [
+							"CORRESPONDENCELANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRFRDCOMMMEDIUMTYPE",
+						"fullPath": [
+							"PRFRDCOMMMEDIUMTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSEEFULLNAME",
+						"fullPath": [
+							"ADDRESSEEFULLNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PERSONGIVENNAME",
+						"fullPath": [
+							"PERSONGIVENNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PERSONFAMILYNAME",
+						"fullPath": [
+							"PERSONFAMILYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME1",
+						"fullPath": [
+							"ORGANIZATIONNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME2",
+						"fullPath": [
+							"ORGANIZATIONNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME3",
+						"fullPath": [
+							"ORGANIZATIONNAME3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONNAME4",
+						"fullPath": [
+							"ORGANIZATIONNAME4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSSEARCHTERM1",
+						"fullPath": [
+							"ADDRESSSEARCHTERM1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSSEARCHTERM2",
+						"fullPath": [
+							"ADDRESSSEARCHTERM2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNUMBER",
+						"fullPath": [
+							"CITYNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNAME",
+						"fullPath": [
+							"CITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DISTRICTNAME",
+						"fullPath": [
+							"DISTRICTNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VILLAGENAME",
+						"fullPath": [
+							"VILLAGENAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTALCODE",
+						"fullPath": [
+							"POSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COMPANYPOSTALCODE",
+						"fullPath": [
+							"COMPANYPOSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREET",
+						"fullPath": [
+							"STREET"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETNAME",
+						"fullPath": [
+							"STREETNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETADDRNONDELIVERABLEREASON",
+						"fullPath": [
+							"STREETADDRNONDELIVERABLEREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETPREFIXNAME1",
+						"fullPath": [
+							"STREETPREFIXNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETPREFIXNAME2",
+						"fullPath": [
+							"STREETPREFIXNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETSUFFIXNAME1",
+						"fullPath": [
+							"STREETSUFFIXNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETSUFFIXNAME2",
+						"fullPath": [
+							"STREETSUFFIXNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HOUSENUMBER",
+						"fullPath": [
+							"HOUSENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HOUSENUMBERSUPPLEMENTTEXT",
+						"fullPath": [
+							"HOUSENUMBERSUPPLEMENTTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BUILDING",
+						"fullPath": [
+							"BUILDING"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FLOOR",
+						"fullPath": [
+							"FLOOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ROOMNUMBER",
+						"fullPath": [
+							"ROOMNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGION",
+						"fullPath": [
+							"REGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FORMOFADDRESS",
+						"fullPath": [
+							"FORMOFADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPORTZONE",
+						"fullPath": [
+							"TRANSPORTZONE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOX",
+						"fullPath": [
+							"POBOX"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXADDRNONDELIVERABLEREASON",
+						"fullPath": [
+							"POBOXADDRNONDELIVERABLEREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXISWITHOUTNUMBER",
+						"fullPath": [
+							"POBOXISWITHOUTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXPOSTALCODE",
+						"fullPath": [
+							"POBOXPOSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXLOBBYNAME",
+						"fullPath": [
+							"POBOXLOBBYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXDEVIATINGCITYNAME",
+						"fullPath": [
+							"POBOXDEVIATINGCITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXDEVIATINGREGION",
+						"fullPath": [
+							"POBOXDEVIATINGREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POBOXDEVIATINGCOUNTRY",
+						"fullPath": [
+							"POBOXDEVIATINGCOUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CAREOFNAME",
+						"fullPath": [
+							"CAREOFNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYSERVICETYPECODE",
+						"fullPath": [
+							"DELIVERYSERVICETYPECODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELIVERYSERVICENUMBER",
+						"fullPath": [
+							"DELIVERYSERVICENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSTIMEZONE",
+						"fullPath": [
+							"ADDRESSTIMEZONE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SECONDARYREGION",
+						"fullPath": [
+							"SECONDARYREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SECONDARYREGIONNAME",
+						"fullPath": [
+							"SECONDARYREGIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TERTIARYREGION",
+						"fullPath": [
+							"TERTIARYREGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TERTIARYREGIONNAME",
+						"fullPath": [
+							"TERTIARYREGIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGIONALSTRUCTURECHECKSTATUS",
+						"fullPath": [
+							"REGIONALSTRUCTURECHECKSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSGROUP",
+						"fullPath": [
+							"ADDRESSGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_address/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_address/2024/08/05/05/1d812a42-19d2-3d96-80a8-eb2979183c5c-2024-08-05T05:11:18/-2010418995-2024-08-05T05:11:18",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "addressid",
+						"fullPath": [
+							"addressid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addresspersonid",
+						"fullPath": [
+							"addresspersonid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addressrepresentationcode",
+						"fullPath": [
+							"addressrepresentationcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addressobjecttype",
+						"fullPath": [
+							"addressobjecttype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "correspondencelanguage",
+						"fullPath": [
+							"correspondencelanguage"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prfrdcommmediumtype",
+						"fullPath": [
+							"prfrdcommmediumtype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addresseefullname",
+						"fullPath": [
+							"addresseefullname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "persongivenname",
+						"fullPath": [
+							"persongivenname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "personfamilyname",
+						"fullPath": [
+							"personfamilyname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationname1",
+						"fullPath": [
+							"organizationname1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationname2",
+						"fullPath": [
+							"organizationname2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationname3",
+						"fullPath": [
+							"organizationname3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationname4",
+						"fullPath": [
+							"organizationname4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addresssearchterm1",
+						"fullPath": [
+							"addresssearchterm1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addresssearchterm2",
+						"fullPath": [
+							"addresssearchterm2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "citynumber",
+						"fullPath": [
+							"citynumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "cityname",
+						"fullPath": [
+							"cityname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "districtname",
+						"fullPath": [
+							"districtname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "villagename",
+						"fullPath": [
+							"villagename"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postalcode",
+						"fullPath": [
+							"postalcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "companypostalcode",
+						"fullPath": [
+							"companypostalcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "street",
+						"fullPath": [
+							"street"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetname",
+						"fullPath": [
+							"streetname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetaddrnondeliverablereason",
+						"fullPath": [
+							"streetaddrnondeliverablereason"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetprefixname1",
+						"fullPath": [
+							"streetprefixname1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetprefixname2",
+						"fullPath": [
+							"streetprefixname2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetsuffixname1",
+						"fullPath": [
+							"streetsuffixname1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetsuffixname2",
+						"fullPath": [
+							"streetsuffixname2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "housenumber",
+						"fullPath": [
+							"housenumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "housenumbersupplementtext",
+						"fullPath": [
+							"housenumbersupplementtext"
+						],
+						"type": "string"
+					},
+					{
+						"key": "building",
+						"fullPath": [
+							"building"
+						],
+						"type": "string"
+					},
+					{
+						"key": "floor",
+						"fullPath": [
+							"floor"
+						],
+						"type": "string"
+					},
+					{
+						"key": "roomnumber",
+						"fullPath": [
+							"roomnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string"
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string"
+					},
+					{
+						"key": "formofaddress",
+						"fullPath": [
+							"formofaddress"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxjurisdiction",
+						"fullPath": [
+							"taxjurisdiction"
+						],
+						"type": "string"
+					},
+					{
+						"key": "transportzone",
+						"fullPath": [
+							"transportzone"
+						],
+						"type": "string"
+					},
+					{
+						"key": "pobox",
+						"fullPath": [
+							"pobox"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxaddrnondeliverablereason",
+						"fullPath": [
+							"poboxaddrnondeliverablereason"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxiswithoutnumber",
+						"fullPath": [
+							"poboxiswithoutnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxpostalcode",
+						"fullPath": [
+							"poboxpostalcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxlobbyname",
+						"fullPath": [
+							"poboxlobbyname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxdeviatingcityname",
+						"fullPath": [
+							"poboxdeviatingcityname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxdeviatingregion",
+						"fullPath": [
+							"poboxdeviatingregion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "poboxdeviatingcountry",
+						"fullPath": [
+							"poboxdeviatingcountry"
+						],
+						"type": "string"
+					},
+					{
+						"key": "careofname",
+						"fullPath": [
+							"careofname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "deliveryservicetypecode",
+						"fullPath": [
+							"deliveryservicetypecode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "deliveryservicenumber",
+						"fullPath": [
+							"deliveryservicenumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addresstimezone",
+						"fullPath": [
+							"addresstimezone"
+						],
+						"type": "string"
+					},
+					{
+						"key": "secondaryregion",
+						"fullPath": [
+							"secondaryregion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "secondaryregionname",
+						"fullPath": [
+							"secondaryregionname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "tertiaryregion",
+						"fullPath": [
+							"tertiaryregion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "tertiaryregionname",
+						"fullPath": [
+							"tertiaryregionname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "regionalstructurecheckstatus",
+						"fullPath": [
+							"regionalstructurecheckstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addressgroup",
+						"fullPath": [
+							"addressgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

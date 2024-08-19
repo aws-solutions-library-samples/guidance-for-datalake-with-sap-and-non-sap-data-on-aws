@@ -1,0 +1,1116 @@
+{
+	"jobConfig": {
+		"name": "afsap-p2p-supplier-invoice-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-p2p-supplier-invoice-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-02T08:55:48.840Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_supplier_invoice/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "SUPPLIERINVOICE",
+						"fullPath": [
+							"SUPPLIERINVOICE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FISCALYEAR",
+						"fullPath": [
+							"FISCALYEAR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERINVOICEITEM",
+						"fullPath": [
+							"SUPPLIERINVOICEITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "QTYINPURCHASEORDERPRICEUNIT",
+						"fullPath": [
+							"QTYINPURCHASEORDERPRICEUNIT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PURCHASEORDERPRICEUNIT",
+						"fullPath": [
+							"PURCHASEORDERPRICEUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERQUANTITYUNIT",
+						"fullPath": [
+							"PURCHASEORDERQUANTITYUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEM",
+						"fullPath": [
+							"PURCHASEORDERITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRMTHBREFERENCEDOCUMENT",
+						"fullPath": [
+							"PRMTHBREFERENCEDOCUMENT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRMTHBREFERENCEDOCUMENTFSCLYR",
+						"fullPath": [
+							"PRMTHBREFERENCEDOCUMENTFSCLYR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRMTHBREFERENCEDOCUMENTITEM",
+						"fullPath": [
+							"PRMTHBREFERENCEDOCUMENTITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEMMATERIAL",
+						"fullPath": [
+							"PURCHASEORDERITEMMATERIAL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "QUANTITYINPURCHASEORDERUNIT",
+						"fullPath": [
+							"QUANTITYINPURCHASEORDERUNIT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SUPLRINVCITMHASQUALITYVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITMHASQUALITYVARIANCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRINVCITEMHASORDPRCQTYVARC",
+						"fullPath": [
+							"SUPLRINVCITEMHASORDPRCQTYVARC"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRINVCITEMHASQTYVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASQTYVARIANCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRINVCITEMHASPRICEVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASPRICEVARIANCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRINVCITEMHASOTHERVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASOTHERVARIANCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRINVCITEMHASAMOUNTOUTSDTOL",
+						"fullPath": [
+							"SUPLRINVCITEMHASAMOUNTOUTSDTOL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRINVCITEMHASDATEVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASDATEVARIANCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISSUBSEQUENTDEBITCREDIT",
+						"fullPath": [
+							"ISSUBSEQUENTDEBITCREDIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PLANT",
+						"fullPath": [
+							"PLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERINVOICEITEMAMOUNT",
+						"fullPath": [
+							"SUPPLIERINVOICEITEMAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SUPLRINVCAUTOMREDUCEDAMOUNT",
+						"fullPath": [
+							"SUPLRINVCAUTOMREDUCEDAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "UNPLANNEDDELIVERYCOST",
+						"fullPath": [
+							"UNPLANNEDDELIVERYCOST"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOCUMENTHEADERTEXT",
+						"fullPath": [
+							"DOCUMENTHEADERTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTDATE",
+						"fullPath": [
+							"DOCUMENTDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTINGDATE",
+						"fullPath": [
+							"POSTINGDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COMPANYCODE",
+						"fullPath": [
+							"COMPANYCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERINVOICEORIGIN",
+						"fullPath": [
+							"SUPPLIERINVOICEORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INVOICINGPARTY",
+						"fullPath": [
+							"INVOICINGPARTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UNPLANNEDDELIVERYCOSTTAXCODE",
+						"fullPath": [
+							"UNPLANNEDDELIVERYCOSTTAXCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REVERSEDOCUMENT",
+						"fullPath": [
+							"REVERSEDOCUMENT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REVERSEDOCUMENTFISCALYEAR",
+						"fullPath": [
+							"REVERSEDOCUMENTFISCALYEAR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERINVOICEIDBYINVCGPARTY",
+						"fullPath": [
+							"SUPPLIERINVOICEIDBYINVCGPARTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISINVOICE",
+						"fullPath": [
+							"ISINVOICE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERINVOICESTATUS",
+						"fullPath": [
+							"SUPPLIERINVOICESTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "SUPPLIERINVOICE",
+						"fullPath": [
+							"SUPPLIERINVOICE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FISCALYEAR",
+						"fullPath": [
+							"FISCALYEAR"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPPLIERINVOICEITEM",
+						"fullPath": [
+							"SUPPLIERINVOICEITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "QTYINPURCHASEORDERPRICEUNIT",
+						"fullPath": [
+							"QTYINPURCHASEORDERPRICEUNIT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERPRICEUNIT",
+						"fullPath": [
+							"PURCHASEORDERPRICEUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERQUANTITYUNIT",
+						"fullPath": [
+							"PURCHASEORDERQUANTITYUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERITEM",
+						"fullPath": [
+							"PURCHASEORDERITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRMTHBREFERENCEDOCUMENT",
+						"fullPath": [
+							"PRMTHBREFERENCEDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRMTHBREFERENCEDOCUMENTFSCLYR",
+						"fullPath": [
+							"PRMTHBREFERENCEDOCUMENTFSCLYR"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRMTHBREFERENCEDOCUMENTITEM",
+						"fullPath": [
+							"PRMTHBREFERENCEDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERITEMMATERIAL",
+						"fullPath": [
+							"PURCHASEORDERITEMMATERIAL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "QUANTITYINPURCHASEORDERUNIT",
+						"fullPath": [
+							"QUANTITYINPURCHASEORDERUNIT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITMHASQUALITYVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITMHASQUALITYVARIANCE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITEMHASORDPRCQTYVARC",
+						"fullPath": [
+							"SUPLRINVCITEMHASORDPRCQTYVARC"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITEMHASQTYVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASQTYVARIANCE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITEMHASPRICEVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASPRICEVARIANCE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITEMHASOTHERVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASOTHERVARIANCE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITEMHASAMOUNTOUTSDTOL",
+						"fullPath": [
+							"SUPLRINVCITEMHASAMOUNTOUTSDTOL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCITEMHASDATEVARIANCE",
+						"fullPath": [
+							"SUPLRINVCITEMHASDATEVARIANCE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ISSUBSEQUENTDEBITCREDIT",
+						"fullPath": [
+							"ISSUBSEQUENTDEBITCREDIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PLANT",
+						"fullPath": [
+							"PLANT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPPLIERINVOICEITEMAMOUNT",
+						"fullPath": [
+							"SUPPLIERINVOICEITEMAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPLRINVCAUTOMREDUCEDAMOUNT",
+						"fullPath": [
+							"SUPLRINVCAUTOMREDUCEDAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "UNPLANNEDDELIVERYCOST",
+						"fullPath": [
+							"UNPLANNEDDELIVERYCOST"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DOCUMENTHEADERTEXT",
+						"fullPath": [
+							"DOCUMENTHEADERTEXT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DOCUMENTDATE",
+						"fullPath": [
+							"DOCUMENTDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "POSTINGDATE",
+						"fullPath": [
+							"POSTINGDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COMPANYCODE",
+						"fullPath": [
+							"COMPANYCODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPPLIERINVOICEORIGIN",
+						"fullPath": [
+							"SUPPLIERINVOICEORIGIN"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INVOICINGPARTY",
+						"fullPath": [
+							"INVOICINGPARTY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "UNPLANNEDDELIVERYCOSTTAXCODE",
+						"fullPath": [
+							"UNPLANNEDDELIVERYCOSTTAXCODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "REVERSEDOCUMENT",
+						"fullPath": [
+							"REVERSEDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "REVERSEDOCUMENTFISCALYEAR",
+						"fullPath": [
+							"REVERSEDOCUMENTFISCALYEAR"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPPLIERINVOICEIDBYINVCGPARTY",
+						"fullPath": [
+							"SUPPLIERINVOICEIDBYINVCGPARTY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ISINVOICE",
+						"fullPath": [
+							"ISINVOICE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUPPLIERINVOICESTATUS",
+						"fullPath": [
+							"SUPPLIERINVOICESTATUS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_supplier_invoice/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_supplier_invoice/2024/08/05/05/2613e4e8-c1a4-32e7-ab61-5ad4167f2cc1-2024-08-05T05:12:09/-1399711046-2024-08-05T05:12:09",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "supplierinvoice",
+						"fullPath": [
+							"supplierinvoice"
+						],
+						"type": "string"
+					},
+					{
+						"key": "fiscalyear",
+						"fullPath": [
+							"fiscalyear"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceitem",
+						"fullPath": [
+							"supplierinvoiceitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "qtyinpurchaseorderpriceunit",
+						"fullPath": [
+							"qtyinpurchaseorderpriceunit"
+						],
+						"type": "double"
+					},
+					{
+						"key": "purchaseorderpriceunit",
+						"fullPath": [
+							"purchaseorderpriceunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderquantityunit",
+						"fullPath": [
+							"purchaseorderquantityunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorder",
+						"fullPath": [
+							"purchaseorder"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitem",
+						"fullPath": [
+							"purchaseorderitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prmthbreferencedocument",
+						"fullPath": [
+							"prmthbreferencedocument"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prmthbreferencedocumentfsclyr",
+						"fullPath": [
+							"prmthbreferencedocumentfsclyr"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prmthbreferencedocumentitem",
+						"fullPath": [
+							"prmthbreferencedocumentitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitemmaterial",
+						"fullPath": [
+							"purchaseorderitemmaterial"
+						],
+						"type": "string"
+					},
+					{
+						"key": "quantityinpurchaseorderunit",
+						"fullPath": [
+							"quantityinpurchaseorderunit"
+						],
+						"type": "double"
+					},
+					{
+						"key": "suplrinvcitmhasqualityvariance",
+						"fullPath": [
+							"suplrinvcitmhasqualityvariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasordprcqtyvarc",
+						"fullPath": [
+							"suplrinvcitemhasordprcqtyvarc"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasqtyvariance",
+						"fullPath": [
+							"suplrinvcitemhasqtyvariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhaspricevariance",
+						"fullPath": [
+							"suplrinvcitemhaspricevariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasothervariance",
+						"fullPath": [
+							"suplrinvcitemhasothervariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasamountoutsdtol",
+						"fullPath": [
+							"suplrinvcitemhasamountoutsdtol"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrinvcitemhasdatevariance",
+						"fullPath": [
+							"suplrinvcitemhasdatevariance"
+						],
+						"type": "string"
+					},
+					{
+						"key": "issubsequentdebitcredit",
+						"fullPath": [
+							"issubsequentdebitcredit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "plant",
+						"fullPath": [
+							"plant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentcurrency",
+						"fullPath": [
+							"documentcurrency"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceitemamount",
+						"fullPath": [
+							"supplierinvoiceitemamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "suplrinvcautomreducedamount",
+						"fullPath": [
+							"suplrinvcautomreducedamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "unplanneddeliverycost",
+						"fullPath": [
+							"unplanneddeliverycost"
+						],
+						"type": "double"
+					},
+					{
+						"key": "documentheadertext",
+						"fullPath": [
+							"documentheadertext"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentdate",
+						"fullPath": [
+							"documentdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postingdate",
+						"fullPath": [
+							"postingdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "companycode",
+						"fullPath": [
+							"companycode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceorigin",
+						"fullPath": [
+							"supplierinvoiceorigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "invoicingparty",
+						"fullPath": [
+							"invoicingparty"
+						],
+						"type": "string"
+					},
+					{
+						"key": "unplanneddeliverycosttaxcode",
+						"fullPath": [
+							"unplanneddeliverycosttaxcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "reversedocument",
+						"fullPath": [
+							"reversedocument"
+						],
+						"type": "string"
+					},
+					{
+						"key": "reversedocumentfiscalyear",
+						"fullPath": [
+							"reversedocumentfiscalyear"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoiceidbyinvcgparty",
+						"fullPath": [
+							"supplierinvoiceidbyinvcgparty"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isinvoice",
+						"fullPath": [
+							"isinvoice"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierinvoicestatus",
+						"fullPath": [
+							"supplierinvoicestatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

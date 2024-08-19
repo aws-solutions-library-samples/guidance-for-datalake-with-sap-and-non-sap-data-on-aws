@@ -1,0 +1,159 @@
+AWSTemplateFormatVersion: '2010-09-09'
+# Template to setup Lambda function . Credential data will be saved in Secret Manager
+
+Parameters:
+  LambdaGlueTableCreate:
+    Type: String
+    Default: 'gluetablecreate_lambdafunction'
+    Description: 'Name of the Lambda function will be created to Read OData metadata and create Glue tables'
+
+  ConfigFileS3BucketName:
+    Type: String
+    Default: 'afsaplake-deployscript-<Update your account ID>'
+    Description: 'Name of the S3 bucket where the config json file, lambda layer and function zip files is stored'
+  
+  ConfigFileName:
+    Type: String
+    Default: 'config_glue_table.json'
+    Description: 'Name of the JSON config file in S3 bucket store OData services name, table and database name, Datalake bucket name'
+  
+  LambdaCodeZipFile:
+    Type: String
+    Default: 'gluetablecreate_lambdafunction.zip'
+    Description: 'Name of the Zip file containing the Lambda function code uploaded to S3'
+  
+  LambdaLayerZipFile:
+    Type: String
+    Default: 'Lambdalayer_GlueTablecreationJob.zip'
+    Description: 'Name of the Zip file containing the Lambda Layer uploaded to S3'
+
+  LambdaLayerOData:
+    Type: String
+    Default: 'sapdata-gluetable-pyodata'
+    Description: 'Name of the Lambda Layer will be created'
+  
+  SecretName:
+    Type: String
+    Description: 'Name of Secret Manager created and stored SAP credentials. This name will be input as Lambda Envinronment Valiables'
+    Default: 'afsaplake-sapsecret'
+  
+  SecretManagerARN:
+    Type: String
+    Description: 'Name of Secret Manager created and stored SAP credentials. This will for Lambda IAM permission setting'
+    Default: 'arn:aws:secretsmanager:<Region>:<AccountID>:secret:<your secret name and specific text>'
+
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: S3 bucket and configuration files. Please check and modify with your environment values.
+        Parameters:
+          - ConfigFileS3BucketName
+          - ConfigFileName
+          - LambdaCodeZipFile
+          - LambdaLayerZipFile
+      - Label:
+          default: Input to create AWS Lambda Function (IAM role will be created automatically). Please check and modify with your values.
+        Parameters:
+          - SecretName
+          - SecretManagerARN
+          - LambdaGlueTableCreate
+          - LambdaLayerOData
+
+Resources:
+  SAPDataLakeLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'afsaplake-lambdaexecutionrole-${AWS::AccountId}'
+      Description: Role for Lambda function to read SAP OData metadata and create tables in Glue
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: '/'
+      Policies:
+        - PolicyName: !Sub afsaplake-lambdaexecutionrole-${AWS::AccountId}-log
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*'
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*:*'
+        - PolicyName: !Sub afsaplake-lambdaexecutionrole-${AWS::AccountId}-glue
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - glue:CreateTable
+                  - glue:UpdateTable
+                Resource: !Sub 'arn:aws:glue:${AWS::Region}:${AWS::AccountId}:*'
+        - PolicyName: !Sub afsaplake-lambdaexecutionrole-${AWS::AccountId}-s3readwrite
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: 
+                  - !Sub 'arn:aws:s3:::*'
+                  - !Sub 'arn:aws:s3:::*/*'
+        - PolicyName: !Sub afsaplake-lambdaexecutionrole-${AWS::AccountId}-secretmanager
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref SecretManagerARN
+
+  LambdaLayerforGluetableLambda:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: !Ref LambdaLayerOData
+      Description: 'Lambda Layer for Glue table creation function'
+      Content:
+        S3Bucket: !Ref ConfigFileS3BucketName
+        S3Key: !Ref LambdaLayerZipFile
+      CompatibleRuntimes:
+        - python3.12
+
+  LambdaFunctionGluetableforSAPDatalake:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref LambdaGlueTableCreate
+      Description: 'Lambda Function to read SAP OData metadata and create Glue tables'
+      Code:
+        S3Bucket: !Ref ConfigFileS3BucketName
+        S3Key: !Ref LambdaCodeZipFile
+      Handler: gluetablecreate_lambdafunction.lambda_handler #Please update this if you change .py filename. Default code file name is gluetablecreate_lambdafunction
+      Runtime: python3.12
+      Timeout: 900
+      Role: !GetAtt SAPDataLakeLambdaRole.Arn
+      Layers:
+        - !Ref LambdaLayerforGluetableLambda
+      Environment:
+        Variables:
+          secretname: !Ref SecretName
+          BucketConfig: !Ref ConfigFileS3BucketName
+          FileNameConfig: !Ref ConfigFileName
+    DependsOn:
+      - SAPDataLakeLambdaRole
+      - LambdaLayerforGluetableLambda
+
+
+

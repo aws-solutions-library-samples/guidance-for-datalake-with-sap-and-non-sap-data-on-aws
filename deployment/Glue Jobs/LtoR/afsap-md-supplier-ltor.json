@@ -1,0 +1,2206 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-supplier-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-supplier-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-05T13:22:04.622Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_supplier/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERACCOUNTGROUP",
+						"fullPath": [
+							"SUPPLIERACCOUNTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERNAME",
+						"fullPath": [
+							"SUPPLIERNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERFULLNAME",
+						"fullPath": [
+							"SUPPLIERFULLNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISBUSINESSPURPOSECOMPLETED",
+						"fullPath": [
+							"ISBUSINESSPURPOSECOMPLETED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISONETIMEACCOUNT",
+						"fullPath": [
+							"ISONETIMEACCOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AUTHORIZATIONGROUP",
+						"fullPath": [
+							"AUTHORIZATIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATREGISTRATION",
+						"fullPath": [
+							"VATREGISTRATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ACCOUNTISBLOCKEDFORPOSTING",
+						"fullPath": [
+							"ACCOUNTISBLOCKEDFORPOSTING"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERCORPORATEGROUP",
+						"fullPath": [
+							"SUPPLIERCORPORATEGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMER",
+						"fullPath": [
+							"CUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRY",
+						"fullPath": [
+							"INDUSTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER1",
+						"fullPath": [
+							"TAXNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER2",
+						"fullPath": [
+							"TAXNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER3",
+						"fullPath": [
+							"TAXNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER4",
+						"fullPath": [
+							"TAXNUMBER4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER5",
+						"fullPath": [
+							"TAXNUMBER5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER6",
+						"fullPath": [
+							"TAXNUMBER6"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTINGISBLOCKED",
+						"fullPath": [
+							"POSTINGISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGISBLOCKED",
+						"fullPath": [
+							"PURCHASINGISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER1",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER2",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER3",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSID",
+						"fullPath": [
+							"ADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGION",
+						"fullPath": [
+							"REGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME1",
+						"fullPath": [
+							"ORGANIZATIONBPNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME2",
+						"fullPath": [
+							"ORGANIZATIONBPNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNAME",
+						"fullPath": [
+							"CITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTALCODE",
+						"fullPath": [
+							"POSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETNAME",
+						"fullPath": [
+							"STREETNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CONCATENATEDINTERNATIONALLOCNO",
+						"fullPath": [
+							"CONCATENATEDINTERNATIONALLOCNO"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERPROCUREMENTBLOCK",
+						"fullPath": [
+							"SUPPLIERPROCUREMENTBLOCK"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRQUALITYMANAGEMENTSYSTEM",
+						"fullPath": [
+							"SUPLRQUALITYMANAGEMENTSYSTEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRQLTYINPROCMTCERTFNVALIDTO",
+						"fullPath": [
+							"SUPLRQLTYINPROCMTCERTFNVALIDTO"
+						],
+						"type": "null"
+					},
+					{
+						"key": "SUPPLIERLANGUAGE",
+						"fullPath": [
+							"SUPPLIERLANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYEEACCOUNTNUMBER",
+						"fullPath": [
+							"ALTERNATIVEPAYEEACCOUNTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PHONENUMBER1",
+						"fullPath": [
+							"PHONENUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FAXNUMBER",
+						"fullPath": [
+							"FAXNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISNATURALPERSON",
+						"fullPath": [
+							"ISNATURALPERSON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBERRESPONSIBLE",
+						"fullPath": [
+							"TAXNUMBERRESPONSIBLE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_CONTRACTORBUSINESSTYPE",
+						"fullPath": [
+							"UK_CONTRACTORBUSINESSTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_PARTNERTRADINGNAME",
+						"fullPath": [
+							"UK_PARTNERTRADINGNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_PARTNERTAXREFERENCE",
+						"fullPath": [
+							"UK_PARTNERTAXREFERENCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_VERIFICATIONSTATUS",
+						"fullPath": [
+							"UK_VERIFICATIONSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_VERIFICATIONNUMBER",
+						"fullPath": [
+							"UK_VERIFICATIONNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_COMPANYREGISTRATIONNUMBER",
+						"fullPath": [
+							"UK_COMPANYREGISTRATIONNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_VERIFIEDTAXSTATUS",
+						"fullPath": [
+							"UK_VERIFIEDTAXSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FORMOFADDRESS",
+						"fullPath": [
+							"FORMOFADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REFERENCEACCOUNTGROUP",
+						"fullPath": [
+							"REFERENCEACCOUNTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATLIABILITY",
+						"fullPath": [
+							"VATLIABILITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RESPONSIBLETYPE",
+						"fullPath": [
+							"RESPONSIBLETYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBERTYPE",
+						"fullPath": [
+							"TAXNUMBERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FISCALADDRESS",
+						"fullPath": [
+							"FISCALADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BUSINESSTYPE",
+						"fullPath": [
+							"BUSINESSTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BIRTHDATE",
+						"fullPath": [
+							"BIRTHDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTISBLOCKEDFORSUPPLIER",
+						"fullPath": [
+							"PAYMENTISBLOCKEDFORSUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SORTFIELD",
+						"fullPath": [
+							"SORTFIELD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PHONENUMBER2",
+						"fullPath": [
+							"PHONENUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELETIONINDICATOR",
+						"fullPath": [
+							"DELETIONINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXINVOICEREPRESENTATIVENAME",
+						"fullPath": [
+							"TAXINVOICEREPRESENTATIVENAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYTYPE",
+						"fullPath": [
+							"INDUSTRYTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "IN_GSTSUPPLIERCLASSIFICATION",
+						"fullPath": [
+							"IN_GSTSUPPLIERCLASSIFICATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRPROOFOFDELIVRLVTCODE",
+						"fullPath": [
+							"SUPLRPROOFOFDELIVRLVTCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRADINGPARTNER",
+						"fullPath": [
+							"TRADINGPARTNER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BR_TAXISSPLIT",
+						"fullPath": [
+							"BR_TAXISSPLIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYERISPAYINGTOCARRYONENT",
+						"fullPath": [
+							"AU_PAYERISPAYINGTOCARRYONENT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_INDIVIDUALISUNDER18",
+						"fullPath": [
+							"AU_INDIVIDUALISUNDER18"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYMENTISEXCEEDING75",
+						"fullPath": [
+							"AU_PAYMENTISEXCEEDING75"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYMENTISWHOLLYINPUTTAXED",
+						"fullPath": [
+							"AU_PAYMENTISWHOLLYINPUTTAXED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PARTNERISSUPPLYWITHOUTGAIN",
+						"fullPath": [
+							"AU_PARTNERISSUPPLYWITHOUTGAIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_SUPPLIERISENTITLEDTOABN",
+						"fullPath": [
+							"AU_SUPPLIERISENTITLEDTOABN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYMENTISINCOMEEXEMPTED",
+						"fullPath": [
+							"AU_PAYMENTISINCOMEEXEMPTED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_SUPPLYISMADEASPRIVATEHOBBY",
+						"fullPath": [
+							"AU_SUPPLYISMADEASPRIVATEHOBBY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_SUPPLYMADEISOFDMSTCNATURE",
+						"fullPath": [
+							"AU_SUPPLYMADEISOFDMSTCNATURE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISTOBEACCEPTEDATORIGIN",
+						"fullPath": [
+							"ISTOBEACCEPTEDATORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BPISEQUALIZATIONTAXSUBJECT",
+						"fullPath": [
+							"BPISEQUALIZATIONTAXSUBJECT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BRSPCFCTAXBASEPERCENTAGECODE",
+						"fullPath": [
+							"BRSPCFCTAXBASEPERCENTAGECODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DATAMEDIUMEXCHANGEINDICATOR",
+						"fullPath": [
+							"DATAMEDIUMEXCHANGEINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DATAEXCHANGEINSTRUCTIONKEY",
+						"fullPath": [
+							"DATAEXCHANGEINSTRUCTIONKEY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERISSUBRANGERELEVANT",
+						"fullPath": [
+							"SUPPLIERISSUBRANGERELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRAINSTATIONNAME",
+						"fullPath": [
+							"TRAINSTATIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYEEISALLOWED",
+						"fullPath": [
+							"ALTERNATIVEPAYEEISALLOWED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYTSLIPWTHREFSUBSCRIBER",
+						"fullPath": [
+							"PAYTSLIPWTHREFSUBSCRIBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPSERVICEAGENTSTSTCGRP",
+						"fullPath": [
+							"TRANSPSERVICEAGENTSTSTCGRP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERISPLANTRELEVANT",
+						"fullPath": [
+							"SUPPLIERISPLANTRELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRTAXAUTHORITYACCOUNTNUMBER",
+						"fullPath": [
+							"SUPLRTAXAUTHORITYACCOUNTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERPLANT",
+						"fullPath": [
+							"SUPPLIERPLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FACTORYCALENDAR",
+						"fullPath": [
+							"FACTORYCALENDAR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTREASON",
+						"fullPath": [
+							"PAYMENTREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERCENTRALDELETIONISBLOCK",
+						"fullPath": [
+							"SUPPLIERCENTRALDELETIONISBLOCK"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERACCOUNTGROUP",
+						"fullPath": [
+							"SUPPLIERACCOUNTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERNAME",
+						"fullPath": [
+							"SUPPLIERNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERFULLNAME",
+						"fullPath": [
+							"SUPPLIERFULLNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISBUSINESSPURPOSECOMPLETED",
+						"fullPath": [
+							"ISBUSINESSPURPOSECOMPLETED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISONETIMEACCOUNT",
+						"fullPath": [
+							"ISONETIMEACCOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AUTHORIZATIONGROUP",
+						"fullPath": [
+							"AUTHORIZATIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATREGISTRATION",
+						"fullPath": [
+							"VATREGISTRATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ACCOUNTISBLOCKEDFORPOSTING",
+						"fullPath": [
+							"ACCOUNTISBLOCKEDFORPOSTING"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERCORPORATEGROUP",
+						"fullPath": [
+							"SUPPLIERCORPORATEGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMER",
+						"fullPath": [
+							"CUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRY",
+						"fullPath": [
+							"INDUSTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER1",
+						"fullPath": [
+							"TAXNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER2",
+						"fullPath": [
+							"TAXNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER3",
+						"fullPath": [
+							"TAXNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER4",
+						"fullPath": [
+							"TAXNUMBER4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER5",
+						"fullPath": [
+							"TAXNUMBER5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBER6",
+						"fullPath": [
+							"TAXNUMBER6"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTINGISBLOCKED",
+						"fullPath": [
+							"POSTINGISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGISBLOCKED",
+						"fullPath": [
+							"PURCHASINGISBLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER1",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER2",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALLOCATIONNUMBER3",
+						"fullPath": [
+							"INTERNATIONALLOCATIONNUMBER3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADDRESSID",
+						"fullPath": [
+							"ADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REGION",
+						"fullPath": [
+							"REGION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME1",
+						"fullPath": [
+							"ORGANIZATIONBPNAME1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORGANIZATIONBPNAME2",
+						"fullPath": [
+							"ORGANIZATIONBPNAME2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CITYNAME",
+						"fullPath": [
+							"CITYNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "POSTALCODE",
+						"fullPath": [
+							"POSTALCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STREETNAME",
+						"fullPath": [
+							"STREETNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CONCATENATEDINTERNATIONALLOCNO",
+						"fullPath": [
+							"CONCATENATEDINTERNATIONALLOCNO"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERPROCUREMENTBLOCK",
+						"fullPath": [
+							"SUPPLIERPROCUREMENTBLOCK"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRQUALITYMANAGEMENTSYSTEM",
+						"fullPath": [
+							"SUPLRQUALITYMANAGEMENTSYSTEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRQLTYINPROCMTCERTFNVALIDTO",
+						"fullPath": [
+							"SUPLRQLTYINPROCMTCERTFNVALIDTO"
+						],
+						"type": "null"
+					},
+					{
+						"key": "SUPPLIERLANGUAGE",
+						"fullPath": [
+							"SUPPLIERLANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYEEACCOUNTNUMBER",
+						"fullPath": [
+							"ALTERNATIVEPAYEEACCOUNTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PHONENUMBER1",
+						"fullPath": [
+							"PHONENUMBER1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FAXNUMBER",
+						"fullPath": [
+							"FAXNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISNATURALPERSON",
+						"fullPath": [
+							"ISNATURALPERSON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBERRESPONSIBLE",
+						"fullPath": [
+							"TAXNUMBERRESPONSIBLE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_CONTRACTORBUSINESSTYPE",
+						"fullPath": [
+							"UK_CONTRACTORBUSINESSTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_PARTNERTRADINGNAME",
+						"fullPath": [
+							"UK_PARTNERTRADINGNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_PARTNERTAXREFERENCE",
+						"fullPath": [
+							"UK_PARTNERTAXREFERENCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_VERIFICATIONSTATUS",
+						"fullPath": [
+							"UK_VERIFICATIONSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_VERIFICATIONNUMBER",
+						"fullPath": [
+							"UK_VERIFICATIONNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_COMPANYREGISTRATIONNUMBER",
+						"fullPath": [
+							"UK_COMPANYREGISTRATIONNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "UK_VERIFIEDTAXSTATUS",
+						"fullPath": [
+							"UK_VERIFIEDTAXSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FORMOFADDRESS",
+						"fullPath": [
+							"FORMOFADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "REFERENCEACCOUNTGROUP",
+						"fullPath": [
+							"REFERENCEACCOUNTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATLIABILITY",
+						"fullPath": [
+							"VATLIABILITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RESPONSIBLETYPE",
+						"fullPath": [
+							"RESPONSIBLETYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXNUMBERTYPE",
+						"fullPath": [
+							"TAXNUMBERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FISCALADDRESS",
+						"fullPath": [
+							"FISCALADDRESS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BUSINESSTYPE",
+						"fullPath": [
+							"BUSINESSTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BIRTHDATE",
+						"fullPath": [
+							"BIRTHDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTISBLOCKEDFORSUPPLIER",
+						"fullPath": [
+							"PAYMENTISBLOCKEDFORSUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SORTFIELD",
+						"fullPath": [
+							"SORTFIELD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PHONENUMBER2",
+						"fullPath": [
+							"PHONENUMBER2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DELETIONINDICATOR",
+						"fullPath": [
+							"DELETIONINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TAXINVOICEREPRESENTATIVENAME",
+						"fullPath": [
+							"TAXINVOICEREPRESENTATIVENAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYTYPE",
+						"fullPath": [
+							"INDUSTRYTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "IN_GSTSUPPLIERCLASSIFICATION",
+						"fullPath": [
+							"IN_GSTSUPPLIERCLASSIFICATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRPROOFOFDELIVRLVTCODE",
+						"fullPath": [
+							"SUPLRPROOFOFDELIVRLVTCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRADINGPARTNER",
+						"fullPath": [
+							"TRADINGPARTNER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BR_TAXISSPLIT",
+						"fullPath": [
+							"BR_TAXISSPLIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYERISPAYINGTOCARRYONENT",
+						"fullPath": [
+							"AU_PAYERISPAYINGTOCARRYONENT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_INDIVIDUALISUNDER18",
+						"fullPath": [
+							"AU_INDIVIDUALISUNDER18"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYMENTISEXCEEDING75",
+						"fullPath": [
+							"AU_PAYMENTISEXCEEDING75"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYMENTISWHOLLYINPUTTAXED",
+						"fullPath": [
+							"AU_PAYMENTISWHOLLYINPUTTAXED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PARTNERISSUPPLYWITHOUTGAIN",
+						"fullPath": [
+							"AU_PARTNERISSUPPLYWITHOUTGAIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_SUPPLIERISENTITLEDTOABN",
+						"fullPath": [
+							"AU_SUPPLIERISENTITLEDTOABN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_PAYMENTISINCOMEEXEMPTED",
+						"fullPath": [
+							"AU_PAYMENTISINCOMEEXEMPTED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_SUPPLYISMADEASPRIVATEHOBBY",
+						"fullPath": [
+							"AU_SUPPLYISMADEASPRIVATEHOBBY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "AU_SUPPLYMADEISOFDMSTCNATURE",
+						"fullPath": [
+							"AU_SUPPLYMADEISOFDMSTCNATURE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISTOBEACCEPTEDATORIGIN",
+						"fullPath": [
+							"ISTOBEACCEPTEDATORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BPISEQUALIZATIONTAXSUBJECT",
+						"fullPath": [
+							"BPISEQUALIZATIONTAXSUBJECT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BRSPCFCTAXBASEPERCENTAGECODE",
+						"fullPath": [
+							"BRSPCFCTAXBASEPERCENTAGECODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DATAMEDIUMEXCHANGEINDICATOR",
+						"fullPath": [
+							"DATAMEDIUMEXCHANGEINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DATAEXCHANGEINSTRUCTIONKEY",
+						"fullPath": [
+							"DATAEXCHANGEINSTRUCTIONKEY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERISSUBRANGERELEVANT",
+						"fullPath": [
+							"SUPPLIERISSUBRANGERELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRAINSTATIONNAME",
+						"fullPath": [
+							"TRAINSTATIONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ALTERNATIVEPAYEEISALLOWED",
+						"fullPath": [
+							"ALTERNATIVEPAYEEISALLOWED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYTSLIPWTHREFSUBSCRIBER",
+						"fullPath": [
+							"PAYTSLIPWTHREFSUBSCRIBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPSERVICEAGENTSTSTCGRP",
+						"fullPath": [
+							"TRANSPSERVICEAGENTSTSTCGRP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERISPLANTRELEVANT",
+						"fullPath": [
+							"SUPPLIERISPLANTRELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPLRTAXAUTHORITYACCOUNTNUMBER",
+						"fullPath": [
+							"SUPLRTAXAUTHORITYACCOUNTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERPLANT",
+						"fullPath": [
+							"SUPPLIERPLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "FACTORYCALENDAR",
+						"fullPath": [
+							"FACTORYCALENDAR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTREASON",
+						"fullPath": [
+							"PAYMENTREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERCENTRALDELETIONISBLOCK",
+						"fullPath": [
+							"SUPPLIERCENTRALDELETIONISBLOCK"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_supplier/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_supplier/2024/08/05/05/0c31a61a-e2ac-339e-b602-e5a874e349f9-2024-08-05T05:11:47/-1612991075-2024-08-05T05:11:47",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplieraccountgroup",
+						"fullPath": [
+							"supplieraccountgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suppliername",
+						"fullPath": [
+							"suppliername"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierfullname",
+						"fullPath": [
+							"supplierfullname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isbusinesspurposecompleted",
+						"fullPath": [
+							"isbusinesspurposecompleted"
+						],
+						"type": "string"
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string"
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isonetimeaccount",
+						"fullPath": [
+							"isonetimeaccount"
+						],
+						"type": "string"
+					},
+					{
+						"key": "authorizationgroup",
+						"fullPath": [
+							"authorizationgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "vatregistration",
+						"fullPath": [
+							"vatregistration"
+						],
+						"type": "string"
+					},
+					{
+						"key": "accountisblockedforposting",
+						"fullPath": [
+							"accountisblockedforposting"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxjurisdiction",
+						"fullPath": [
+							"taxjurisdiction"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suppliercorporategroup",
+						"fullPath": [
+							"suppliercorporategroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customer",
+						"fullPath": [
+							"customer"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industry",
+						"fullPath": [
+							"industry"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber1",
+						"fullPath": [
+							"taxnumber1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber2",
+						"fullPath": [
+							"taxnumber2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber3",
+						"fullPath": [
+							"taxnumber3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber4",
+						"fullPath": [
+							"taxnumber4"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber5",
+						"fullPath": [
+							"taxnumber5"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumber6",
+						"fullPath": [
+							"taxnumber6"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postingisblocked",
+						"fullPath": [
+							"postingisblocked"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingisblocked",
+						"fullPath": [
+							"purchasingisblocked"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationallocationnumber1",
+						"fullPath": [
+							"internationallocationnumber1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationallocationnumber2",
+						"fullPath": [
+							"internationallocationnumber2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationallocationnumber3",
+						"fullPath": [
+							"internationallocationnumber3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "addressid",
+						"fullPath": [
+							"addressid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationbpname1",
+						"fullPath": [
+							"organizationbpname1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "organizationbpname2",
+						"fullPath": [
+							"organizationbpname2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "cityname",
+						"fullPath": [
+							"cityname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "postalcode",
+						"fullPath": [
+							"postalcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "streetname",
+						"fullPath": [
+							"streetname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string"
+					},
+					{
+						"key": "concatenatedinternationallocno",
+						"fullPath": [
+							"concatenatedinternationallocno"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierprocurementblock",
+						"fullPath": [
+							"supplierprocurementblock"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrqualitymanagementsystem",
+						"fullPath": [
+							"suplrqualitymanagementsystem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrqltyinprocmtcertfnvalidto",
+						"fullPath": [
+							"suplrqltyinprocmtcertfnvalidto"
+						],
+						"type": "null"
+					},
+					{
+						"key": "supplierlanguage",
+						"fullPath": [
+							"supplierlanguage"
+						],
+						"type": "string"
+					},
+					{
+						"key": "alternativepayeeaccountnumber",
+						"fullPath": [
+							"alternativepayeeaccountnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "phonenumber1",
+						"fullPath": [
+							"phonenumber1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "faxnumber",
+						"fullPath": [
+							"faxnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isnaturalperson",
+						"fullPath": [
+							"isnaturalperson"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumberresponsible",
+						"fullPath": [
+							"taxnumberresponsible"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_contractorbusinesstype",
+						"fullPath": [
+							"uk_contractorbusinesstype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_partnertradingname",
+						"fullPath": [
+							"uk_partnertradingname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_partnertaxreference",
+						"fullPath": [
+							"uk_partnertaxreference"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_verificationstatus",
+						"fullPath": [
+							"uk_verificationstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_verificationnumber",
+						"fullPath": [
+							"uk_verificationnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_companyregistrationnumber",
+						"fullPath": [
+							"uk_companyregistrationnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "uk_verifiedtaxstatus",
+						"fullPath": [
+							"uk_verifiedtaxstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "formofaddress",
+						"fullPath": [
+							"formofaddress"
+						],
+						"type": "string"
+					},
+					{
+						"key": "referenceaccountgroup",
+						"fullPath": [
+							"referenceaccountgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "vatliability",
+						"fullPath": [
+							"vatliability"
+						],
+						"type": "string"
+					},
+					{
+						"key": "responsibletype",
+						"fullPath": [
+							"responsibletype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxnumbertype",
+						"fullPath": [
+							"taxnumbertype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "fiscaladdress",
+						"fullPath": [
+							"fiscaladdress"
+						],
+						"type": "string"
+					},
+					{
+						"key": "businesstype",
+						"fullPath": [
+							"businesstype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "birthdate",
+						"fullPath": [
+							"birthdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "paymentisblockedforsupplier",
+						"fullPath": [
+							"paymentisblockedforsupplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "sortfield",
+						"fullPath": [
+							"sortfield"
+						],
+						"type": "string"
+					},
+					{
+						"key": "phonenumber2",
+						"fullPath": [
+							"phonenumber2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "deletionindicator",
+						"fullPath": [
+							"deletionindicator"
+						],
+						"type": "string"
+					},
+					{
+						"key": "taxinvoicerepresentativename",
+						"fullPath": [
+							"taxinvoicerepresentativename"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrytype",
+						"fullPath": [
+							"industrytype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "in_gstsupplierclassification",
+						"fullPath": [
+							"in_gstsupplierclassification"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrproofofdelivrlvtcode",
+						"fullPath": [
+							"suplrproofofdelivrlvtcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "tradingpartner",
+						"fullPath": [
+							"tradingpartner"
+						],
+						"type": "string"
+					},
+					{
+						"key": "br_taxissplit",
+						"fullPath": [
+							"br_taxissplit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_payerispayingtocarryonent",
+						"fullPath": [
+							"au_payerispayingtocarryonent"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_individualisunder18",
+						"fullPath": [
+							"au_individualisunder18"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_paymentisexceeding75",
+						"fullPath": [
+							"au_paymentisexceeding75"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_paymentiswhollyinputtaxed",
+						"fullPath": [
+							"au_paymentiswhollyinputtaxed"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_partnerissupplywithoutgain",
+						"fullPath": [
+							"au_partnerissupplywithoutgain"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_supplierisentitledtoabn",
+						"fullPath": [
+							"au_supplierisentitledtoabn"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_paymentisincomeexempted",
+						"fullPath": [
+							"au_paymentisincomeexempted"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_supplyismadeasprivatehobby",
+						"fullPath": [
+							"au_supplyismadeasprivatehobby"
+						],
+						"type": "string"
+					},
+					{
+						"key": "au_supplymadeisofdmstcnature",
+						"fullPath": [
+							"au_supplymadeisofdmstcnature"
+						],
+						"type": "string"
+					},
+					{
+						"key": "istobeacceptedatorigin",
+						"fullPath": [
+							"istobeacceptedatorigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "bpisequalizationtaxsubject",
+						"fullPath": [
+							"bpisequalizationtaxsubject"
+						],
+						"type": "string"
+					},
+					{
+						"key": "brspcfctaxbasepercentagecode",
+						"fullPath": [
+							"brspcfctaxbasepercentagecode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "datamediumexchangeindicator",
+						"fullPath": [
+							"datamediumexchangeindicator"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dataexchangeinstructionkey",
+						"fullPath": [
+							"dataexchangeinstructionkey"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierissubrangerelevant",
+						"fullPath": [
+							"supplierissubrangerelevant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "trainstationname",
+						"fullPath": [
+							"trainstationname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "alternativepayeeisallowed",
+						"fullPath": [
+							"alternativepayeeisallowed"
+						],
+						"type": "string"
+					},
+					{
+						"key": "paytslipwthrefsubscriber",
+						"fullPath": [
+							"paytslipwthrefsubscriber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "transpserviceagentststcgrp",
+						"fullPath": [
+							"transpserviceagentststcgrp"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierisplantrelevant",
+						"fullPath": [
+							"supplierisplantrelevant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suplrtaxauthorityaccountnumber",
+						"fullPath": [
+							"suplrtaxauthorityaccountnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierplant",
+						"fullPath": [
+							"supplierplant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "factorycalendar",
+						"fullPath": [
+							"factorycalendar"
+						],
+						"type": "string"
+					},
+					{
+						"key": "paymentreason",
+						"fullPath": [
+							"paymentreason"
+						],
+						"type": "string"
+					},
+					{
+						"key": "suppliercentraldeletionisblock",
+						"fullPath": [
+							"suppliercentraldeletionisblock"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

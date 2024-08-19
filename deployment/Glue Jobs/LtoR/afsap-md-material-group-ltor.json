@@ -1,0 +1,316 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-material-group-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-material-group-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-02T09:27:39.116Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_material_group/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "PRODUCTGROUP",
+						"fullPath": [
+							"PRODUCTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LANGUAGE",
+						"fullPath": [
+							"LANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTGROUPNAME",
+						"fullPath": [
+							"PRODUCTGROUPNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTGROUPTEXT",
+						"fullPath": [
+							"PRODUCTGROUPTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "PRODUCTGROUP",
+						"fullPath": [
+							"PRODUCTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LANGUAGE",
+						"fullPath": [
+							"LANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTGROUPNAME",
+						"fullPath": [
+							"PRODUCTGROUPNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTGROUPTEXT",
+						"fullPath": [
+							"PRODUCTGROUPTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_material_group/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_material_group/2024/08/05/05/973665b1-59a3-3de1-aa6d-ec8dde654f7a-2024-08-05T05:11:27/-229389871-2024-08-05T05:11:26",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "productgroup",
+						"fullPath": [
+							"productgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "language",
+						"fullPath": [
+							"language"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productgroupname",
+						"fullPath": [
+							"productgroupname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productgrouptext",
+						"fullPath": [
+							"productgrouptext"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

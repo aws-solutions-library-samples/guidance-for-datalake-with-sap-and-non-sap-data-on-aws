@@ -1,0 +1,1639 @@
+{
+	"jobConfig": {
+		"name": "afsap-p2p-po-schedule-line-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-p2p-po-schedule-line-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-02T08:49:07.849Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_po_schedule_line/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEM",
+						"fullPath": [
+							"PURCHASEORDERITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERSCHEDULELINE",
+						"fullPath": [
+							"PURCHASEORDERSCHEDULELINE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEDELIVERYDATE",
+						"fullPath": [
+							"SCHEDULELINEDELIVERYDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEDELIVERYTIME",
+						"fullPath": [
+							"SCHEDULELINEDELIVERYTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEREQUISITION",
+						"fullPath": [
+							"PURCHASEREQUISITION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEREQUISITIONITEM",
+						"fullPath": [
+							"PURCHASEREQUISITIONITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BATCH",
+						"fullPath": [
+							"BATCH"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGSCHDLNNROFREMINDERS",
+						"fullPath": [
+							"PURCHASINGSCHDLNNROFREMINDERS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "REQUISITIONERNAME",
+						"fullPath": [
+							"REQUISITIONERNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RETAILPROMOTION",
+						"fullPath": [
+							"RETAILPROMOTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ARTICLECATEGORY",
+						"fullPath": [
+							"ARTICLECATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGORDERREASON",
+						"fullPath": [
+							"PURCHASINGORDERREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISCOMPLETELYDELIVERED",
+						"fullPath": [
+							"ISCOMPLETELYDELIVERED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUFACTURERMATERIAL",
+						"fullPath": [
+							"MANUFACTURERMATERIAL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISFINALLYINVOICED",
+						"fullPath": [
+							"ISFINALLYINVOICED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASECONTRACT",
+						"fullPath": [
+							"PURCHASECONTRACT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASECONTRACTITEM",
+						"fullPath": [
+							"PURCHASECONTRACTITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STORAGELOCATION",
+						"fullPath": [
+							"STORAGELOCATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BASEUNIT",
+						"fullPath": [
+							"BASEUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MATERIALGROUP",
+						"fullPath": [
+							"MATERIALGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MATERIAL",
+						"fullPath": [
+							"MATERIAL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERQUANTITYUNIT",
+						"fullPath": [
+							"PURCHASEORDERQUANTITYUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEMCATEGORY",
+						"fullPath": [
+							"PURCHASEORDERITEMCATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISSUINGSTORAGELOCATION",
+						"fullPath": [
+							"ISSUINGSTORAGELOCATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEMTEXT",
+						"fullPath": [
+							"PURCHASEORDERITEMTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGPARENTITEM",
+						"fullPath": [
+							"PURCHASINGPARENTITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORDERITEMQTYTOBASEQTYDNMNTR",
+						"fullPath": [
+							"ORDERITEMQTYTOBASEQTYDNMNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "ORDERITEMQTYTOBASEQTYNMRTR",
+						"fullPath": [
+							"ORDERITEMQTYTOBASEQTYNMRTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "INVOICEISGOODSRECEIPTBASED",
+						"fullPath": [
+							"INVOICEISGOODSRECEIPTBASED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "GOODSRECEIPTISEXPECTED",
+						"fullPath": [
+							"GOODSRECEIPTISEXPECTED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PLANT",
+						"fullPath": [
+							"PLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EVALDRCPTSETTLMTISALLOWED",
+						"fullPath": [
+							"EVALDRCPTSETTLMTISALLOWED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERDATE",
+						"fullPath": [
+							"PURCHASEORDERDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERTYPE",
+						"fullPath": [
+							"PURCHASEORDERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGGROUP",
+						"fullPath": [
+							"PURCHASINGGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGORGANIZATION",
+						"fullPath": [
+							"PURCHASINGORGANIZATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VALIDITYSTARTDATE",
+						"fullPath": [
+							"VALIDITYSTARTDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "VALIDITYENDDATE",
+						"fullPath": [
+							"VALIDITYENDDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INVOICINGPARTY",
+						"fullPath": [
+							"INVOICINGPARTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGSUPPLIER",
+						"fullPath": [
+							"SUPPLYINGSUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGPLANT",
+						"fullPath": [
+							"SUPPLYINGPLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGDOCUMENTORIGIN",
+						"fullPath": [
+							"PURCHASINGDOCUMENTORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EXCHANGERATE",
+						"fullPath": [
+							"EXCHANGERATE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DELIVDATECATEGORY",
+						"fullPath": [
+							"DELIVDATECATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEORDERQUANTITY",
+						"fullPath": [
+							"SCHEDULELINEORDERQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PREVDELIVQTYOFSCHEDULELINE",
+						"fullPath": [
+							"PREVDELIVQTYOFSCHEDULELINE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "ROUGHGOODSRECEIPTQTY",
+						"fullPath": [
+							"ROUGHGOODSRECEIPTQTY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SCHEDULELINEISSUEDQUANTITY",
+						"fullPath": [
+							"SCHEDULELINEISSUEDQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SOURCEOFCREATION",
+						"fullPath": [
+							"SOURCEOFCREATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RESERVATION",
+						"fullPath": [
+							"RESERVATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEISFIXED",
+						"fullPath": [
+							"SCHEDULELINEISFIXED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STOCKTRANSFERDELIVEREDQUANTITY",
+						"fullPath": [
+							"STOCKTRANSFERDELIVEREDQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SCHEDULELINECOMMITTEDQUANTITY",
+						"fullPath": [
+							"SCHEDULELINECOMMITTEDQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PRODUCTAVAILABILITYDATE",
+						"fullPath": [
+							"PRODUCTAVAILABILITYDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "PRODUCTAVAILABILITYTIME",
+						"fullPath": [
+							"PRODUCTAVAILABILITYTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LOADINGDATE",
+						"fullPath": [
+							"LOADINGDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "LOADINGTIME",
+						"fullPath": [
+							"LOADINGTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPORTATIONPLANNINGDATE",
+						"fullPath": [
+							"TRANSPORTATIONPLANNINGDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "TRANSPORTATIONPLANNINGTIME",
+						"fullPath": [
+							"TRANSPORTATIONPLANNINGTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "GOODSISSUEDATE",
+						"fullPath": [
+							"GOODSISSUEDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "GOODSISSUETIME",
+						"fullPath": [
+							"GOODSISSUETIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STOLATESTPOSSIBLEGRDATE",
+						"fullPath": [
+							"STOLATESTPOSSIBLEGRDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STOLATESTPOSSIBLEGRTIME",
+						"fullPath": [
+							"STOLATESTPOSSIBLEGRTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "OPENPURCHASEORDERNETAMOUNT",
+						"fullPath": [
+							"OPENPURCHASEORDERNETAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEM",
+						"fullPath": [
+							"PURCHASEORDERITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERSCHEDULELINE",
+						"fullPath": [
+							"PURCHASEORDERSCHEDULELINE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEDELIVERYDATE",
+						"fullPath": [
+							"SCHEDULELINEDELIVERYDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEDELIVERYTIME",
+						"fullPath": [
+							"SCHEDULELINEDELIVERYTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEREQUISITION",
+						"fullPath": [
+							"PURCHASEREQUISITION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEREQUISITIONITEM",
+						"fullPath": [
+							"PURCHASEREQUISITIONITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BATCH",
+						"fullPath": [
+							"BATCH"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGSCHDLNNROFREMINDERS",
+						"fullPath": [
+							"PURCHASINGSCHDLNNROFREMINDERS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "REQUISITIONERNAME",
+						"fullPath": [
+							"REQUISITIONERNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RETAILPROMOTION",
+						"fullPath": [
+							"RETAILPROMOTION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ARTICLECATEGORY",
+						"fullPath": [
+							"ARTICLECATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGORDERREASON",
+						"fullPath": [
+							"PURCHASINGORDERREASON"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISCOMPLETELYDELIVERED",
+						"fullPath": [
+							"ISCOMPLETELYDELIVERED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUFACTURERMATERIAL",
+						"fullPath": [
+							"MANUFACTURERMATERIAL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISFINALLYINVOICED",
+						"fullPath": [
+							"ISFINALLYINVOICED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASECONTRACT",
+						"fullPath": [
+							"PURCHASECONTRACT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASECONTRACTITEM",
+						"fullPath": [
+							"PURCHASECONTRACTITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STORAGELOCATION",
+						"fullPath": [
+							"STORAGELOCATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BASEUNIT",
+						"fullPath": [
+							"BASEUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MATERIALGROUP",
+						"fullPath": [
+							"MATERIALGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MATERIAL",
+						"fullPath": [
+							"MATERIAL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERQUANTITYUNIT",
+						"fullPath": [
+							"PURCHASEORDERQUANTITYUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEMCATEGORY",
+						"fullPath": [
+							"PURCHASEORDERITEMCATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISSUINGSTORAGELOCATION",
+						"fullPath": [
+							"ISSUINGSTORAGELOCATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERITEMTEXT",
+						"fullPath": [
+							"PURCHASEORDERITEMTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGPARENTITEM",
+						"fullPath": [
+							"PURCHASINGPARENTITEM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ORDERITEMQTYTOBASEQTYDNMNTR",
+						"fullPath": [
+							"ORDERITEMQTYTOBASEQTYDNMNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "ORDERITEMQTYTOBASEQTYNMRTR",
+						"fullPath": [
+							"ORDERITEMQTYTOBASEQTYNMRTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "INVOICEISGOODSRECEIPTBASED",
+						"fullPath": [
+							"INVOICEISGOODSRECEIPTBASED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "GOODSRECEIPTISEXPECTED",
+						"fullPath": [
+							"GOODSRECEIPTISEXPECTED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PLANT",
+						"fullPath": [
+							"PLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EVALDRCPTSETTLMTISALLOWED",
+						"fullPath": [
+							"EVALDRCPTSETTLMTISALLOWED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERDATE",
+						"fullPath": [
+							"PURCHASEORDERDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERTYPE",
+						"fullPath": [
+							"PURCHASEORDERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGGROUP",
+						"fullPath": [
+							"PURCHASINGGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGORGANIZATION",
+						"fullPath": [
+							"PURCHASINGORGANIZATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VALIDITYSTARTDATE",
+						"fullPath": [
+							"VALIDITYSTARTDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "VALIDITYENDDATE",
+						"fullPath": [
+							"VALIDITYENDDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INVOICINGPARTY",
+						"fullPath": [
+							"INVOICINGPARTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGSUPPLIER",
+						"fullPath": [
+							"SUPPLYINGSUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGPLANT",
+						"fullPath": [
+							"SUPPLYINGPLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGDOCUMENTORIGIN",
+						"fullPath": [
+							"PURCHASINGDOCUMENTORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EXCHANGERATE",
+						"fullPath": [
+							"EXCHANGERATE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DELIVDATECATEGORY",
+						"fullPath": [
+							"DELIVDATECATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEORDERQUANTITY",
+						"fullPath": [
+							"SCHEDULELINEORDERQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PREVDELIVQTYOFSCHEDULELINE",
+						"fullPath": [
+							"PREVDELIVQTYOFSCHEDULELINE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "ROUGHGOODSRECEIPTQTY",
+						"fullPath": [
+							"ROUGHGOODSRECEIPTQTY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SCHEDULELINEISSUEDQUANTITY",
+						"fullPath": [
+							"SCHEDULELINEISSUEDQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SOURCEOFCREATION",
+						"fullPath": [
+							"SOURCEOFCREATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RESERVATION",
+						"fullPath": [
+							"RESERVATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SCHEDULELINEISFIXED",
+						"fullPath": [
+							"SCHEDULELINEISFIXED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STOCKTRANSFERDELIVEREDQUANTITY",
+						"fullPath": [
+							"STOCKTRANSFERDELIVEREDQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SCHEDULELINECOMMITTEDQUANTITY",
+						"fullPath": [
+							"SCHEDULELINECOMMITTEDQUANTITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PRODUCTAVAILABILITYDATE",
+						"fullPath": [
+							"PRODUCTAVAILABILITYDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "PRODUCTAVAILABILITYTIME",
+						"fullPath": [
+							"PRODUCTAVAILABILITYTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LOADINGDATE",
+						"fullPath": [
+							"LOADINGDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "LOADINGTIME",
+						"fullPath": [
+							"LOADINGTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPORTATIONPLANNINGDATE",
+						"fullPath": [
+							"TRANSPORTATIONPLANNINGDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "TRANSPORTATIONPLANNINGTIME",
+						"fullPath": [
+							"TRANSPORTATIONPLANNINGTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "GOODSISSUEDATE",
+						"fullPath": [
+							"GOODSISSUEDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "GOODSISSUETIME",
+						"fullPath": [
+							"GOODSISSUETIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STOLATESTPOSSIBLEGRDATE",
+						"fullPath": [
+							"STOLATESTPOSSIBLEGRDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STOLATESTPOSSIBLEGRTIME",
+						"fullPath": [
+							"STOLATESTPOSSIBLEGRTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "OPENPURCHASEORDERNETAMOUNT",
+						"fullPath": [
+							"OPENPURCHASEORDERNETAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_po_schedule_line/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_po_schedule_line/2024/08/05/05/47753832-54b8-3e4a-906e-bba44e179173-2024-08-05T05:11:47/-1641321921-2024-08-05T05:11:44",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "purchaseorder",
+						"fullPath": [
+							"purchaseorder"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitem",
+						"fullPath": [
+							"purchaseorderitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderscheduleline",
+						"fullPath": [
+							"purchaseorderscheduleline"
+						],
+						"type": "string"
+					},
+					{
+						"key": "schedulelinedeliverydate",
+						"fullPath": [
+							"schedulelinedeliverydate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "schedulelinedeliverytime",
+						"fullPath": [
+							"schedulelinedeliverytime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaserequisition",
+						"fullPath": [
+							"purchaserequisition"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaserequisitionitem",
+						"fullPath": [
+							"purchaserequisitionitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "batch",
+						"fullPath": [
+							"batch"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingschdlnnrofreminders",
+						"fullPath": [
+							"purchasingschdlnnrofreminders"
+						],
+						"type": "int"
+					},
+					{
+						"key": "requisitionername",
+						"fullPath": [
+							"requisitionername"
+						],
+						"type": "string"
+					},
+					{
+						"key": "retailpromotion",
+						"fullPath": [
+							"retailpromotion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "articlecategory",
+						"fullPath": [
+							"articlecategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingorderreason",
+						"fullPath": [
+							"purchasingorderreason"
+						],
+						"type": "string"
+					},
+					{
+						"key": "iscompletelydelivered",
+						"fullPath": [
+							"iscompletelydelivered"
+						],
+						"type": "string"
+					},
+					{
+						"key": "manufacturermaterial",
+						"fullPath": [
+							"manufacturermaterial"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isfinallyinvoiced",
+						"fullPath": [
+							"isfinallyinvoiced"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasecontract",
+						"fullPath": [
+							"purchasecontract"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasecontractitem",
+						"fullPath": [
+							"purchasecontractitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "storagelocation",
+						"fullPath": [
+							"storagelocation"
+						],
+						"type": "string"
+					},
+					{
+						"key": "baseunit",
+						"fullPath": [
+							"baseunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "materialgroup",
+						"fullPath": [
+							"materialgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "material",
+						"fullPath": [
+							"material"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderquantityunit",
+						"fullPath": [
+							"purchaseorderquantityunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitemcategory",
+						"fullPath": [
+							"purchaseorderitemcategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "issuingstoragelocation",
+						"fullPath": [
+							"issuingstoragelocation"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderitemtext",
+						"fullPath": [
+							"purchaseorderitemtext"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingparentitem",
+						"fullPath": [
+							"purchasingparentitem"
+						],
+						"type": "string"
+					},
+					{
+						"key": "orderitemqtytobaseqtydnmntr",
+						"fullPath": [
+							"orderitemqtytobaseqtydnmntr"
+						],
+						"type": "int"
+					},
+					{
+						"key": "orderitemqtytobaseqtynmrtr",
+						"fullPath": [
+							"orderitemqtytobaseqtynmrtr"
+						],
+						"type": "int"
+					},
+					{
+						"key": "invoiceisgoodsreceiptbased",
+						"fullPath": [
+							"invoiceisgoodsreceiptbased"
+						],
+						"type": "string"
+					},
+					{
+						"key": "goodsreceiptisexpected",
+						"fullPath": [
+							"goodsreceiptisexpected"
+						],
+						"type": "string"
+					},
+					{
+						"key": "plant",
+						"fullPath": [
+							"plant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "evaldrcptsettlmtisallowed",
+						"fullPath": [
+							"evaldrcptsettlmtisallowed"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderdate",
+						"fullPath": [
+							"purchaseorderdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseordertype",
+						"fullPath": [
+							"purchaseordertype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasinggroup",
+						"fullPath": [
+							"purchasinggroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingorganization",
+						"fullPath": [
+							"purchasingorganization"
+						],
+						"type": "string"
+					},
+					{
+						"key": "validitystartdate",
+						"fullPath": [
+							"validitystartdate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "validityenddate",
+						"fullPath": [
+							"validityenddate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "invoicingparty",
+						"fullPath": [
+							"invoicingparty"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplyingsupplier",
+						"fullPath": [
+							"supplyingsupplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplyingplant",
+						"fullPath": [
+							"supplyingplant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingdocumentorigin",
+						"fullPath": [
+							"purchasingdocumentorigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentcurrency",
+						"fullPath": [
+							"documentcurrency"
+						],
+						"type": "string"
+					},
+					{
+						"key": "exchangerate",
+						"fullPath": [
+							"exchangerate"
+						],
+						"type": "double"
+					},
+					{
+						"key": "delivdatecategory",
+						"fullPath": [
+							"delivdatecategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "schedulelineorderquantity",
+						"fullPath": [
+							"schedulelineorderquantity"
+						],
+						"type": "double"
+					},
+					{
+						"key": "prevdelivqtyofscheduleline",
+						"fullPath": [
+							"prevdelivqtyofscheduleline"
+						],
+						"type": "double"
+					},
+					{
+						"key": "roughgoodsreceiptqty",
+						"fullPath": [
+							"roughgoodsreceiptqty"
+						],
+						"type": "double"
+					},
+					{
+						"key": "schedulelineissuedquantity",
+						"fullPath": [
+							"schedulelineissuedquantity"
+						],
+						"type": "double"
+					},
+					{
+						"key": "sourceofcreation",
+						"fullPath": [
+							"sourceofcreation"
+						],
+						"type": "string"
+					},
+					{
+						"key": "reservation",
+						"fullPath": [
+							"reservation"
+						],
+						"type": "string"
+					},
+					{
+						"key": "schedulelineisfixed",
+						"fullPath": [
+							"schedulelineisfixed"
+						],
+						"type": "string"
+					},
+					{
+						"key": "stocktransferdeliveredquantity",
+						"fullPath": [
+							"stocktransferdeliveredquantity"
+						],
+						"type": "double"
+					},
+					{
+						"key": "schedulelinecommittedquantity",
+						"fullPath": [
+							"schedulelinecommittedquantity"
+						],
+						"type": "double"
+					},
+					{
+						"key": "productavailabilitydate",
+						"fullPath": [
+							"productavailabilitydate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "productavailabilitytime",
+						"fullPath": [
+							"productavailabilitytime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadingdate",
+						"fullPath": [
+							"loadingdate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "loadingtime",
+						"fullPath": [
+							"loadingtime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "transportationplanningdate",
+						"fullPath": [
+							"transportationplanningdate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "transportationplanningtime",
+						"fullPath": [
+							"transportationplanningtime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "goodsissuedate",
+						"fullPath": [
+							"goodsissuedate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "goodsissuetime",
+						"fullPath": [
+							"goodsissuetime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "stolatestpossiblegrdate",
+						"fullPath": [
+							"stolatestpossiblegrdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "stolatestpossiblegrtime",
+						"fullPath": [
+							"stolatestpossiblegrtime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "openpurchaseordernetamount",
+						"fullPath": [
+							"openpurchaseordernetamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

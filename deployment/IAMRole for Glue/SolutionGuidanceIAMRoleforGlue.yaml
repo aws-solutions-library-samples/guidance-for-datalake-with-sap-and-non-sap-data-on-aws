@@ -1,0 +1,251 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creates an IAM Role that will be used by AWS Glue
+
+Parameters:
+  RawS3Bucket:
+    Type: String
+    Description: Name of the S3 bucket used for raw data - default is afsaplakeraw-<accountID>
+
+  EnrichedS3Bucket:
+    Type: String
+    Description: Name of the S3 bucket used for enriched data - default is afsaplakeenriched-<accountID>
+  
+  CuratedS3Bucket:
+    Type: String
+    Description: Name of the S3 bucket used for curated data - default is afsaplakecurated-<accountID>
+  
+  DeployScriptS3Bucket:
+    Type: String
+    Description: Name of the S3 bucket used for script deploymet - default is afsaplake-deployscript-<accountID>
+  
+    
+
+Resources:
+  ## IAM ROLE FOR Glue
+
+  
+       IAMRoleGlue:
+         Type: AWS::IAM::Role
+         Properties:
+           AssumeRolePolicyDocument:
+             Version: "2012-10-17"
+             Statement:
+              - Effect: Allow
+                Principal:
+                  Service: !Sub glue.amazonaws.com
+                Action:
+                 - "sts:AssumeRole"
+           RoleName: AWSGlueServiceRoleforDatalake
+           ManagedPolicyArns:
+             - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+             - arn:aws:iam::aws:policy/service-role/AWSGlueServiceNotebookRole
+             - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole 
+
+
+       GluePassRole:
+        Type: AWS::IAM::Policy
+        Properties:
+          PolicyName: !Sub GluePassRole-${AWS::AccountId}
+          Roles: 
+          - !Ref IAMRoleGlue
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement:
+             - Effect: Allow
+               Sid: VisualEditor0
+               Action: 'iam:PassRole'
+               Resource: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSGlueServiceRoleforDatalake
+       
+       S3Policy:
+        Type: AWS::IAM::ManagedPolicy
+        Properties:
+         ManagedPolicyName: AWSDataLakeS3Access
+         Roles:
+          - !Ref IAMRoleGlue
+         PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                 - s3:ListAccessPointsForObjectLambda
+                 - s3:DeleteAccessGrant
+                 - s3:PauseReplication
+                 - s3:DeleteAccessPoint
+                 - s3:ListStorageLensGroups
+                 - s3:DeleteAccessPointForObjectLambda
+                 - s3:DissociateAccessGrantsIdentityCenter
+                 - s3:DeleteJobTagging
+                 - s3:GetStorageLensGroup
+                 - s3:PutLifecycleConfiguration
+                 - s3:PutObjectTagging
+                 - s3:DeleteObject
+                 - s3:CreateMultiRegionAccessPoint
+                 - s3:PutAccessPointPolicyForObjectLambda
+                 - s3:PutAccountPublicAccessBlock
+                 - s3:GetBucketWebsite
+                 - s3:PutMultiRegionAccessPointPolicy
+                 - s3:DeleteStorageLensConfigurationTagging
+                 - s3:GetMultiRegionAccessPoint
+                 - s3:DeleteAccessGrantsInstanceResourcePolicy
+                 - s3:PutReplicationConfiguration
+                 - s3:GetObjectAttributes
+                 - s3:GetAccessGrantsInstanceResourcePolicy
+                 - s3:DeleteObjectVersionTagging
+                 - s3:InitiateReplication
+                 - s3:GetObjectLegalHold
+                 - s3:GetBucketNotification
+                 - s3:DeleteBucketPolicy
+                 - s3:GetReplicationConfiguration
+                 - s3:DescribeMultiRegionAccessPointOperation
+                 - s3:PutObject
+                 - s3:PutBucketNotification
+                 - s3:PutObjectVersionAcl
+                 - s3:PutAccessPointPublicAccessBlock
+                 - s3:CreateAccessGrant
+                 - s3:CreateJob
+                 - s3:PutBucketObjectLockConfiguration
+                 - s3:PutAccessPointPolicy
+                 - s3:GetStorageLensDashboard
+                 - s3:GetLifecycleConfiguration
+                 - s3:UntagResource
+                 - s3:GetBucketTagging
+                 - s3:GetInventoryConfiguration
+                 - s3:GetAccessPointPolicyForObjectLambda
+                 - s3:ReplicateTags
+                 - s3:ListBucket
+                 - s3:AbortMultipartUpload
+                 - s3:PutBucketTagging
+                 - s3:AssociateAccessGrantsIdentityCenter
+                 - s3:ListAccessGrantsInstances
+                 - s3:UpdateJobPriority
+                 - s3:GetAccessGrantsInstance
+                 - s3:DeleteBucket
+                 - s3:PutBucketVersioning
+                 - s3:GetMultiRegionAccessPointPolicyStatus
+                 - s3:ListBucketMultipartUploads
+                 - s3:PutIntelligentTieringConfiguration
+                 - s3:GetDataAccess
+                 - s3:PutMetricsConfiguration
+                 - s3:CreateStorageLensGroup
+                 - s3:PutStorageLensConfigurationTagging
+                 - s3:PutObjectVersionTagging
+                 - s3:GetBucketVersioning
+                 - s3:GetAccessPointConfigurationForObjectLambda
+                 - s3:CreateAccessGrantsInstance
+                 - s3:ListAccessGrantsLocations
+                 - s3:PutInventoryConfiguration
+                 - s3:GetMultiRegionAccessPointRoutes
+                 - s3:ObjectOwnerOverrideToBucketOwner
+                 - s3:GetStorageLensConfiguration
+                 - s3:DeleteStorageLensConfiguration
+                 - s3:GetAccountPublicAccessBlock
+                 - s3:PutBucketWebsite
+                 - s3:ListAllMyBuckets
+                 - s3:PutBucketRequestPayment
+                 - s3:PutObjectRetention
+                 - s3:CreateAccessPointForObjectLambda
+                 - s3:GetBucketCORS
+                 - s3:DeleteAccessPointPolicy
+                 - s3:PutAccessGrantsInstanceResourcePolicy
+                 - s3:GetObjectVersion
+                 - s3:PutAnalyticsConfiguration
+                 - s3:PutAccessPointConfigurationForObjectLambda
+                 - s3:GetObjectVersionTagging
+                 - s3:PutStorageLensConfiguration
+                 - s3:CreateBucket
+                 - s3:GetStorageLensConfigurationTagging
+                 - s3:ReplicateObject
+                 - s3:GetObjectAcl
+                 - s3:GetBucketObjectLockConfiguration
+                 - s3:DeleteBucketWebsite
+                 - s3:GetIntelligentTieringConfiguration
+                 - s3:DeleteAccessPointPolicyForObjectLambda
+                 - s3:GetAccessGrantsInstanceForPrefix
+                 - s3:GetObjectVersionAcl
+                 - s3:PutBucketAcl
+                 - s3:DeleteObjectTagging
+                 - s3:GetBucketPolicyStatus
+                 - s3:GetAccessGrantsLocation
+                 - s3:GetObjectRetention
+                 - s3:GetJobTagging
+                 - s3:TagResource
+                 - s3:ListJobs
+                 - s3:PutObjectLegalHold
+                 - s3:PutBucketCORS
+                 - s3:ListMultipartUploadParts
+                 - s3:GetObject
+                 - s3:DescribeJob
+                 - s3:PutBucketLogging
+                 - s3:GetAnalyticsConfiguration
+                 - s3:GetObjectVersionForReplication
+                 - s3:GetAccessPointForObjectLambda
+                 - s3:CreateAccessPoint
+                 - s3:GetAccessPoint
+                 - s3:PutAccelerateConfiguration
+                 - s3:SubmitMultiRegionAccessPointRoutes
+                 - s3:CreateAccessGrantsLocation
+                 - s3:DeleteObjectVersion
+                 - s3:GetBucketLogging
+                 - s3:ListBucketVersions
+                 - s3:GetAccessGrant
+                 - s3:RestoreObject
+                 - s3:GetAccelerateConfiguration
+                 - s3:GetObjectVersionAttributes
+                 - s3:GetBucketPolicy
+                 - s3:DeleteAccessGrantsLocation
+                 - s3:ListTagsForResource
+                 - s3:PutEncryptionConfiguration
+                 - s3:GetEncryptionConfiguration
+                 - s3:GetObjectVersionTorrent
+                 - s3:DeleteAccessGrantsInstance
+                 - s3:GetBucketRequestPayment
+                 - s3:ListAccessGrants
+                 - s3:GetAccessPointPolicyStatus
+                 - s3:DeleteStorageLensGroup
+                 - s3:GetObjectTagging
+                 - s3:GetBucketOwnershipControls
+                 - s3:GetMetricsConfiguration
+                 - s3:PutObjectAcl
+                 - s3:GetBucketPublicAccessBlock
+                 - s3:PutBucketPublicAccessBlock
+                 - s3:GetMultiRegionAccessPointPolicy
+                 - s3:GetAccessPointPolicyStatusForObjectLambda
+                 - s3:ListAccessPoints
+                 - s3:UpdateStorageLensGroup
+                 - s3:PutBucketOwnershipControls
+                 - s3:DeleteMultiRegionAccessPoint
+                 - s3:PutJobTagging
+                 - s3:ListMultiRegionAccessPoints
+                 - s3:UpdateJobStatus
+                 - s3:GetBucketAcl
+                 - s3:BypassGovernanceRetention
+                 - s3:ListStorageLensConfigurations
+                 - s3:GetObjectTorrent
+                 - s3:PutBucketPolicy
+                 - s3:UpdateAccessGrantsLocation
+                 - s3:GetBucketLocation
+                 - s3:GetAccessPointPolicy
+                 - s3:ReplicateDelete
+              Resource:
+               - !Sub arn:aws:s3:::${RawS3Bucket}
+               - !Sub arn:aws:s3:::${RawS3Bucket}/*
+               - !Sub arn:aws:s3:::${EnrichedS3Bucket}
+               - !Sub arn:aws:s3:::${EnrichedS3Bucket}/*
+               - !Sub arn:aws:s3:::${CuratedS3Bucket}
+               - !Sub arn:aws:s3:::${CuratedS3Bucket}/*
+               - !Sub arn:aws:s3:::${DeployScriptS3Bucket}
+               - !Sub arn:aws:s3:::${DeployScriptS3Bucket}/*
+
+      
+
+
+
+
+    
+              
+
+        
+          
+
+              
+      

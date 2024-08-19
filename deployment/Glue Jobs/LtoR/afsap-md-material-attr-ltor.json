@@ -1,0 +1,2251 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-material-attr-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-material-attr-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-02T09:23:52.791Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_material_attr/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "PRODUCT",
+						"fullPath": [
+							"PRODUCT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTEXTERNALID",
+						"fullPath": [
+							"PRODUCTEXTERNALID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTOID",
+						"fullPath": [
+							"PRODUCTOID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTTYPE",
+						"fullPath": [
+							"PRODUCTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONTIME",
+						"fullPath": [
+							"CREATIONTIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATETIME",
+						"fullPath": [
+							"CREATIONDATETIME"
+						],
+						"type": "double"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LASTCHANGEDATE",
+						"fullPath": [
+							"LASTCHANGEDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LASTCHANGEDBYUSER",
+						"fullPath": [
+							"LASTCHANGEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISMARKEDFORDELETION",
+						"fullPath": [
+							"ISMARKEDFORDELETION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CROSSPLANTSTATUS",
+						"fullPath": [
+							"CROSSPLANTSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CROSSPLANTSTATUSVALIDITYDATE",
+						"fullPath": [
+							"CROSSPLANTSTATUSVALIDITYDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "PRODUCTOLDID",
+						"fullPath": [
+							"PRODUCTOLDID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "GROSSWEIGHT",
+						"fullPath": [
+							"GROSSWEIGHT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PURCHASEORDERQUANTITYUNIT",
+						"fullPath": [
+							"PURCHASEORDERQUANTITYUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SOURCEOFSUPPLY",
+						"fullPath": [
+							"SOURCEOFSUPPLY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "WEIGHTUNIT",
+						"fullPath": [
+							"WEIGHTUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COUNTRYOFORIGIN",
+						"fullPath": [
+							"COUNTRYOFORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COMPETITORID",
+						"fullPath": [
+							"COMPETITORID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTGROUP",
+						"fullPath": [
+							"PRODUCTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BASEUNIT",
+						"fullPath": [
+							"BASEUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ITEMCATEGORYGROUP",
+						"fullPath": [
+							"ITEMCATEGORYGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "NETWEIGHT",
+						"fullPath": [
+							"NETWEIGHT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PRODUCTHIERARCHY",
+						"fullPath": [
+							"PRODUCTHIERARCHY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DIVISION",
+						"fullPath": [
+							"DIVISION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VARBLPURORDUNITISACTIVE",
+						"fullPath": [
+							"VARBLPURORDUNITISACTIVE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VOLUMEUNIT",
+						"fullPath": [
+							"VOLUMEUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MATERIALVOLUME",
+						"fullPath": [
+							"MATERIALVOLUME"
+						],
+						"type": "double"
+					},
+					{
+						"key": "SALESSTATUS",
+						"fullPath": [
+							"SALESSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPORTATIONGROUP",
+						"fullPath": [
+							"TRANSPORTATIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SALESSTATUSVALIDITYDATE",
+						"fullPath": [
+							"SALESSTATUSVALIDITYDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "AUTHORIZATIONGROUP",
+						"fullPath": [
+							"AUTHORIZATIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ANPCODE",
+						"fullPath": [
+							"ANPCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTCATEGORY",
+						"fullPath": [
+							"PRODUCTCATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BRAND",
+						"fullPath": [
+							"BRAND"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PROCUREMENTRULE",
+						"fullPath": [
+							"PROCUREMENTRULE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VALIDITYSTARTDATE",
+						"fullPath": [
+							"VALIDITYSTARTDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "LOWLEVELCODE",
+						"fullPath": [
+							"LOWLEVELCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODNOINGENPRODINPREPACKPROD",
+						"fullPath": [
+							"PRODNOINGENPRODINPREPACKPROD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SERIALIDENTIFIERASSGMTPROFILE",
+						"fullPath": [
+							"SERIALIDENTIFIERASSGMTPROFILE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SIZEORDIMENSIONTEXT",
+						"fullPath": [
+							"SIZEORDIMENSIONTEXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYSTANDARDNAME",
+						"fullPath": [
+							"INDUSTRYSTANDARDNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTSTANDARDID",
+						"fullPath": [
+							"PRODUCTSTANDARDID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INTERNATIONALARTICLENUMBERCAT",
+						"fullPath": [
+							"INTERNATIONALARTICLENUMBERCAT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTISCONFIGURABLE",
+						"fullPath": [
+							"PRODUCTISCONFIGURABLE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISBATCHMANAGEMENTREQUIRED",
+						"fullPath": [
+							"ISBATCHMANAGEMENTREQUIRED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HASEMPTIESBOM",
+						"fullPath": [
+							"HASEMPTIESBOM"
+						],
+						"type": "string"
+					},
+					{
+						"key": "EXTERNALPRODUCTGROUP",
+						"fullPath": [
+							"EXTERNALPRODUCTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CROSSPLANTCONFIGURABLEPRODUCT",
+						"fullPath": [
+							"CROSSPLANTCONFIGURABLEPRODUCT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SERIALNOEXPLICITNESSLEVEL",
+						"fullPath": [
+							"SERIALNOEXPLICITNESSLEVEL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTMANUFACTURERNUMBER",
+						"fullPath": [
+							"PRODUCTMANUFACTURERNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUFACTURERNUMBER",
+						"fullPath": [
+							"MANUFACTURERNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUFACTURERPARTPROFILE",
+						"fullPath": [
+							"MANUFACTURERPARTPROFILE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "QLTYMGMTINPROCMTISACTIVE",
+						"fullPath": [
+							"QLTYMGMTINPROCMTISACTIVE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISAPPROVEDBATCHRECORDREQD",
+						"fullPath": [
+							"ISAPPROVEDBATCHRECORDREQD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HANDLINGINDICATOR",
+						"fullPath": [
+							"HANDLINGINDICATOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "WAREHOUSEPRODUCTGROUP",
+						"fullPath": [
+							"WAREHOUSEPRODUCTGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "WAREHOUSESTORAGECONDITION",
+						"fullPath": [
+							"WAREHOUSESTORAGECONDITION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "STANDARDHANDLINGUNITTYPE",
+						"fullPath": [
+							"STANDARDHANDLINGUNITTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SERIALNUMBERPROFILE",
+						"fullPath": [
+							"SERIALNUMBERPROFILE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ADJUSTMENTPROFILE",
+						"fullPath": [
+							"ADJUSTMENTPROFILE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PREFERREDUNITOFMEASURE",
+						"fullPath": [
+							"PREFERREDUNITOFMEASURE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISPILFERABLE",
+						"fullPath": [
+							"ISPILFERABLE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISRELEVANTFORHZDSSUBSTANCES",
+						"fullPath": [
+							"ISRELEVANTFORHZDSSUBSTANCES"
+						],
+						"type": "string"
+					},
+					{
+						"key": "QUARANTINEPERIOD",
+						"fullPath": [
+							"QUARANTINEPERIOD"
+						],
+						"type": "int"
+					},
+					{
+						"key": "TIMEUNITFORQUARANTINEPERIOD",
+						"fullPath": [
+							"TIMEUNITFORQUARANTINEPERIOD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "QUALITYINSPECTIONGROUP",
+						"fullPath": [
+							"QUALITYINSPECTIONGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HANDLINGUNITTYPE",
+						"fullPath": [
+							"HANDLINGUNITTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HASVARIABLETAREWEIGHT",
+						"fullPath": [
+							"HASVARIABLETAREWEIGHT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MAXIMUMPACKAGINGLENGTH",
+						"fullPath": [
+							"MAXIMUMPACKAGINGLENGTH"
+						],
+						"type": "double"
+					},
+					{
+						"key": "MAXIMUMPACKAGINGWIDTH",
+						"fullPath": [
+							"MAXIMUMPACKAGINGWIDTH"
+						],
+						"type": "double"
+					},
+					{
+						"key": "MAXIMUMPACKAGINGHEIGHT",
+						"fullPath": [
+							"MAXIMUMPACKAGINGHEIGHT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "MAXIMUMCAPACITY",
+						"fullPath": [
+							"MAXIMUMCAPACITY"
+						],
+						"type": "double"
+					},
+					{
+						"key": "OVERCAPACITYTOLERANCE",
+						"fullPath": [
+							"OVERCAPACITYTOLERANCE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "UNITFORMAXPACKAGINGDIMENSIONS",
+						"fullPath": [
+							"UNITFORMAXPACKAGINGDIMENSIONS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BASEUNITSPECIFICPRODUCTLENGTH",
+						"fullPath": [
+							"BASEUNITSPECIFICPRODUCTLENGTH"
+						],
+						"type": "double"
+					},
+					{
+						"key": "BASEUNITSPECIFICPRODUCTWIDTH",
+						"fullPath": [
+							"BASEUNITSPECIFICPRODUCTWIDTH"
+						],
+						"type": "double"
+					},
+					{
+						"key": "BASEUNITSPECIFICPRODUCTHEIGHT",
+						"fullPath": [
+							"BASEUNITSPECIFICPRODUCTHEIGHT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PRODUCTMEASUREMENTUNIT",
+						"fullPath": [
+							"PRODUCTMEASUREMENTUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTVALIDSTARTDATE",
+						"fullPath": [
+							"PRODUCTVALIDSTARTDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "ARTICLECATEGORY",
+						"fullPath": [
+							"ARTICLECATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CONTENTUNIT",
+						"fullPath": [
+							"CONTENTUNIT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "NETCONTENT",
+						"fullPath": [
+							"NETCONTENT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "COMPARISONPRICEQUANTITY",
+						"fullPath": [
+							"COMPARISONPRICEQUANTITY"
+						],
+						"type": "int"
+					},
+					{
+						"key": "GROSSCONTENT",
+						"fullPath": [
+							"GROSSCONTENT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "PRODUCTVALIDENDDATE",
+						"fullPath": [
+							"PRODUCTVALIDENDDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "ASSORTMENTLISTTYPE",
+						"fullPath": [
+							"ASSORTMENTLISTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "HASTEXTILEPARTSWTHANIMALORIGIN",
+						"fullPath": [
+							"HASTEXTILEPARTSWTHANIMALORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTSEASONUSAGECATEGORY",
+						"fullPath": [
+							"PRODUCTSEASONUSAGECATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INDUSTRYSECTOR",
+						"fullPath": [
+							"INDUSTRYSECTOR"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CHANGENUMBER",
+						"fullPath": [
+							"CHANGENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MATERIALREVISIONLEVEL",
+						"fullPath": [
+							"MATERIALREVISIONLEVEL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISACTIVEENTITY",
+						"fullPath": [
+							"ISACTIVEENTITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LASTCHANGEDATETIME",
+						"fullPath": [
+							"LASTCHANGEDATETIME"
+						],
+						"type": "double"
+					},
+					{
+						"key": "LASTCHANGETIME",
+						"fullPath": [
+							"LASTCHANGETIME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DANGEROUSGOODSINDPROFILE",
+						"fullPath": [
+							"DANGEROUSGOODSINDPROFILE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTUUID",
+						"fullPath": [
+							"PRODUCTUUID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODSUPCHNMGMTUUID22",
+						"fullPath": [
+							"PRODSUPCHNMGMTUUID22"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTCHANGENUMBER",
+						"fullPath": [
+							"PRODUCTDOCUMENTCHANGENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTPAGECOUNT",
+						"fullPath": [
+							"PRODUCTDOCUMENTPAGECOUNT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTPAGENUMBER",
+						"fullPath": [
+							"PRODUCTDOCUMENTPAGENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "OWNINVENTORYMANAGEDPRODUCT",
+						"fullPath": [
+							"OWNINVENTORYMANAGEDPRODUCT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTISCREATEDBYCAD",
+						"fullPath": [
+							"DOCUMENTISCREATEDBYCAD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTIONORINSPECTIONMEMOTXT",
+						"fullPath": [
+							"PRODUCTIONORINSPECTIONMEMOTXT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTIONMEMOPAGEFORMAT",
+						"fullPath": [
+							"PRODUCTIONMEMOPAGEFORMAT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "GLOBALTRADEITEMNUMBERVARIANT",
+						"fullPath": [
+							"GLOBALTRADEITEMNUMBERVARIANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTISHIGHLYVISCOUS",
+						"fullPath": [
+							"PRODUCTISHIGHLYVISCOUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "TRANSPORTISINBULK",
+						"fullPath": [
+							"TRANSPORTISINBULK"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODALLOCDETNPROCEDURE",
+						"fullPath": [
+							"PRODALLOCDETNPROCEDURE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODEFFCTYPARAMVALSAREASSIGNED",
+						"fullPath": [
+							"PRODEFFCTYPARAMVALSAREASSIGNED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODISENVIRONMENTALLYRELEVANT",
+						"fullPath": [
+							"PRODISENVIRONMENTALLYRELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LABORATORYORDESIGNOFFICE",
+						"fullPath": [
+							"LABORATORYORDESIGNOFFICE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PACKAGINGMATERIALGROUP",
+						"fullPath": [
+							"PACKAGINGMATERIALGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTISLOCKED",
+						"fullPath": [
+							"PRODUCTISLOCKED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DISCOUNTINKINDELIGIBILITY",
+						"fullPath": [
+							"DISCOUNTINKINDELIGIBILITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SMARTFORMNAME",
+						"fullPath": [
+							"SMARTFORMNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PACKINGREFERENCEPRODUCT",
+						"fullPath": [
+							"PACKINGREFERENCEPRODUCT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "BASICMATERIAL",
+						"fullPath": [
+							"BASICMATERIAL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTNUMBER",
+						"fullPath": [
+							"PRODUCTDOCUMENTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTVERSION",
+						"fullPath": [
+							"PRODUCTDOCUMENTVERSION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTTYPE",
+						"fullPath": [
+							"PRODUCTDOCUMENTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTDOCUMENTPAGEFORMAT",
+						"fullPath": [
+							"PRODUCTDOCUMENTPAGEFORMAT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTCONFIGURATION",
+						"fullPath": [
+							"PRODUCTCONFIGURATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SEGMENTATIONSTRATEGY",
+						"fullPath": [
+							"SEGMENTATIONSTRATEGY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SEGMENTATIONISRELEVANT",
+						"fullPath": [
+							"SEGMENTATIONISRELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISCHEMICALCOMPLIANCERELEVANT",
+						"fullPath": [
+							"ISCHEMICALCOMPLIANCERELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUFACTURERBOOKPARTNUMBER",
+						"fullPath": [
+							"MANUFACTURERBOOKPARTNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LOGISTICALPRODUCTCATEGORY",
+						"fullPath": [
+							"LOGISTICALPRODUCTCATEGORY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SALESPRODUCT",
+						"fullPath": [
+							"SALESPRODUCT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODCHARC1INTERNALNUMBER",
+						"fullPath": [
+							"PRODCHARC1INTERNALNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODCHARC2INTERNALNUMBER",
+						"fullPath": [
+							"PRODCHARC2INTERNALNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODCHARC3INTERNALNUMBER",
+						"fullPath": [
+							"PRODCHARC3INTERNALNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTCHARACTERISTIC1",
+						"fullPath": [
+							"PRODUCTCHARACTERISTIC1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTCHARACTERISTIC2",
+						"fullPath": [
+							"PRODUCTCHARACTERISTIC2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRODUCTCHARACTERISTIC3",
+						"fullPath": [
+							"PRODUCTCHARACTERISTIC3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSAMMUNITIONGROUPCODE",
+						"fullPath": [
+							"DFSAMMUNITIONGROUPCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSRICIDENTIFIER",
+						"fullPath": [
+							"DFSRICIDENTIFIER"
+						],
+						"type": "int"
+					},
+					{
+						"key": "DFSPRODUCTSENSITIVITY",
+						"fullPath": [
+							"DFSPRODUCTSENSITIVITY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSMANUFACTURERPARTLONGNUMBER",
+						"fullPath": [
+							"DFSMANUFACTURERPARTLONGNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSMATLCONDITIONMGMT",
+						"fullPath": [
+							"DFSMATLCONDITIONMGMT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSRETURNDELIVERY",
+						"fullPath": [
+							"DFSRETURNDELIVERY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSLOGISTICSLEVEL",
+						"fullPath": [
+							"DFSLOGISTICSLEVEL"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DFSNATIONALITEMIDNNUMBER",
+						"fullPath": [
+							"DFSNATIONALITEMIDNNUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ZZ1_CUSTOMFIELDRISKMIT_PRD",
+						"fullPath": [
+							"ZZ1_CUSTOMFIELDRISKMIT_PRD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ZZ1_CUSTOMFIELDHIGHRIS_PRD",
+						"fullPath": [
+							"ZZ1_CUSTOMFIELDHIGHRIS_PRD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ZZ1_CUSTOMFIELDRISKREA_PRD",
+						"fullPath": [
+							"ZZ1_CUSTOMFIELDRISKREA_PRD"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_material_attr/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_material_attr/2024/08/05/05/172bfb1c-d14d-3fe7-a2bb-b459801175aa-2024-08-05T05:11:51/-149821755-2024-08-05T05:11:50",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "product",
+						"fullPath": [
+							"product"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productexternalid",
+						"fullPath": [
+							"productexternalid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productoid",
+						"fullPath": [
+							"productoid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "producttype",
+						"fullPath": [
+							"producttype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "creationtime",
+						"fullPath": [
+							"creationtime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "creationdatetime",
+						"fullPath": [
+							"creationdatetime"
+						],
+						"type": "double"
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string"
+					},
+					{
+						"key": "lastchangedate",
+						"fullPath": [
+							"lastchangedate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "lastchangedbyuser",
+						"fullPath": [
+							"lastchangedbyuser"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ismarkedfordeletion",
+						"fullPath": [
+							"ismarkedfordeletion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "crossplantstatus",
+						"fullPath": [
+							"crossplantstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "crossplantstatusvaliditydate",
+						"fullPath": [
+							"crossplantstatusvaliditydate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "productoldid",
+						"fullPath": [
+							"productoldid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "grossweight",
+						"fullPath": [
+							"grossweight"
+						],
+						"type": "double"
+					},
+					{
+						"key": "purchaseorderquantityunit",
+						"fullPath": [
+							"purchaseorderquantityunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "sourceofsupply",
+						"fullPath": [
+							"sourceofsupply"
+						],
+						"type": "string"
+					},
+					{
+						"key": "weightunit",
+						"fullPath": [
+							"weightunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "countryoforigin",
+						"fullPath": [
+							"countryoforigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "competitorid",
+						"fullPath": [
+							"competitorid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productgroup",
+						"fullPath": [
+							"productgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "baseunit",
+						"fullPath": [
+							"baseunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "itemcategorygroup",
+						"fullPath": [
+							"itemcategorygroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "netweight",
+						"fullPath": [
+							"netweight"
+						],
+						"type": "double"
+					},
+					{
+						"key": "producthierarchy",
+						"fullPath": [
+							"producthierarchy"
+						],
+						"type": "string"
+					},
+					{
+						"key": "division",
+						"fullPath": [
+							"division"
+						],
+						"type": "string"
+					},
+					{
+						"key": "varblpurordunitisactive",
+						"fullPath": [
+							"varblpurordunitisactive"
+						],
+						"type": "string"
+					},
+					{
+						"key": "volumeunit",
+						"fullPath": [
+							"volumeunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "materialvolume",
+						"fullPath": [
+							"materialvolume"
+						],
+						"type": "double"
+					},
+					{
+						"key": "salesstatus",
+						"fullPath": [
+							"salesstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "transportationgroup",
+						"fullPath": [
+							"transportationgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "salesstatusvaliditydate",
+						"fullPath": [
+							"salesstatusvaliditydate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "authorizationgroup",
+						"fullPath": [
+							"authorizationgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "anpcode",
+						"fullPath": [
+							"anpcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productcategory",
+						"fullPath": [
+							"productcategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "brand",
+						"fullPath": [
+							"brand"
+						],
+						"type": "string"
+					},
+					{
+						"key": "procurementrule",
+						"fullPath": [
+							"procurementrule"
+						],
+						"type": "string"
+					},
+					{
+						"key": "validitystartdate",
+						"fullPath": [
+							"validitystartdate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "lowlevelcode",
+						"fullPath": [
+							"lowlevelcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodnoingenprodinprepackprod",
+						"fullPath": [
+							"prodnoingenprodinprepackprod"
+						],
+						"type": "string"
+					},
+					{
+						"key": "serialidentifierassgmtprofile",
+						"fullPath": [
+							"serialidentifierassgmtprofile"
+						],
+						"type": "string"
+					},
+					{
+						"key": "sizeordimensiontext",
+						"fullPath": [
+							"sizeordimensiontext"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrystandardname",
+						"fullPath": [
+							"industrystandardname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productstandardid",
+						"fullPath": [
+							"productstandardid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "internationalarticlenumbercat",
+						"fullPath": [
+							"internationalarticlenumbercat"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productisconfigurable",
+						"fullPath": [
+							"productisconfigurable"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isbatchmanagementrequired",
+						"fullPath": [
+							"isbatchmanagementrequired"
+						],
+						"type": "string"
+					},
+					{
+						"key": "hasemptiesbom",
+						"fullPath": [
+							"hasemptiesbom"
+						],
+						"type": "string"
+					},
+					{
+						"key": "externalproductgroup",
+						"fullPath": [
+							"externalproductgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "crossplantconfigurableproduct",
+						"fullPath": [
+							"crossplantconfigurableproduct"
+						],
+						"type": "string"
+					},
+					{
+						"key": "serialnoexplicitnesslevel",
+						"fullPath": [
+							"serialnoexplicitnesslevel"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productmanufacturernumber",
+						"fullPath": [
+							"productmanufacturernumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "manufacturernumber",
+						"fullPath": [
+							"manufacturernumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "manufacturerpartprofile",
+						"fullPath": [
+							"manufacturerpartprofile"
+						],
+						"type": "string"
+					},
+					{
+						"key": "qltymgmtinprocmtisactive",
+						"fullPath": [
+							"qltymgmtinprocmtisactive"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isapprovedbatchrecordreqd",
+						"fullPath": [
+							"isapprovedbatchrecordreqd"
+						],
+						"type": "string"
+					},
+					{
+						"key": "handlingindicator",
+						"fullPath": [
+							"handlingindicator"
+						],
+						"type": "string"
+					},
+					{
+						"key": "warehouseproductgroup",
+						"fullPath": [
+							"warehouseproductgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "warehousestoragecondition",
+						"fullPath": [
+							"warehousestoragecondition"
+						],
+						"type": "string"
+					},
+					{
+						"key": "standardhandlingunittype",
+						"fullPath": [
+							"standardhandlingunittype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "serialnumberprofile",
+						"fullPath": [
+							"serialnumberprofile"
+						],
+						"type": "string"
+					},
+					{
+						"key": "adjustmentprofile",
+						"fullPath": [
+							"adjustmentprofile"
+						],
+						"type": "string"
+					},
+					{
+						"key": "preferredunitofmeasure",
+						"fullPath": [
+							"preferredunitofmeasure"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ispilferable",
+						"fullPath": [
+							"ispilferable"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isrelevantforhzdssubstances",
+						"fullPath": [
+							"isrelevantforhzdssubstances"
+						],
+						"type": "string"
+					},
+					{
+						"key": "quarantineperiod",
+						"fullPath": [
+							"quarantineperiod"
+						],
+						"type": "int"
+					},
+					{
+						"key": "timeunitforquarantineperiod",
+						"fullPath": [
+							"timeunitforquarantineperiod"
+						],
+						"type": "string"
+					},
+					{
+						"key": "qualityinspectiongroup",
+						"fullPath": [
+							"qualityinspectiongroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "handlingunittype",
+						"fullPath": [
+							"handlingunittype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "hasvariabletareweight",
+						"fullPath": [
+							"hasvariabletareweight"
+						],
+						"type": "string"
+					},
+					{
+						"key": "maximumpackaginglength",
+						"fullPath": [
+							"maximumpackaginglength"
+						],
+						"type": "double"
+					},
+					{
+						"key": "maximumpackagingwidth",
+						"fullPath": [
+							"maximumpackagingwidth"
+						],
+						"type": "double"
+					},
+					{
+						"key": "maximumpackagingheight",
+						"fullPath": [
+							"maximumpackagingheight"
+						],
+						"type": "double"
+					},
+					{
+						"key": "maximumcapacity",
+						"fullPath": [
+							"maximumcapacity"
+						],
+						"type": "double"
+					},
+					{
+						"key": "overcapacitytolerance",
+						"fullPath": [
+							"overcapacitytolerance"
+						],
+						"type": "double"
+					},
+					{
+						"key": "unitformaxpackagingdimensions",
+						"fullPath": [
+							"unitformaxpackagingdimensions"
+						],
+						"type": "string"
+					},
+					{
+						"key": "baseunitspecificproductlength",
+						"fullPath": [
+							"baseunitspecificproductlength"
+						],
+						"type": "double"
+					},
+					{
+						"key": "baseunitspecificproductwidth",
+						"fullPath": [
+							"baseunitspecificproductwidth"
+						],
+						"type": "double"
+					},
+					{
+						"key": "baseunitspecificproductheight",
+						"fullPath": [
+							"baseunitspecificproductheight"
+						],
+						"type": "double"
+					},
+					{
+						"key": "productmeasurementunit",
+						"fullPath": [
+							"productmeasurementunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productvalidstartdate",
+						"fullPath": [
+							"productvalidstartdate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "articlecategory",
+						"fullPath": [
+							"articlecategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "contentunit",
+						"fullPath": [
+							"contentunit"
+						],
+						"type": "string"
+					},
+					{
+						"key": "netcontent",
+						"fullPath": [
+							"netcontent"
+						],
+						"type": "double"
+					},
+					{
+						"key": "comparisonpricequantity",
+						"fullPath": [
+							"comparisonpricequantity"
+						],
+						"type": "int"
+					},
+					{
+						"key": "grosscontent",
+						"fullPath": [
+							"grosscontent"
+						],
+						"type": "double"
+					},
+					{
+						"key": "productvalidenddate",
+						"fullPath": [
+							"productvalidenddate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "assortmentlisttype",
+						"fullPath": [
+							"assortmentlisttype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "hastextilepartswthanimalorigin",
+						"fullPath": [
+							"hastextilepartswthanimalorigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productseasonusagecategory",
+						"fullPath": [
+							"productseasonusagecategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "industrysector",
+						"fullPath": [
+							"industrysector"
+						],
+						"type": "string"
+					},
+					{
+						"key": "changenumber",
+						"fullPath": [
+							"changenumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "materialrevisionlevel",
+						"fullPath": [
+							"materialrevisionlevel"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isactiveentity",
+						"fullPath": [
+							"isactiveentity"
+						],
+						"type": "string"
+					},
+					{
+						"key": "lastchangedatetime",
+						"fullPath": [
+							"lastchangedatetime"
+						],
+						"type": "double"
+					},
+					{
+						"key": "lastchangetime",
+						"fullPath": [
+							"lastchangetime"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dangerousgoodsindprofile",
+						"fullPath": [
+							"dangerousgoodsindprofile"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productuuid",
+						"fullPath": [
+							"productuuid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodsupchnmgmtuuid22",
+						"fullPath": [
+							"prodsupchnmgmtuuid22"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumentchangenumber",
+						"fullPath": [
+							"productdocumentchangenumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumentpagecount",
+						"fullPath": [
+							"productdocumentpagecount"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumentpagenumber",
+						"fullPath": [
+							"productdocumentpagenumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "owninventorymanagedproduct",
+						"fullPath": [
+							"owninventorymanagedproduct"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentiscreatedbycad",
+						"fullPath": [
+							"documentiscreatedbycad"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productionorinspectionmemotxt",
+						"fullPath": [
+							"productionorinspectionmemotxt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productionmemopageformat",
+						"fullPath": [
+							"productionmemopageformat"
+						],
+						"type": "string"
+					},
+					{
+						"key": "globaltradeitemnumbervariant",
+						"fullPath": [
+							"globaltradeitemnumbervariant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productishighlyviscous",
+						"fullPath": [
+							"productishighlyviscous"
+						],
+						"type": "string"
+					},
+					{
+						"key": "transportisinbulk",
+						"fullPath": [
+							"transportisinbulk"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodallocdetnprocedure",
+						"fullPath": [
+							"prodallocdetnprocedure"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodeffctyparamvalsareassigned",
+						"fullPath": [
+							"prodeffctyparamvalsareassigned"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodisenvironmentallyrelevant",
+						"fullPath": [
+							"prodisenvironmentallyrelevant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "laboratoryordesignoffice",
+						"fullPath": [
+							"laboratoryordesignoffice"
+						],
+						"type": "string"
+					},
+					{
+						"key": "packagingmaterialgroup",
+						"fullPath": [
+							"packagingmaterialgroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productislocked",
+						"fullPath": [
+							"productislocked"
+						],
+						"type": "string"
+					},
+					{
+						"key": "discountinkindeligibility",
+						"fullPath": [
+							"discountinkindeligibility"
+						],
+						"type": "string"
+					},
+					{
+						"key": "smartformname",
+						"fullPath": [
+							"smartformname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "packingreferenceproduct",
+						"fullPath": [
+							"packingreferenceproduct"
+						],
+						"type": "string"
+					},
+					{
+						"key": "basicmaterial",
+						"fullPath": [
+							"basicmaterial"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumentnumber",
+						"fullPath": [
+							"productdocumentnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumentversion",
+						"fullPath": [
+							"productdocumentversion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumenttype",
+						"fullPath": [
+							"productdocumenttype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productdocumentpageformat",
+						"fullPath": [
+							"productdocumentpageformat"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productconfiguration",
+						"fullPath": [
+							"productconfiguration"
+						],
+						"type": "string"
+					},
+					{
+						"key": "segmentationstrategy",
+						"fullPath": [
+							"segmentationstrategy"
+						],
+						"type": "string"
+					},
+					{
+						"key": "segmentationisrelevant",
+						"fullPath": [
+							"segmentationisrelevant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ischemicalcompliancerelevant",
+						"fullPath": [
+							"ischemicalcompliancerelevant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "manufacturerbookpartnumber",
+						"fullPath": [
+							"manufacturerbookpartnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "logisticalproductcategory",
+						"fullPath": [
+							"logisticalproductcategory"
+						],
+						"type": "string"
+					},
+					{
+						"key": "salesproduct",
+						"fullPath": [
+							"salesproduct"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodcharc1internalnumber",
+						"fullPath": [
+							"prodcharc1internalnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodcharc2internalnumber",
+						"fullPath": [
+							"prodcharc2internalnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "prodcharc3internalnumber",
+						"fullPath": [
+							"prodcharc3internalnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productcharacteristic1",
+						"fullPath": [
+							"productcharacteristic1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productcharacteristic2",
+						"fullPath": [
+							"productcharacteristic2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "productcharacteristic3",
+						"fullPath": [
+							"productcharacteristic3"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfsammunitiongroupcode",
+						"fullPath": [
+							"dfsammunitiongroupcode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfsricidentifier",
+						"fullPath": [
+							"dfsricidentifier"
+						],
+						"type": "int"
+					},
+					{
+						"key": "dfsproductsensitivity",
+						"fullPath": [
+							"dfsproductsensitivity"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfsmanufacturerpartlongnumber",
+						"fullPath": [
+							"dfsmanufacturerpartlongnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfsmatlconditionmgmt",
+						"fullPath": [
+							"dfsmatlconditionmgmt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfsreturndelivery",
+						"fullPath": [
+							"dfsreturndelivery"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfslogisticslevel",
+						"fullPath": [
+							"dfslogisticslevel"
+						],
+						"type": "string"
+					},
+					{
+						"key": "dfsnationalitemidnnumber",
+						"fullPath": [
+							"dfsnationalitemidnnumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "zz1_customfieldriskmit_prd",
+						"fullPath": [
+							"zz1_customfieldriskmit_prd"
+						],
+						"type": "string"
+					},
+					{
+						"key": "zz1_customfieldhighris_prd",
+						"fullPath": [
+							"zz1_customfieldhighris_prd"
+						],
+						"type": "string"
+					},
+					{
+						"key": "zz1_customfieldriskrea_prd",
+						"fullPath": [
+							"zz1_customfieldriskrea_prd"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

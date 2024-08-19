@@ -1,0 +1,2912 @@
+{
+	"jobConfig": {
+		"name": "afsap-md-supplier-rtoc",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-md-supplier-rtoc.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": false,
+		"sparkConfiguration": "standard",
+		"jobParameters": [
+			{
+				"key": "--conf",
+				"value": "spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog  --conf spark.sql.catalog.AwsDataCatalog.warehouse=s3://afsapenriched/  --conf spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog  --conf spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.iceberg.handle-timestamp-without-timezone=true",
+				"existing": false
+			},
+			{
+				"key": "--datalake-formats",
+				"value": "iceberg",
+				"existing": false
+			}
+		],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-05T05:06:23.221Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1722339523745": {
+			"nodeId": "node-1722339523745",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1722339523745",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/raw/cds_supplier/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/raw/cds_supplier/loaddt=2024-08-05/run-AmazonS3_node1711298687208-1-part-r-00000",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplieraccountgroup",
+						"fullPath": [
+							"supplieraccountgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suppliername",
+						"fullPath": [
+							"suppliername"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierfullname",
+						"fullPath": [
+							"supplierfullname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isbusinesspurposecompleted",
+						"fullPath": [
+							"isbusinesspurposecompleted"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isonetimeaccount",
+						"fullPath": [
+							"isonetimeaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "authorizationgroup",
+						"fullPath": [
+							"authorizationgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatregistration",
+						"fullPath": [
+							"vatregistration"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountisblockedforposting",
+						"fullPath": [
+							"accountisblockedforposting"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxjurisdiction",
+						"fullPath": [
+							"taxjurisdiction"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suppliercorporategroup",
+						"fullPath": [
+							"suppliercorporategroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customer",
+						"fullPath": [
+							"customer"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "industry",
+						"fullPath": [
+							"industry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber1",
+						"fullPath": [
+							"taxnumber1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber2",
+						"fullPath": [
+							"taxnumber2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber3",
+						"fullPath": [
+							"taxnumber3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber4",
+						"fullPath": [
+							"taxnumber4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber5",
+						"fullPath": [
+							"taxnumber5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber6",
+						"fullPath": [
+							"taxnumber6"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "postingisblocked",
+						"fullPath": [
+							"postingisblocked"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchasingisblocked",
+						"fullPath": [
+							"purchasingisblocked"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationallocationnumber1",
+						"fullPath": [
+							"internationallocationnumber1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationallocationnumber2",
+						"fullPath": [
+							"internationallocationnumber2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationallocationnumber3",
+						"fullPath": [
+							"internationallocationnumber3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "addressid",
+						"fullPath": [
+							"addressid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationbpname1",
+						"fullPath": [
+							"organizationbpname1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationbpname2",
+						"fullPath": [
+							"organizationbpname2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cityname",
+						"fullPath": [
+							"cityname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "postalcode",
+						"fullPath": [
+							"postalcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "streetname",
+						"fullPath": [
+							"streetname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "concatenatedinternationallocno",
+						"fullPath": [
+							"concatenatedinternationallocno"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierprocurementblock",
+						"fullPath": [
+							"supplierprocurementblock"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrqualitymanagementsystem",
+						"fullPath": [
+							"suplrqualitymanagementsystem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrqltyinprocmtcertfnvalidto",
+						"fullPath": [
+							"suplrqltyinprocmtcertfnvalidto"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierlanguage",
+						"fullPath": [
+							"supplierlanguage"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "alternativepayeeaccountnumber",
+						"fullPath": [
+							"alternativepayeeaccountnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "phonenumber1",
+						"fullPath": [
+							"phonenumber1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "faxnumber",
+						"fullPath": [
+							"faxnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isnaturalperson",
+						"fullPath": [
+							"isnaturalperson"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumberresponsible",
+						"fullPath": [
+							"taxnumberresponsible"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_contractorbusinesstype",
+						"fullPath": [
+							"uk_contractorbusinesstype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_partnertradingname",
+						"fullPath": [
+							"uk_partnertradingname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_partnertaxreference",
+						"fullPath": [
+							"uk_partnertaxreference"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_verificationstatus",
+						"fullPath": [
+							"uk_verificationstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_verificationnumber",
+						"fullPath": [
+							"uk_verificationnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_companyregistrationnumber",
+						"fullPath": [
+							"uk_companyregistrationnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_verifiedtaxstatus",
+						"fullPath": [
+							"uk_verifiedtaxstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formofaddress",
+						"fullPath": [
+							"formofaddress"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referenceaccountgroup",
+						"fullPath": [
+							"referenceaccountgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatliability",
+						"fullPath": [
+							"vatliability"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "responsibletype",
+						"fullPath": [
+							"responsibletype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumbertype",
+						"fullPath": [
+							"taxnumbertype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscaladdress",
+						"fullPath": [
+							"fiscaladdress"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businesstype",
+						"fullPath": [
+							"businesstype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "birthdate",
+						"fullPath": [
+							"birthdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentisblockedforsupplier",
+						"fullPath": [
+							"paymentisblockedforsupplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sortfield",
+						"fullPath": [
+							"sortfield"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "phonenumber2",
+						"fullPath": [
+							"phonenumber2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deletionindicator",
+						"fullPath": [
+							"deletionindicator"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxinvoicerepresentativename",
+						"fullPath": [
+							"taxinvoicerepresentativename"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "industrytype",
+						"fullPath": [
+							"industrytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "in_gstsupplierclassification",
+						"fullPath": [
+							"in_gstsupplierclassification"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrproofofdelivrlvtcode",
+						"fullPath": [
+							"suplrproofofdelivrlvtcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tradingpartner",
+						"fullPath": [
+							"tradingpartner"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "br_taxissplit",
+						"fullPath": [
+							"br_taxissplit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_payerispayingtocarryonent",
+						"fullPath": [
+							"au_payerispayingtocarryonent"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_individualisunder18",
+						"fullPath": [
+							"au_individualisunder18"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_paymentisexceeding75",
+						"fullPath": [
+							"au_paymentisexceeding75"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_paymentiswhollyinputtaxed",
+						"fullPath": [
+							"au_paymentiswhollyinputtaxed"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_partnerissupplywithoutgain",
+						"fullPath": [
+							"au_partnerissupplywithoutgain"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_supplierisentitledtoabn",
+						"fullPath": [
+							"au_supplierisentitledtoabn"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_paymentisincomeexempted",
+						"fullPath": [
+							"au_paymentisincomeexempted"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_supplyismadeasprivatehobby",
+						"fullPath": [
+							"au_supplyismadeasprivatehobby"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_supplymadeisofdmstcnature",
+						"fullPath": [
+							"au_supplymadeisofdmstcnature"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "istobeacceptedatorigin",
+						"fullPath": [
+							"istobeacceptedatorigin"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "bpisequalizationtaxsubject",
+						"fullPath": [
+							"bpisequalizationtaxsubject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "brspcfctaxbasepercentagecode",
+						"fullPath": [
+							"brspcfctaxbasepercentagecode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "datamediumexchangeindicator",
+						"fullPath": [
+							"datamediumexchangeindicator"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "dataexchangeinstructionkey",
+						"fullPath": [
+							"dataexchangeinstructionkey"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierissubrangerelevant",
+						"fullPath": [
+							"supplierissubrangerelevant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "trainstationname",
+						"fullPath": [
+							"trainstationname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "alternativepayeeisallowed",
+						"fullPath": [
+							"alternativepayeeisallowed"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paytslipwthrefsubscriber",
+						"fullPath": [
+							"paytslipwthrefsubscriber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transpserviceagentststcgrp",
+						"fullPath": [
+							"transpserviceagentststcgrp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierisplantrelevant",
+						"fullPath": [
+							"supplierisplantrelevant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrtaxauthorityaccountnumber",
+						"fullPath": [
+							"suplrtaxauthorityaccountnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierplant",
+						"fullPath": [
+							"supplierplant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factorycalendar",
+						"fullPath": [
+							"factorycalendar"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentreason",
+						"fullPath": [
+							"paymentreason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suppliercentraldeletionisblock",
+						"fullPath": [
+							"suppliercentraldeletionisblock"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722339666383": {
+			"nodeId": "node-1722339666383",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722339635256"
+			],
+			"name": "RemoveDuplicates",
+			"generatedNodeName": "RemoveDuplicates_node1722339666383",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1722339635256",
+					"alias": "cdf"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplieraccountgroup",
+						"fullPath": [
+							"supplieraccountgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suppliername",
+						"fullPath": [
+							"suppliername"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierfullname",
+						"fullPath": [
+							"supplierfullname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isbusinesspurposecompleted",
+						"fullPath": [
+							"isbusinesspurposecompleted"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isonetimeaccount",
+						"fullPath": [
+							"isonetimeaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "authorizationgroup",
+						"fullPath": [
+							"authorizationgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatregistration",
+						"fullPath": [
+							"vatregistration"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountisblockedforposting",
+						"fullPath": [
+							"accountisblockedforposting"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxjurisdiction",
+						"fullPath": [
+							"taxjurisdiction"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suppliercorporategroup",
+						"fullPath": [
+							"suppliercorporategroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customer",
+						"fullPath": [
+							"customer"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "industry",
+						"fullPath": [
+							"industry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber1",
+						"fullPath": [
+							"taxnumber1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber2",
+						"fullPath": [
+							"taxnumber2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber3",
+						"fullPath": [
+							"taxnumber3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber4",
+						"fullPath": [
+							"taxnumber4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber5",
+						"fullPath": [
+							"taxnumber5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumber6",
+						"fullPath": [
+							"taxnumber6"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "postingisblocked",
+						"fullPath": [
+							"postingisblocked"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchasingisblocked",
+						"fullPath": [
+							"purchasingisblocked"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationallocationnumber1",
+						"fullPath": [
+							"internationallocationnumber1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationallocationnumber2",
+						"fullPath": [
+							"internationallocationnumber2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationallocationnumber3",
+						"fullPath": [
+							"internationallocationnumber3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "addressid",
+						"fullPath": [
+							"addressid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationbpname1",
+						"fullPath": [
+							"organizationbpname1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationbpname2",
+						"fullPath": [
+							"organizationbpname2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cityname",
+						"fullPath": [
+							"cityname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "postalcode",
+						"fullPath": [
+							"postalcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "streetname",
+						"fullPath": [
+							"streetname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "concatenatedinternationallocno",
+						"fullPath": [
+							"concatenatedinternationallocno"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierprocurementblock",
+						"fullPath": [
+							"supplierprocurementblock"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrqualitymanagementsystem",
+						"fullPath": [
+							"suplrqualitymanagementsystem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrqltyinprocmtcertfnvalidto",
+						"fullPath": [
+							"suplrqltyinprocmtcertfnvalidto"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierlanguage",
+						"fullPath": [
+							"supplierlanguage"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "alternativepayeeaccountnumber",
+						"fullPath": [
+							"alternativepayeeaccountnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "phonenumber1",
+						"fullPath": [
+							"phonenumber1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "faxnumber",
+						"fullPath": [
+							"faxnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isnaturalperson",
+						"fullPath": [
+							"isnaturalperson"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumberresponsible",
+						"fullPath": [
+							"taxnumberresponsible"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_contractorbusinesstype",
+						"fullPath": [
+							"uk_contractorbusinesstype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_partnertradingname",
+						"fullPath": [
+							"uk_partnertradingname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_partnertaxreference",
+						"fullPath": [
+							"uk_partnertaxreference"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_verificationstatus",
+						"fullPath": [
+							"uk_verificationstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_verificationnumber",
+						"fullPath": [
+							"uk_verificationnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_companyregistrationnumber",
+						"fullPath": [
+							"uk_companyregistrationnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uk_verifiedtaxstatus",
+						"fullPath": [
+							"uk_verifiedtaxstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formofaddress",
+						"fullPath": [
+							"formofaddress"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referenceaccountgroup",
+						"fullPath": [
+							"referenceaccountgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatliability",
+						"fullPath": [
+							"vatliability"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "responsibletype",
+						"fullPath": [
+							"responsibletype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxnumbertype",
+						"fullPath": [
+							"taxnumbertype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscaladdress",
+						"fullPath": [
+							"fiscaladdress"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businesstype",
+						"fullPath": [
+							"businesstype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "birthdate",
+						"fullPath": [
+							"birthdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentisblockedforsupplier",
+						"fullPath": [
+							"paymentisblockedforsupplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sortfield",
+						"fullPath": [
+							"sortfield"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "phonenumber2",
+						"fullPath": [
+							"phonenumber2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deletionindicator",
+						"fullPath": [
+							"deletionindicator"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxinvoicerepresentativename",
+						"fullPath": [
+							"taxinvoicerepresentativename"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "industrytype",
+						"fullPath": [
+							"industrytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "in_gstsupplierclassification",
+						"fullPath": [
+							"in_gstsupplierclassification"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrproofofdelivrlvtcode",
+						"fullPath": [
+							"suplrproofofdelivrlvtcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tradingpartner",
+						"fullPath": [
+							"tradingpartner"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "br_taxissplit",
+						"fullPath": [
+							"br_taxissplit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_payerispayingtocarryonent",
+						"fullPath": [
+							"au_payerispayingtocarryonent"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_individualisunder18",
+						"fullPath": [
+							"au_individualisunder18"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_paymentisexceeding75",
+						"fullPath": [
+							"au_paymentisexceeding75"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_paymentiswhollyinputtaxed",
+						"fullPath": [
+							"au_paymentiswhollyinputtaxed"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_partnerissupplywithoutgain",
+						"fullPath": [
+							"au_partnerissupplywithoutgain"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_supplierisentitledtoabn",
+						"fullPath": [
+							"au_supplierisentitledtoabn"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_paymentisincomeexempted",
+						"fullPath": [
+							"au_paymentisincomeexempted"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_supplyismadeasprivatehobby",
+						"fullPath": [
+							"au_supplyismadeasprivatehobby"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "au_supplymadeisofdmstcnature",
+						"fullPath": [
+							"au_supplymadeisofdmstcnature"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "istobeacceptedatorigin",
+						"fullPath": [
+							"istobeacceptedatorigin"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "bpisequalizationtaxsubject",
+						"fullPath": [
+							"bpisequalizationtaxsubject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "brspcfctaxbasepercentagecode",
+						"fullPath": [
+							"brspcfctaxbasepercentagecode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "datamediumexchangeindicator",
+						"fullPath": [
+							"datamediumexchangeindicator"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "dataexchangeinstructionkey",
+						"fullPath": [
+							"dataexchangeinstructionkey"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierissubrangerelevant",
+						"fullPath": [
+							"supplierissubrangerelevant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "trainstationname",
+						"fullPath": [
+							"trainstationname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "alternativepayeeisallowed",
+						"fullPath": [
+							"alternativepayeeisallowed"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paytslipwthrefsubscriber",
+						"fullPath": [
+							"paytslipwthrefsubscriber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transpserviceagentststcgrp",
+						"fullPath": [
+							"transpserviceagentststcgrp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierisplantrelevant",
+						"fullPath": [
+							"supplierisplantrelevant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suplrtaxauthorityaccountnumber",
+						"fullPath": [
+							"suplrtaxauthorityaccountnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplierplant",
+						"fullPath": [
+							"supplierplant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factorycalendar",
+						"fullPath": [
+							"factorycalendar"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentreason",
+						"fullPath": [
+							"paymentreason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "suppliercentraldeletionisblock",
+						"fullPath": [
+							"suppliercentraldeletionisblock"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "timestamp",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "is_latest",
+						"fullPath": [
+							"is_latest"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "SELECT\n  *\nFROM\n  (\n    SELECT\n      *,\n       ROW_NUMBER() OVER (PARTITION BY supplier ORDER BY loadts DESC, counter DESC) as is_latest\n    FROM\n      cdf\n  )\nWHERE\n  is_latest = 1;",
+			"codeGenVersion": 2
+		},
+		"node-1722339635256": {
+			"nodeId": "node-1722339635256",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722339523745"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1722339635256",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "supplier",
+					"fromPath": [
+						"supplier"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplieraccountgroup",
+					"fromPath": [
+						"supplieraccountgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suppliername",
+					"fromPath": [
+						"suppliername"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierfullname",
+					"fromPath": [
+						"supplierfullname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isbusinesspurposecompleted",
+					"fromPath": [
+						"isbusinesspurposecompleted"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "createdbyuser",
+					"fromPath": [
+						"createdbyuser"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creationdate",
+					"fromPath": [
+						"creationdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isonetimeaccount",
+					"fromPath": [
+						"isonetimeaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "authorizationgroup",
+					"fromPath": [
+						"authorizationgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "vatregistration",
+					"fromPath": [
+						"vatregistration"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountisblockedforposting",
+					"fromPath": [
+						"accountisblockedforposting"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxjurisdiction",
+					"fromPath": [
+						"taxjurisdiction"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suppliercorporategroup",
+					"fromPath": [
+						"suppliercorporategroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customer",
+					"fromPath": [
+						"customer"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "industry",
+					"fromPath": [
+						"industry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumber1",
+					"fromPath": [
+						"taxnumber1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumber2",
+					"fromPath": [
+						"taxnumber2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumber3",
+					"fromPath": [
+						"taxnumber3"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumber4",
+					"fromPath": [
+						"taxnumber4"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumber5",
+					"fromPath": [
+						"taxnumber5"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumber6",
+					"fromPath": [
+						"taxnumber6"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "postingisblocked",
+					"fromPath": [
+						"postingisblocked"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchasingisblocked",
+					"fromPath": [
+						"purchasingisblocked"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "internationallocationnumber1",
+					"fromPath": [
+						"internationallocationnumber1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "internationallocationnumber2",
+					"fromPath": [
+						"internationallocationnumber2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "internationallocationnumber3",
+					"fromPath": [
+						"internationallocationnumber3"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "addressid",
+					"fromPath": [
+						"addressid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "region",
+					"fromPath": [
+						"region"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "organizationbpname1",
+					"fromPath": [
+						"organizationbpname1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "organizationbpname2",
+					"fromPath": [
+						"organizationbpname2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cityname",
+					"fromPath": [
+						"cityname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "postalcode",
+					"fromPath": [
+						"postalcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "streetname",
+					"fromPath": [
+						"streetname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "country",
+					"fromPath": [
+						"country"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "concatenatedinternationallocno",
+					"fromPath": [
+						"concatenatedinternationallocno"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierprocurementblock",
+					"fromPath": [
+						"supplierprocurementblock"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrqualitymanagementsystem",
+					"fromPath": [
+						"suplrqualitymanagementsystem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrqltyinprocmtcertfnvalidto",
+					"fromPath": [
+						"suplrqltyinprocmtcertfnvalidto"
+					],
+					"toType": "null",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierlanguage",
+					"fromPath": [
+						"supplierlanguage"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "alternativepayeeaccountnumber",
+					"fromPath": [
+						"alternativepayeeaccountnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "phonenumber1",
+					"fromPath": [
+						"phonenumber1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "faxnumber",
+					"fromPath": [
+						"faxnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isnaturalperson",
+					"fromPath": [
+						"isnaturalperson"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumberresponsible",
+					"fromPath": [
+						"taxnumberresponsible"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_contractorbusinesstype",
+					"fromPath": [
+						"uk_contractorbusinesstype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_partnertradingname",
+					"fromPath": [
+						"uk_partnertradingname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_partnertaxreference",
+					"fromPath": [
+						"uk_partnertaxreference"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_verificationstatus",
+					"fromPath": [
+						"uk_verificationstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_verificationnumber",
+					"fromPath": [
+						"uk_verificationnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_companyregistrationnumber",
+					"fromPath": [
+						"uk_companyregistrationnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uk_verifiedtaxstatus",
+					"fromPath": [
+						"uk_verifiedtaxstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "formofaddress",
+					"fromPath": [
+						"formofaddress"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referenceaccountgroup",
+					"fromPath": [
+						"referenceaccountgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "vatliability",
+					"fromPath": [
+						"vatliability"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "responsibletype",
+					"fromPath": [
+						"responsibletype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxnumbertype",
+					"fromPath": [
+						"taxnumbertype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fiscaladdress",
+					"fromPath": [
+						"fiscaladdress"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businesstype",
+					"fromPath": [
+						"businesstype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "birthdate",
+					"fromPath": [
+						"birthdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "paymentisblockedforsupplier",
+					"fromPath": [
+						"paymentisblockedforsupplier"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sortfield",
+					"fromPath": [
+						"sortfield"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "phonenumber2",
+					"fromPath": [
+						"phonenumber2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deletionindicator",
+					"fromPath": [
+						"deletionindicator"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxinvoicerepresentativename",
+					"fromPath": [
+						"taxinvoicerepresentativename"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "industrytype",
+					"fromPath": [
+						"industrytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "in_gstsupplierclassification",
+					"fromPath": [
+						"in_gstsupplierclassification"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrproofofdelivrlvtcode",
+					"fromPath": [
+						"suplrproofofdelivrlvtcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tradingpartner",
+					"fromPath": [
+						"tradingpartner"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "br_taxissplit",
+					"fromPath": [
+						"br_taxissplit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_payerispayingtocarryonent",
+					"fromPath": [
+						"au_payerispayingtocarryonent"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_individualisunder18",
+					"fromPath": [
+						"au_individualisunder18"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_paymentisexceeding75",
+					"fromPath": [
+						"au_paymentisexceeding75"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_paymentiswhollyinputtaxed",
+					"fromPath": [
+						"au_paymentiswhollyinputtaxed"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_partnerissupplywithoutgain",
+					"fromPath": [
+						"au_partnerissupplywithoutgain"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_supplierisentitledtoabn",
+					"fromPath": [
+						"au_supplierisentitledtoabn"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_paymentisincomeexempted",
+					"fromPath": [
+						"au_paymentisincomeexempted"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_supplyismadeasprivatehobby",
+					"fromPath": [
+						"au_supplyismadeasprivatehobby"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "au_supplymadeisofdmstcnature",
+					"fromPath": [
+						"au_supplymadeisofdmstcnature"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "istobeacceptedatorigin",
+					"fromPath": [
+						"istobeacceptedatorigin"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "bpisequalizationtaxsubject",
+					"fromPath": [
+						"bpisequalizationtaxsubject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "brspcfctaxbasepercentagecode",
+					"fromPath": [
+						"brspcfctaxbasepercentagecode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "datamediumexchangeindicator",
+					"fromPath": [
+						"datamediumexchangeindicator"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "dataexchangeinstructionkey",
+					"fromPath": [
+						"dataexchangeinstructionkey"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierissubrangerelevant",
+					"fromPath": [
+						"supplierissubrangerelevant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "trainstationname",
+					"fromPath": [
+						"trainstationname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "alternativepayeeisallowed",
+					"fromPath": [
+						"alternativepayeeisallowed"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "paytslipwthrefsubscriber",
+					"fromPath": [
+						"paytslipwthrefsubscriber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transpserviceagentststcgrp",
+					"fromPath": [
+						"transpserviceagentststcgrp"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierisplantrelevant",
+					"fromPath": [
+						"supplierisplantrelevant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suplrtaxauthorityaccountnumber",
+					"fromPath": [
+						"suplrtaxauthorityaccountnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplierplant",
+					"fromPath": [
+						"supplierplant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "factorycalendar",
+					"fromPath": [
+						"factorycalendar"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "paymentreason",
+					"fromPath": [
+						"paymentreason"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "suppliercentraldeletionisblock",
+					"fromPath": [
+						"suppliercentraldeletionisblock"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_changemode",
+					"fromPath": [
+						"odq_changemode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_entitycntr",
+					"fromPath": [
+						"odq_entitycntr"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadts",
+					"fromPath": [
+						"loadts"
+					],
+					"toType": "timestamp",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "counter",
+					"fromPath": [
+						"counter"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722339771608": {
+			"nodeId": "node-1722339771608",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722339666383"
+			],
+			"name": "MergeToTarget",
+			"generatedNodeName": "MergeToTarget_node1722339771608",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1722339666383",
+					"alias": "sdf"
+				}
+			],
+			"outputSchemas": [
+				[]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "MERGE INTO AwsDataCatalog.<your_curated_glue_catalog_db>.cds_supplier t\nUSING (SELECT * FROM sdf) s on s.supplier = t.supplier\nWHEN MATCHED THEN UPDATE SET * WHEN NOT MATCHED THEN INSERT *",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

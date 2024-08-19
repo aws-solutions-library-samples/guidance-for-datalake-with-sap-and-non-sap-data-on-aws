@@ -1,0 +1,1430 @@
+{
+	"jobConfig": {
+		"name": "afsap-p2p-po-header-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-p2p-po-header-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-07-31T10:10:51.396Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null,
+		"pythonPath": ""
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_po_header/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERTYPE",
+						"fullPath": [
+							"PURCHASEORDERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERSUBTYPE",
+						"fullPath": [
+							"PURCHASEORDERSUBTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGDOCUMENTORIGIN",
+						"fullPath": [
+							"PURCHASINGDOCUMENTORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERDATE",
+						"fullPath": [
+							"PURCHASEORDERDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LANGUAGE",
+						"fullPath": [
+							"LANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CORRESPNCEXTERNALREFERENCE",
+						"fullPath": [
+							"CORRESPNCEXTERNALREFERENCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CORRESPNCINTERNALREFERENCE",
+						"fullPath": [
+							"CORRESPNCINTERNALREFERENCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGDOCUMENTDELETIONCODE",
+						"fullPath": [
+							"PURCHASINGDOCUMENTDELETIONCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RELEASEISNOTCOMPLETED",
+						"fullPath": [
+							"RELEASEISNOTCOMPLETED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGCOMPLETENESSSTATUS",
+						"fullPath": [
+							"PURCHASINGCOMPLETENESSSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGPROCESSINGSTATUS",
+						"fullPath": [
+							"PURCHASINGPROCESSINGSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURGRELEASESEQUENCESTATUS",
+						"fullPath": [
+							"PURGRELEASESEQUENCESTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RELEASECODE",
+						"fullPath": [
+							"RELEASECODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COMPANYCODE",
+						"fullPath": [
+							"COMPANYCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGORGANIZATION",
+						"fullPath": [
+							"PURCHASINGORGANIZATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGGROUP",
+						"fullPath": [
+							"PURCHASINGGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUALSUPPLIERADDRESSID",
+						"fullPath": [
+							"MANUALSUPPLIERADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERRESPSALESPERSONNAME",
+						"fullPath": [
+							"SUPPLIERRESPSALESPERSONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERPHONENUMBER",
+						"fullPath": [
+							"SUPPLIERPHONENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGSUPPLIER",
+						"fullPath": [
+							"SUPPLYINGSUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGPLANT",
+						"fullPath": [
+							"SUPPLYINGPLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INVOICINGPARTY",
+						"fullPath": [
+							"INVOICINGPARTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMER",
+						"fullPath": [
+							"CUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERQUOTATIONEXTERNALID",
+						"fullPath": [
+							"SUPPLIERQUOTATIONEXTERNALID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTTERMS",
+						"fullPath": [
+							"PAYMENTTERMS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CASHDISCOUNT1DAYS",
+						"fullPath": [
+							"CASHDISCOUNT1DAYS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "CASHDISCOUNT2DAYS",
+						"fullPath": [
+							"CASHDISCOUNT2DAYS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "NETPAYMENTDAYS",
+						"fullPath": [
+							"NETPAYMENTDAYS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "CASHDISCOUNT1PERCENT",
+						"fullPath": [
+							"CASHDISCOUNT1PERCENT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "CASHDISCOUNT2PERCENT",
+						"fullPath": [
+							"CASHDISCOUNT2PERCENT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOWNPAYMENTTYPE",
+						"fullPath": [
+							"DOWNPAYMENTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOWNPAYMENTPERCENTAGEOFTOTAMT",
+						"fullPath": [
+							"DOWNPAYMENTPERCENTAGEOFTOTAMT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOWNPAYMENTAMOUNT",
+						"fullPath": [
+							"DOWNPAYMENTAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOWNPAYMENTDUEDATE",
+						"fullPath": [
+							"DOWNPAYMENTDUEDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "INCOTERMSCLASSIFICATION",
+						"fullPath": [
+							"INCOTERMSCLASSIFICATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSTRANSFERLOCATION",
+						"fullPath": [
+							"INCOTERMSTRANSFERLOCATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSVERSION",
+						"fullPath": [
+							"INCOTERMSVERSION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSLOCATION1",
+						"fullPath": [
+							"INCOTERMSLOCATION1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSLOCATION2",
+						"fullPath": [
+							"INCOTERMSLOCATION2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISINTRASTATREPORTINGRELEVANT",
+						"fullPath": [
+							"ISINTRASTATREPORTINGRELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISINTRASTATREPORTINGEXCLUDED",
+						"fullPath": [
+							"ISINTRASTATREPORTINGEXCLUDED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRICINGDOCUMENT",
+						"fullPath": [
+							"PRICINGDOCUMENT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRICINGPROCEDURE",
+						"fullPath": [
+							"PRICINGPROCEDURE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VALIDITYSTARTDATE",
+						"fullPath": [
+							"VALIDITYSTARTDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "VALIDITYENDDATE",
+						"fullPath": [
+							"VALIDITYENDDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "EXCHANGERATE",
+						"fullPath": [
+							"EXCHANGERATE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "EXCHANGERATEISFIXED",
+						"fullPath": [
+							"EXCHANGERATEISFIXED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LASTCHANGEDATETIME",
+						"fullPath": [
+							"LASTCHANGEDATETIME"
+						],
+						"type": "double"
+					},
+					{
+						"key": "TAXRETURNCOUNTRY",
+						"fullPath": [
+							"TAXRETURNCOUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATREGISTRATIONCOUNTRY",
+						"fullPath": [
+							"VATREGISTRATIONCOUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURGREASONFORDOCCANCELLATION",
+						"fullPath": [
+							"PURGREASONFORDOCCANCELLATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURGRELEASETIMETOTALAMOUNT",
+						"fullPath": [
+							"PURGRELEASETIMETOTALAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			]
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERTYPE",
+						"fullPath": [
+							"PURCHASEORDERTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERSUBTYPE",
+						"fullPath": [
+							"PURCHASEORDERSUBTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGDOCUMENTORIGIN",
+						"fullPath": [
+							"PURCHASINGDOCUMENTORIGIN"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATEDBYUSER",
+						"fullPath": [
+							"CREATEDBYUSER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASEORDERDATE",
+						"fullPath": [
+							"PURCHASEORDERDATE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LANGUAGE",
+						"fullPath": [
+							"LANGUAGE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CORRESPNCEXTERNALREFERENCE",
+						"fullPath": [
+							"CORRESPNCEXTERNALREFERENCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CORRESPNCINTERNALREFERENCE",
+						"fullPath": [
+							"CORRESPNCINTERNALREFERENCE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGDOCUMENTDELETIONCODE",
+						"fullPath": [
+							"PURCHASINGDOCUMENTDELETIONCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RELEASEISNOTCOMPLETED",
+						"fullPath": [
+							"RELEASEISNOTCOMPLETED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGCOMPLETENESSSTATUS",
+						"fullPath": [
+							"PURCHASINGCOMPLETENESSSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGPROCESSINGSTATUS",
+						"fullPath": [
+							"PURCHASINGPROCESSINGSTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURGRELEASESEQUENCESTATUS",
+						"fullPath": [
+							"PURGRELEASESEQUENCESTATUS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "RELEASECODE",
+						"fullPath": [
+							"RELEASECODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "COMPANYCODE",
+						"fullPath": [
+							"COMPANYCODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGORGANIZATION",
+						"fullPath": [
+							"PURCHASINGORGANIZATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURCHASINGGROUP",
+						"fullPath": [
+							"PURCHASINGGROUP"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIER",
+						"fullPath": [
+							"SUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "MANUALSUPPLIERADDRESSID",
+						"fullPath": [
+							"MANUALSUPPLIERADDRESSID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERRESPSALESPERSONNAME",
+						"fullPath": [
+							"SUPPLIERRESPSALESPERSONNAME"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERPHONENUMBER",
+						"fullPath": [
+							"SUPPLIERPHONENUMBER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGSUPPLIER",
+						"fullPath": [
+							"SUPPLYINGSUPPLIER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLYINGPLANT",
+						"fullPath": [
+							"SUPPLYINGPLANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INVOICINGPARTY",
+						"fullPath": [
+							"INVOICINGPARTY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CUSTOMER",
+						"fullPath": [
+							"CUSTOMER"
+						],
+						"type": "string"
+					},
+					{
+						"key": "SUPPLIERQUOTATIONEXTERNALID",
+						"fullPath": [
+							"SUPPLIERQUOTATIONEXTERNALID"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PAYMENTTERMS",
+						"fullPath": [
+							"PAYMENTTERMS"
+						],
+						"type": "string"
+					},
+					{
+						"key": "CASHDISCOUNT1DAYS",
+						"fullPath": [
+							"CASHDISCOUNT1DAYS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "CASHDISCOUNT2DAYS",
+						"fullPath": [
+							"CASHDISCOUNT2DAYS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "NETPAYMENTDAYS",
+						"fullPath": [
+							"NETPAYMENTDAYS"
+						],
+						"type": "int"
+					},
+					{
+						"key": "CASHDISCOUNT1PERCENT",
+						"fullPath": [
+							"CASHDISCOUNT1PERCENT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "CASHDISCOUNT2PERCENT",
+						"fullPath": [
+							"CASHDISCOUNT2PERCENT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOWNPAYMENTTYPE",
+						"fullPath": [
+							"DOWNPAYMENTTYPE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOWNPAYMENTPERCENTAGEOFTOTAMT",
+						"fullPath": [
+							"DOWNPAYMENTPERCENTAGEOFTOTAMT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOWNPAYMENTAMOUNT",
+						"fullPath": [
+							"DOWNPAYMENTAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "DOWNPAYMENTDUEDATE",
+						"fullPath": [
+							"DOWNPAYMENTDUEDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "INCOTERMSCLASSIFICATION",
+						"fullPath": [
+							"INCOTERMSCLASSIFICATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSTRANSFERLOCATION",
+						"fullPath": [
+							"INCOTERMSTRANSFERLOCATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSVERSION",
+						"fullPath": [
+							"INCOTERMSVERSION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSLOCATION1",
+						"fullPath": [
+							"INCOTERMSLOCATION1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "INCOTERMSLOCATION2",
+						"fullPath": [
+							"INCOTERMSLOCATION2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISINTRASTATREPORTINGRELEVANT",
+						"fullPath": [
+							"ISINTRASTATREPORTINGRELEVANT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ISINTRASTATREPORTINGEXCLUDED",
+						"fullPath": [
+							"ISINTRASTATREPORTINGEXCLUDED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRICINGDOCUMENT",
+						"fullPath": [
+							"PRICINGDOCUMENT"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PRICINGPROCEDURE",
+						"fullPath": [
+							"PRICINGPROCEDURE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VALIDITYSTARTDATE",
+						"fullPath": [
+							"VALIDITYSTARTDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "VALIDITYENDDATE",
+						"fullPath": [
+							"VALIDITYENDDATE"
+						],
+						"type": "null"
+					},
+					{
+						"key": "EXCHANGERATE",
+						"fullPath": [
+							"EXCHANGERATE"
+						],
+						"type": "double"
+					},
+					{
+						"key": "EXCHANGERATEISFIXED",
+						"fullPath": [
+							"EXCHANGERATEISFIXED"
+						],
+						"type": "string"
+					},
+					{
+						"key": "LASTCHANGEDATETIME",
+						"fullPath": [
+							"LASTCHANGEDATETIME"
+						],
+						"type": "double"
+					},
+					{
+						"key": "TAXRETURNCOUNTRY",
+						"fullPath": [
+							"TAXRETURNCOUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "VATREGISTRATIONCOUNTRY",
+						"fullPath": [
+							"VATREGISTRATIONCOUNTRY"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURGREASONFORDOCCANCELLATION",
+						"fullPath": [
+							"PURGREASONFORDOCCANCELLATION"
+						],
+						"type": "string"
+					},
+					{
+						"key": "PURGRELEASETIMETOTALAMOUNT",
+						"fullPath": [
+							"PURGRELEASETIMETOTALAMOUNT"
+						],
+						"type": "double"
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string"
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int"
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string"
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string"
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "long"
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_po_header/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_po_header/2024/08/05/05/caf0de87-cf12-360c-a9ad-098bf58cf613-2024-08-05T05:11:34/1030063926-2024-08-05T05:11:33",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "purchaseorder",
+						"fullPath": [
+							"purchaseorder"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseordertype",
+						"fullPath": [
+							"purchaseordertype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseordersubtype",
+						"fullPath": [
+							"purchaseordersubtype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingdocumentorigin",
+						"fullPath": [
+							"purchasingdocumentorigin"
+						],
+						"type": "string"
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string"
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchaseorderdate",
+						"fullPath": [
+							"purchaseorderdate"
+						],
+						"type": "string"
+					},
+					{
+						"key": "language",
+						"fullPath": [
+							"language"
+						],
+						"type": "string"
+					},
+					{
+						"key": "correspncexternalreference",
+						"fullPath": [
+							"correspncexternalreference"
+						],
+						"type": "string"
+					},
+					{
+						"key": "correspncinternalreference",
+						"fullPath": [
+							"correspncinternalreference"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingdocumentdeletioncode",
+						"fullPath": [
+							"purchasingdocumentdeletioncode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "releaseisnotcompleted",
+						"fullPath": [
+							"releaseisnotcompleted"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingcompletenessstatus",
+						"fullPath": [
+							"purchasingcompletenessstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingprocessingstatus",
+						"fullPath": [
+							"purchasingprocessingstatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purgreleasesequencestatus",
+						"fullPath": [
+							"purgreleasesequencestatus"
+						],
+						"type": "string"
+					},
+					{
+						"key": "releasecode",
+						"fullPath": [
+							"releasecode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "companycode",
+						"fullPath": [
+							"companycode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasingorganization",
+						"fullPath": [
+							"purchasingorganization"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purchasinggroup",
+						"fullPath": [
+							"purchasinggroup"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "manualsupplieraddressid",
+						"fullPath": [
+							"manualsupplieraddressid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierrespsalespersonname",
+						"fullPath": [
+							"supplierrespsalespersonname"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierphonenumber",
+						"fullPath": [
+							"supplierphonenumber"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplyingsupplier",
+						"fullPath": [
+							"supplyingsupplier"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplyingplant",
+						"fullPath": [
+							"supplyingplant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "invoicingparty",
+						"fullPath": [
+							"invoicingparty"
+						],
+						"type": "string"
+					},
+					{
+						"key": "customer",
+						"fullPath": [
+							"customer"
+						],
+						"type": "string"
+					},
+					{
+						"key": "supplierquotationexternalid",
+						"fullPath": [
+							"supplierquotationexternalid"
+						],
+						"type": "string"
+					},
+					{
+						"key": "paymentterms",
+						"fullPath": [
+							"paymentterms"
+						],
+						"type": "string"
+					},
+					{
+						"key": "cashdiscount1days",
+						"fullPath": [
+							"cashdiscount1days"
+						],
+						"type": "int"
+					},
+					{
+						"key": "cashdiscount2days",
+						"fullPath": [
+							"cashdiscount2days"
+						],
+						"type": "int"
+					},
+					{
+						"key": "netpaymentdays",
+						"fullPath": [
+							"netpaymentdays"
+						],
+						"type": "int"
+					},
+					{
+						"key": "cashdiscount1percent",
+						"fullPath": [
+							"cashdiscount1percent"
+						],
+						"type": "double"
+					},
+					{
+						"key": "cashdiscount2percent",
+						"fullPath": [
+							"cashdiscount2percent"
+						],
+						"type": "double"
+					},
+					{
+						"key": "downpaymenttype",
+						"fullPath": [
+							"downpaymenttype"
+						],
+						"type": "string"
+					},
+					{
+						"key": "downpaymentpercentageoftotamt",
+						"fullPath": [
+							"downpaymentpercentageoftotamt"
+						],
+						"type": "double"
+					},
+					{
+						"key": "downpaymentamount",
+						"fullPath": [
+							"downpaymentamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "downpaymentduedate",
+						"fullPath": [
+							"downpaymentduedate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "incotermsclassification",
+						"fullPath": [
+							"incotermsclassification"
+						],
+						"type": "string"
+					},
+					{
+						"key": "incotermstransferlocation",
+						"fullPath": [
+							"incotermstransferlocation"
+						],
+						"type": "string"
+					},
+					{
+						"key": "incotermsversion",
+						"fullPath": [
+							"incotermsversion"
+						],
+						"type": "string"
+					},
+					{
+						"key": "incotermslocation1",
+						"fullPath": [
+							"incotermslocation1"
+						],
+						"type": "string"
+					},
+					{
+						"key": "incotermslocation2",
+						"fullPath": [
+							"incotermslocation2"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isintrastatreportingrelevant",
+						"fullPath": [
+							"isintrastatreportingrelevant"
+						],
+						"type": "string"
+					},
+					{
+						"key": "isintrastatreportingexcluded",
+						"fullPath": [
+							"isintrastatreportingexcluded"
+						],
+						"type": "string"
+					},
+					{
+						"key": "pricingdocument",
+						"fullPath": [
+							"pricingdocument"
+						],
+						"type": "string"
+					},
+					{
+						"key": "pricingprocedure",
+						"fullPath": [
+							"pricingprocedure"
+						],
+						"type": "string"
+					},
+					{
+						"key": "documentcurrency",
+						"fullPath": [
+							"documentcurrency"
+						],
+						"type": "string"
+					},
+					{
+						"key": "validitystartdate",
+						"fullPath": [
+							"validitystartdate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "validityenddate",
+						"fullPath": [
+							"validityenddate"
+						],
+						"type": "null"
+					},
+					{
+						"key": "exchangerate",
+						"fullPath": [
+							"exchangerate"
+						],
+						"type": "double"
+					},
+					{
+						"key": "exchangerateisfixed",
+						"fullPath": [
+							"exchangerateisfixed"
+						],
+						"type": "string"
+					},
+					{
+						"key": "lastchangedatetime",
+						"fullPath": [
+							"lastchangedatetime"
+						],
+						"type": "double"
+					},
+					{
+						"key": "taxreturncountry",
+						"fullPath": [
+							"taxreturncountry"
+						],
+						"type": "string"
+					},
+					{
+						"key": "vatregistrationcountry",
+						"fullPath": [
+							"vatregistrationcountry"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purgreasonfordoccancellation",
+						"fullPath": [
+							"purgreasonfordoccancellation"
+						],
+						"type": "string"
+					},
+					{
+						"key": "purgreleasetimetotalamount",
+						"fullPath": [
+							"purgreleasetimetotalamount"
+						],
+						"type": "double"
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string"
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int"
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"inferSchemaChanged": true
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}
