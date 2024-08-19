@@ -14,13 +14,10 @@ This Guidance demonstrates how to combine and consolidate SAP and non-SAP data f
 6. [Run Athena Queries to View Data](#run-athena-queries-to-view-data)
 7. [Next Steps](#next-steps)
 8. [Cleanup](#cleanup)
-
-***Optional***
-
-8. [FAQ, known issues, additional considerations, and limitations](#faq-known-issues-additional-considerations-and-limitations)
-9. [Revisions](#revisions)
-10. [Notices](#notices)
-11. [Authors](#authors)
+9. [FAQ, known issues, additional considerations, and limitations](#faq-known-issues-additional-considerations-and-limitations)
+10. [Revisions](#revisions)
+11. [Notices](#notices)
+12. [Authors](#authors)
 
 ## Overview 
 
