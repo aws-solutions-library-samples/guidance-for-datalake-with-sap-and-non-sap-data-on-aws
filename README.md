@@ -2,6 +2,8 @@
 
 This Guidance demonstrates how to combine and consolidate SAP and non-SAP data from disparate sources using AWS Datalakes and Machine Learning services allowing customers to unlock hidden business insights.
 
+You can find details about the architecture in the [Architecture Overview page](ArchitectureOverview.md)
+
 
 ## Table of Contents
 
@@ -14,7 +16,7 @@ This Guidance demonstrates how to combine and consolidate SAP and non-SAP data f
 6. [Run Athena Queries to View Data](#run-athena-queries-to-view-data)
 7. [Next Steps](#next-steps)
 8. [Cleanup](#cleanup)
-9. [FAQ, known issues, additional considerations, and limitations](#faq-known-issues-additional-considerations-and-limitations)
+8. [FAQ, known issues, additional considerations, and limitations](#faq-known-issues-additional-considerations-and-limitations)
 10. [Revisions](#revisions)
 11. [Notices](#notices)
 12. [Authors](#authors)
@@ -32,6 +34,26 @@ This Guidance demonstrates how to combine and consolidate SAP and non-SAP data f
 5. **Data Cataloging and Governance**: The data is cataloged in the AWS Glue Data Catalog, and an Amazon Data Zone provides a business-level catalog. Fine-grained access control can be implemented using AWS Lake Formation.
 6. **Orchestration and Monitoring**: Data pipelines are centrally orchestrated and monitored using AWS Step Functions.
 ![alt text](assets/images/image1.jpeg)
+
+### Cost
+_You are responsible for the cost of the AWS services used while running this Guidance. As of September 2024, the cost for running this Guidance with the default settings in the US East (N. Virginia)) is approximately $600 per month (Assumption: 1tb storage, delta flows run every 5 minutes, full data flows run daily. Each flow transfers 2mb of data each time. 100 Athena queries are executed per day)._
+
+_We recommend creating a [Budget](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html) through [AWS Cost Explorer](https://aws.amazon.com/aws-cost-management/aws-cost-explorer/) to help manage costs. Prices are subject to change. For full details, refer to the pricing webpage for each AWS service used in this Guidance._
+
+#### Cost Table
+
+The following table provides a sample cost breakdown for deploying this Guidance with the default parameters in the US East (N. Virginia) Region for one month.
+
+| AWS service  | Dimensions | Cost [USD] |
+| ----------- | ------------ | ------------ |
+| Amazon AppFlow | Price per flow run | $0.001 month |
+| Amazon AppFlow | Data processing price for flows whose destinations are integrated with AWS PrivateLink  | $0.02 per GB month |
+| AWS Glue Interactive Sessions | Duration for provisioned interactive sessions | $0.04 per minute per 5 Data Processing Units, per month |
+| AWS Glue Data Catalog | Storage free for the first million objects stored | $1.00 per 100,000 objects stored above 1M, per month |
+| Amazon Simple Storage Service | GB per month |  $0,023 per GB/month |
+| Amazon Simple Storage Service | Put requests per month |  $0,000005 per GB/month |
+| Amazon Simple Storage Service | Get requests per month |  $0,0000004 per GB/month |
+| Amazon Athena  | Queries per month x GB  |  $5 per TB per Query / month |
 
 
 ## Prerequisites 
@@ -244,8 +266,8 @@ By clicking on it we can see details about it:
 
 #### a. The Lambda function folder includes the following files:
 
-1. [**config_glue_table.json**](/deployment/Lambda/config_glue_table.json): Configuration file including OData service name, glue table, database and target S3 bucket to save enriched/currated data. **Note**: You need to modify this file with the details of your environment. 
-2. [**Lambdalayer_GlueTablecreationJob.zip**](/deployment/Lambda/Lambdalayer_GlueTablecreationJob.zip): Sample package for Lambda layer, including including pyodata and other python libraries required for the lambda function to work. This can be used for testing and should be reviewed before running in a productive enviroment.
+1. [**config_glue_table.json**](/deployment/Lambda/config_glue_table.json): Configuration file including OData service name, glue table, database and target S3 bucket to save enriched/curated data. **Note**: You need to modify this file with the details of your environment. 
+2. [**Lambdalayer_GlueTablecreationJob.zip**](/deployment/Lambda/Lambdalayer_GlueTablecreationJob.zip): Sample package for Lambda layer, including pyodata and requests libraries required for the lambda function to work. This can be used for testing and should be reviewed before running in a productive enviroment.
 3. [**gluetablecreate_lambdafunction.py**](/deployment/Lambda/gluetablecreate_lambdafunction.py): Python code of Lambda Function for manual deployment (this file is also included in the Zip file below).
 4. [**gluetablecreate_lambdafunction.zip**](/deployment/Lambda/gluetablecreate_lambdafunction.zip): Zip file of Lambda python code above. Use to upload to S3 when deploy by CloudFormation Template
 5. [**cf_lambda_gluetablecreate.yaml**](/deployment/Lambda/cf_lambda_gluetablecreate.yaml): Cloud Formation template to automate the creation of Lambda function, Lambda layer, IAM role, Secret Manager.
@@ -317,6 +339,7 @@ Download the sql scripts under Data Catalog:
 - Curated Supplier Invoices Table [curated_supplier_invoice.sql](/deployment/Data%20Catalog/curated_supplier_invoice.sql)
 - PO Analysis View [purchase_order_analysis.sql](/deployment/Data%20Catalog/purchase_order_analysis.sql)
 - PO and Invoice Analysis View [purchase_order_invoice_analysis.sql](/deployment/Data%20Catalog/purchase_order_invoice_analysis.sql)
+- Supplier Invoice Analysis View [supplier_invoice_analysis.sql](/deployment/Data%20Catalog/supplier_invoice_analysis.sql)
 
 Open each script and update the parameters <your_curated_s3_bucket> and <your_curated_glue_db> with the S3 bucket and Glue DB created previously. 
 

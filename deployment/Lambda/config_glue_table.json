@@ -4,185 +4,185 @@
       "service": "ZCDS_PO_HEADER_SRV",
       "table_name": "cds_po_header",
       "database_name": "afsaplakeenriched",
-      "s3_path": "s3://<your_bucket>/cds_po_header/"
+      "s3_path": "s3://<<your_enriched_s3_bucket>>/cds_po_header/"
 
     },
     {
       "service": "ZCDS_PO_ITEM_SRV",
       "table_name": "cds_po_item",
       "database_name": "afsaplakeenriched",
-      "s3_path": "s3://<your_bucket>/cds_po_item/"
+      "s3_path": "s3://<your_enriched_s3_bucket>/cds_po_item/"
 
     },
     {
       "service": "ZCDS_PO_SCH_LINE_SRV",
       "table_name": "cds_po_schedule_line",
       "database_name": "afsaplakeenriched",
-      "s3_path": "s3://<your_bucket>/cds_po_schedule_line/"
+      "s3_path": "s3://<your_enriched_s3_bucket>/cds_po_schedule_line/"
 
     },
     {
       "service": "ZCDS_SUPPLIER_INVOICE_SRV",
       "table_name": "cds_supplier_invoice",
       "database_name": "afsaplakeenriched",
-      "s3_path": "s3://<your_bucket>/cds_supplier_invoice/"
+      "s3_path": "s3://<your_enriched_s3_bucket>/cds_supplier_invoice/"
 
     },
     {
       "service": "ZCDS_PUR_ORG_SRV",
       "table_name": "cds_purchasing_organisation",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchasing_organisation/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchasing_organisation/"
     },
     {
       "service": "ZCDS_ADDRESS_SRV",
       "table_name": "cds_address",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_address/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_address/"
     },
     {
       "service": "ZCDS_COMP_CODE_SRV",
       "table_name": "cds_company_code",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_company_code/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_company_code/"
     },
     {
       "service": "ZCDS_COUNTRY_ATTR_SRV",
       "table_name": "cds_country_attr",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_country_attr/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_country_attr/"
     },
     {
       "service": "ZCDS_COUNTRY_TEXT_SRV",
       "table_name": "cds_country_text",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_country_text/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_country_text/"
     },
     {
       "service": "ZCDS_CURRENCY_ATTR_SRV",
       "table_name": "cds_currency_attr",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_currency_attr/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_currency_attr/"
     },
     {
       "service": "ZCDS_CURRENCY_TEXT_SRV",
       "table_name": "cds_currency_text",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_currency_text/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_currency_text/"
     },
     {
       "service": "ZCDS_SUPPLIER_SRV",
       "table_name": "cds_supplier",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_supplier/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_supplier/"
     },
     {
       "service": "ZCDS_MATERIAL_ATTR_SRV",
       "table_name": "cds_material_attr",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_material_attr/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_material_attr/"
     },
     {
       "service": "ZCDS_MATERIAL_TEXT_SRV",
       "table_name": "cds_material_text",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_material_text/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_material_text/"
     },
     {
       "service": "ZCDS_PLANT_SRV",
       "table_name": "cds_plant",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_plant/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_plant/"
     },
     {
       "service": "ZCDS_MATERIAL_GROUP_SRV",
       "table_name": "cds_material_group",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_material_group/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_material_group/"
     },
     {
       "service": "ZCDS_CUSTOMER_SRV",
       "table_name": "cds_customer",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_customer/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_customer/"
     },
     {
       "service": "ZCDS_INCO_CLASS_SRV",
       "table_name": "cds_incoterms_classification",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_incoterms_classification/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_incoterms_classification/"
     },
     {
       "service": "ZCDS_INCO_VERS_SRV",
       "table_name": "cds_incoterms_version",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_incoterms_version/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_incoterms_version/"
     },
     {
       "service": "ZCDS_PAYM_TERMS_SRV",
       "table_name": "cds_payment_terms",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_payment_terms/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_payment_terms/"
     },
     {
       "service": "ZCDS_PUR_DOC_CAT_SRV",
       "table_name": "cds_purchasing_document_category",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchasing_document_category/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchasing_document_category/"
     },
     {
       "service": "ZCDS_PUR_DOC_ORIG_SRV",
       "table_name": "cds_purchasing_document_origin",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchasing_document_origin/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchasing_document_origin/"
     },
     {
       "service": "ZCDS_PUR_ORD_TYPE_SRV",
       "table_name": "cds_purchase_order_type",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchase_order_type/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchase_order_type/"
     },
     {
       "service": "ZCDS_PUR_GROUP_SRV",
       "table_name": "cds_purchasing_group",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchasing_group/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchasing_group/"
     },
     {
       "service": "ZCDS_PUR_ORD_SUBTYPE_SRV",
       "table_name": "cds_purchase_order_subtype",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchase_order_subtype/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchase_order_subtype/"
     },
     {
       "service": "ZCDS_PUR_PROC_STATUS_SRV",
       "table_name": "cds_purchasing_processing_status",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_purchasing_processing_status/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_purchasing_processing_status/"
     },
     {
       "service": "ZCDS_STOR_LOC_SRV",
       "table_name": "cds_storage_location",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_storage_location/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_storage_location/"
     },
     {
       "service": "ZCDS_UOM_ATTR_SRV",
       "table_name": "cds_uom_attr",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_uom_attr/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_uom_attr/"
     },
     {
       "service": "ZCDS_UOM_TEXT_SRV",
       "table_name": "cds_uom_text",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_uom_text/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_uom_text/"
     },
     {
       "service": "ZCDS_INVOICE_STATUS_SRV",
       "table_name": "cds_invoice_status",
       "database_name": "afsaplakecurated",
-      "s3_path": "s3://<your_bucket>/cds_invoice_status/"
+      "s3_path": "s3://<your_curated_s3_bucket>/cds_invoice_status/"
     }
 
   ]
