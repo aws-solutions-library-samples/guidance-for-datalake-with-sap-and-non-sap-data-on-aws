@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: |
-  Automatic S3 Bucket and GlueDBs
+  Automatic S3 Bucket and GlueDBs (SO9095)
 
 Parameters:
   GlueDatabaseForEnriched:
