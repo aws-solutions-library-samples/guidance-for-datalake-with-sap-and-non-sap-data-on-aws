@@ -90,7 +90,7 @@ For master data objects, in the sample code the Enriched layer is not utilised. 
 
 The Curated Layer is the layer where data is stored for data consumption. Records deleted on the source are deleted physically. Any calculations (averages, time between dates, etc) or data manipulation (format changes, lookup from another table) can be stored in this layer, ready to be consumed. Data is updated in this layer using the -etoc and -rtoc AWS Glue jobs. Athena views are created on top of these tables for consumption from Quicksight or any other tools. 
 
-##Data Management
+### Data Management
 
 Data management takes care of the data propagation between the different data lake layers. [AWS Glue](https://aws.amazon.com/glue/) is the service that provides this functionality in this solution guidance and sample code. 
 The Glue Jobs provided are as follows. 
