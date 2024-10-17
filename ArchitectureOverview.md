@@ -99,9 +99,9 @@ The Glue Jobs provided are as follows.
 
 -rtoe (Raw to Enriched) jobs: Reads the data from the Raw Bucket Raw folder and updates into the enriched layer (upsert). Data is inserted using SQL commands using Apache Iceberg tables, which ultimately store the data in Amazon S3. These jobs take care of the upserts, deduplicating extracted data and updating records that already exist and inserting new records. 
 
--etoc (Enriched to Consumption) jobs: Reads data from the enriched layer and updates into the consumption layer. Transformations, calculations and filtering can be performed in these jobs. Deleted records are also physically deleted from the target. 
+-etoc (Enriched to Curated) jobs: Reads data from the enriched layer and updates into the Curated layer. Transformations, calculations and filtering can be performed in these jobs. Deleted records are also physically deleted from the target. 
 
--rtoc (Raw to Enriched) jobs: Reads data from the Raw folder and updates in the consumption layer (similar to -etoc jobs). These jobs are used for master data objects, where the enriched layer is not necessary. 
+-rtoc (Raw to Curated) jobs: Reads data from the Raw folder and updates in the Curated layer (similar to -etoc jobs). These jobs are used for master data objects, where the enriched layer is not necessary. 
 
 
 
