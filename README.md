@@ -102,7 +102,7 @@ The Data Lake Solution Guidance Sample utilises SAP Standard Delta Enabled CDS v
 
 ### 3. Create the SAP Connection in Amazon AppFlow
 
-Next we need to define the SAP system in Amazon AppFlow as a “Connection”
+Next we need to define the SAP system in Amazon AppFlow as a “Connection”.
 
 1. Go to Amazon AppFlow Service in the AWS console and go to Connections:
 
