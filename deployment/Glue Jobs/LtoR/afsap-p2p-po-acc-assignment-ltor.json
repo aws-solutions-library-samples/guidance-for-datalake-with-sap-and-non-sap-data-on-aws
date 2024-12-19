@@ -1,0 +1,1239 @@
+{
+	"jobConfig": {
+		"name": "afsap-p2p-po-acc-assignment-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"jobRunQueuingEnabled": false,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-p2p-po-acc-assignment-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-08-30T10:23:54.190Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_po_acc_assignment/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": "LOG",
+				"database": "analytics-fabric-lake",
+				"table": "stg_poheader"
+			},
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_po_acc_assignment/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_po_acc_assignment/2024/08/29/13/0a26272a-7bd1-3182-8397-9ecd42617c19-2024-08-29T13:00:48/726337347-2024-08-29T13:00:49",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "purchaseorder",
+						"fullPath": [
+							"purchaseorder"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchaseorderitem",
+						"fullPath": [
+							"purchaseorderitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountassignmentnumber",
+						"fullPath": [
+							"accountassignmentnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costcenter",
+						"fullPath": [
+							"costcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "masterfixedasset",
+						"fullPath": [
+							"masterfixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "projectnetwork",
+						"fullPath": [
+							"projectnetwork"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "quantity",
+						"fullPath": [
+							"quantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchaseorderquantityunit",
+						"fullPath": [
+							"purchaseorderquantityunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "multipleacctassgmtdistrpercent",
+						"fullPath": [
+							"multipleacctassgmtdistrpercent"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purgdocnetamount",
+						"fullPath": [
+							"purgdocnetamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "documentcurrency",
+						"fullPath": [
+							"documentcurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isdeleted",
+						"fullPath": [
+							"isdeleted"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "glaccount",
+						"fullPath": [
+							"glaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businessarea",
+						"fullPath": [
+							"businessarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorder",
+						"fullPath": [
+							"salesorder"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorderitem",
+						"fullPath": [
+							"salesorderitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorderscheduleline",
+						"fullPath": [
+							"salesorderscheduleline"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedasset",
+						"fullPath": [
+							"fixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderid",
+						"fullPath": [
+							"orderid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unloadingpointname",
+						"fullPath": [
+							"unloadingpointname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingarea",
+						"fullPath": [
+							"controllingarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costobject",
+						"fullPath": [
+							"costobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitabilitysegment",
+						"fullPath": [
+							"profitabilitysegment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitabilitysegment_2",
+						"fullPath": [
+							"profitabilitysegment_2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitcenter",
+						"fullPath": [
+							"profitcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "wbselementinternalid",
+						"fullPath": [
+							"wbselementinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "projectnetworkinternalid",
+						"fullPath": [
+							"projectnetworkinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "commitmentitem",
+						"fullPath": [
+							"commitmentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fundscenter",
+						"fullPath": [
+							"fundscenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fund",
+						"fullPath": [
+							"fund"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "functionalarea",
+						"fullPath": [
+							"functionalarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "goodsrecipientname",
+						"fullPath": [
+							"goodsrecipientname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isfinallyinvoiced",
+						"fullPath": [
+							"isfinallyinvoiced"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestateobject",
+						"fullPath": [
+							"realestateobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "networkactivityinternalid",
+						"fullPath": [
+							"networkactivityinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partneraccountnumber",
+						"fullPath": [
+							"partneraccountnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventurerecoverycode",
+						"fullPath": [
+							"jointventurerecoverycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "settlementreferencedate",
+						"fullPath": [
+							"settlementreferencedate"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderinternalid",
+						"fullPath": [
+							"orderinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderintbillofoperationsitem",
+						"fullPath": [
+							"orderintbillofoperationsitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxcode",
+						"fullPath": [
+							"taxcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxjurisdiction",
+						"fullPath": [
+							"taxjurisdiction"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nondeductibleinputtaxamount",
+						"fullPath": [
+							"nondeductibleinputtaxamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costctractivitytype",
+						"fullPath": [
+							"costctractivitytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businessprocess",
+						"fullPath": [
+							"businessprocess"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grantid",
+						"fullPath": [
+							"grantid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "budgetperiod",
+						"fullPath": [
+							"budgetperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "earmarkedfundsdocument",
+						"fullPath": [
+							"earmarkedfundsdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "earmarkedfundsdocumentitem",
+						"fullPath": [
+							"earmarkedfundsdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicedocumenttype",
+						"fullPath": [
+							"servicedocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicedocument",
+						"fullPath": [
+							"servicedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicedocumentitem",
+						"fullPath": [
+							"servicedocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchaseordertype",
+						"fullPath": [
+							"purchaseordertype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchasingorganization",
+						"fullPath": [
+							"purchasingorganization"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchasinggroup",
+						"fullPath": [
+							"purchasinggroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plant",
+						"fullPath": [
+							"plant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountassignmentcategory",
+						"fullPath": [
+							"accountassignmentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "PURCHASEORDER",
+						"fullPath": [
+							"PURCHASEORDER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERITEM",
+						"fullPath": [
+							"PURCHASEORDERITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTASSIGNMENTNUMBER",
+						"fullPath": [
+							"ACCOUNTASSIGNMENTNUMBER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COSTCENTER",
+						"fullPath": [
+							"COSTCENTER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "MASTERFIXEDASSET",
+						"fullPath": [
+							"MASTERFIXEDASSET"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROJECTNETWORK",
+						"fullPath": [
+							"PROJECTNETWORK"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "QUANTITY",
+						"fullPath": [
+							"QUANTITY"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERQUANTITYUNIT",
+						"fullPath": [
+							"PURCHASEORDERQUANTITYUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "MULTIPLEACCTASSGMTDISTRPERCENT",
+						"fullPath": [
+							"MULTIPLEACCTASSGMTDISTRPERCENT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURGDOCNETAMOUNT",
+						"fullPath": [
+							"PURGDOCNETAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DOCUMENTCURRENCY",
+						"fullPath": [
+							"DOCUMENTCURRENCY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ISDELETED",
+						"fullPath": [
+							"ISDELETED"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "GLACCOUNT",
+						"fullPath": [
+							"GLACCOUNT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BUSINESSAREA",
+						"fullPath": [
+							"BUSINESSAREA"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESORDER",
+						"fullPath": [
+							"SALESORDER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESORDERITEM",
+						"fullPath": [
+							"SALESORDERITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESORDERSCHEDULELINE",
+						"fullPath": [
+							"SALESORDERSCHEDULELINE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FIXEDASSET",
+						"fullPath": [
+							"FIXEDASSET"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORDERID",
+						"fullPath": [
+							"ORDERID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "UNLOADINGPOINTNAME",
+						"fullPath": [
+							"UNLOADINGPOINTNAME"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CONTROLLINGAREA",
+						"fullPath": [
+							"CONTROLLINGAREA"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COSTOBJECT",
+						"fullPath": [
+							"COSTOBJECT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROFITABILITYSEGMENT",
+						"fullPath": [
+							"PROFITABILITYSEGMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROFITABILITYSEGMENT_2",
+						"fullPath": [
+							"PROFITABILITYSEGMENT_2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROFITCENTER",
+						"fullPath": [
+							"PROFITCENTER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "WBSELEMENTINTERNALID",
+						"fullPath": [
+							"WBSELEMENTINTERNALID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROJECTNETWORKINTERNALID",
+						"fullPath": [
+							"PROJECTNETWORKINTERNALID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COMMITMENTITEM",
+						"fullPath": [
+							"COMMITMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FUNDSCENTER",
+						"fullPath": [
+							"FUNDSCENTER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FUND",
+						"fullPath": [
+							"FUND"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FUNCTIONALAREA",
+						"fullPath": [
+							"FUNCTIONALAREA"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "GOODSRECIPIENTNAME",
+						"fullPath": [
+							"GOODSRECIPIENTNAME"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ISFINALLYINVOICED",
+						"fullPath": [
+							"ISFINALLYINVOICED"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "REALESTATEOBJECT",
+						"fullPath": [
+							"REALESTATEOBJECT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "NETWORKACTIVITYINTERNALID",
+						"fullPath": [
+							"NETWORKACTIVITYINTERNALID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PARTNERACCOUNTNUMBER",
+						"fullPath": [
+							"PARTNERACCOUNTNUMBER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "JOINTVENTURERECOVERYCODE",
+						"fullPath": [
+							"JOINTVENTURERECOVERYCODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SETTLEMENTREFERENCEDATE",
+						"fullPath": [
+							"SETTLEMENTREFERENCEDATE"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORDERINTERNALID",
+						"fullPath": [
+							"ORDERINTERNALID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORDERINTBILLOFOPERATIONSITEM",
+						"fullPath": [
+							"ORDERINTBILLOFOPERATIONSITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "TAXCODE",
+						"fullPath": [
+							"TAXCODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "TAXJURISDICTION",
+						"fullPath": [
+							"TAXJURISDICTION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "NONDEDUCTIBLEINPUTTAXAMOUNT",
+						"fullPath": [
+							"NONDEDUCTIBLEINPUTTAXAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COSTCTRACTIVITYTYPE",
+						"fullPath": [
+							"COSTCTRACTIVITYTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BUSINESSPROCESS",
+						"fullPath": [
+							"BUSINESSPROCESS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "GRANTID",
+						"fullPath": [
+							"GRANTID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BUDGETPERIOD",
+						"fullPath": [
+							"BUDGETPERIOD"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "EARMARKEDFUNDSDOCUMENT",
+						"fullPath": [
+							"EARMARKEDFUNDSDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "EARMARKEDFUNDSDOCUMENTITEM",
+						"fullPath": [
+							"EARMARKEDFUNDSDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SERVICEDOCUMENTTYPE",
+						"fullPath": [
+							"SERVICEDOCUMENTTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SERVICEDOCUMENT",
+						"fullPath": [
+							"SERVICEDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SERVICEDOCUMENTITEM",
+						"fullPath": [
+							"SERVICEDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASEORDERTYPE",
+						"fullPath": [
+							"PURCHASEORDERTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASINGORGANIZATION",
+						"fullPath": [
+							"PURCHASINGORGANIZATION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PURCHASINGGROUP",
+						"fullPath": [
+							"PURCHASINGGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PLANT",
+						"fullPath": [
+							"PLANT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTASSIGNMENTCATEGORY",
+						"fullPath": [
+							"ACCOUNTASSIGNMENTCATEGORY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

@@ -1,0 +1,3073 @@
+{
+	"jobConfig": {
+		"name": "afsap-o2c-delivery-header-etoc",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"jobRunQueuingEnabled": false,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-o2c-delivery-header-etoc.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [
+			{
+				"key": "--conf",
+				"value": "spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.AwsDataCatalog.warehouse=s3://<your_s3_curated_bucket>/ --conf spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.iceberg.handle-timestamp-without-timezone=true",
+				"existing": false
+			}
+		],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-12-16T20:43:35.288Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-disable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1720195476327": {
+			"nodeId": "node-1720195476327",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1721075170335"
+			],
+			"name": "MergeToTarget",
+			"generatedNodeName": "MergeToTarget_node1720195476327",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1721075170335",
+					"alias": "sdf"
+				}
+			],
+			"outputSchemas": [
+				[]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "MERGE INTO AwsDataCatalog.<your_curated_glue_catalog_db>.cds_outbound_delivery_header t\nUSING (SELECT * FROM sdf) s on s.deliverydocument = t.deliverydocument\nWHEN MATCHED AND s.odq_changemode = 'D' THEN delete\nWHEN MATCHED AND s.odq_changemode <> 'D' THEN UPDATE SET * \nWHEN NOT MATCHED AND s.odq_changemode <> 'D' THEN INSERT *",
+			"codeGenVersion": 2
+		},
+		"node-1721075170335": {
+			"nodeId": "node-1721075170335",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722906721636"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1721075170335",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "deliverydocument",
+					"fromPath": [
+						"deliverydocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sddocumentcategory",
+					"fromPath": [
+						"sddocumentcategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliverydocumenttype",
+					"fromPath": [
+						"deliverydocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "createdbyuser",
+					"fromPath": [
+						"createdbyuser"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creationdate",
+					"fromPath": [
+						"creationdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creationtime",
+					"fromPath": [
+						"creationtime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "lastchangedbyuser",
+					"fromPath": [
+						"lastchangedbyuser"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "lastchangedate",
+					"fromPath": [
+						"lastchangedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shippingpoint",
+					"fromPath": [
+						"shippingpoint"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesorganization",
+					"fromPath": [
+						"salesorganization"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesoffice",
+					"fromPath": [
+						"salesoffice"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "completedeliveryisdefined",
+					"fromPath": [
+						"completedeliveryisdefined"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ordercombinationisallowed",
+					"fromPath": [
+						"ordercombinationisallowed"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliverypriority",
+					"fromPath": [
+						"deliverypriority"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliveryblockreason",
+					"fromPath": [
+						"deliveryblockreason"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplier",
+					"fromPath": [
+						"supplier"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliverydocumentbysupplier",
+					"fromPath": [
+						"deliverydocumentbysupplier"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliveryisinplant",
+					"fromPath": [
+						"deliveryisinplant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "receivingplant",
+					"fromPath": [
+						"receivingplant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "warehouse",
+					"fromPath": [
+						"warehouse"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isexportdelivery",
+					"fromPath": [
+						"isexportdelivery"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "orderid",
+					"fromPath": [
+						"orderid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headergrossweight",
+					"fromPath": [
+						"headergrossweight"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headernetweight",
+					"fromPath": [
+						"headernetweight"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headerweightunit",
+					"fromPath": [
+						"headerweightunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headervolume",
+					"fromPath": [
+						"headervolume"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headervolumeunit",
+					"fromPath": [
+						"headervolumeunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isdeliveryforsinglewarehouse",
+					"fromPath": [
+						"isdeliveryforsinglewarehouse"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "goodsissueorreceiptslipnumber",
+					"fromPath": [
+						"goodsissueorreceiptslipnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "warehousegate",
+					"fromPath": [
+						"warehousegate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "warehousestagingarea",
+					"fromPath": [
+						"warehousestagingarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "meansoftransportrefmaterial",
+					"fromPath": [
+						"meansoftransportrefmaterial"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "specialprocessingcode",
+					"fromPath": [
+						"specialprocessingcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "externalidentificationtype",
+					"fromPath": [
+						"externalidentificationtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliveryversion",
+					"fromPath": [
+						"deliveryversion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pickeditemslocation",
+					"fromPath": [
+						"pickeditemslocation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "documentdate",
+					"fromPath": [
+						"documentdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pickingdate",
+					"fromPath": [
+						"pickingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pickingtime",
+					"fromPath": [
+						"pickingtime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalnumberofpackage",
+					"fromPath": [
+						"totalnumberofpackage"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadingpoint",
+					"fromPath": [
+						"loadingpoint"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadingdate",
+					"fromPath": [
+						"loadingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadingtime",
+					"fromPath": [
+						"loadingtime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "billoflading",
+					"fromPath": [
+						"billoflading"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "handlingunitinstock",
+					"fromPath": [
+						"handlingunitinstock"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shiptoparty",
+					"fromPath": [
+						"shiptoparty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shippingtype",
+					"fromPath": [
+						"shippingtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliverydate",
+					"fromPath": [
+						"deliverydate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliverytime",
+					"fromPath": [
+						"deliverytime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shippingcondition",
+					"fromPath": [
+						"shippingcondition"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shipmentblockreason",
+					"fromPath": [
+						"shipmentblockreason"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transportationplanningdate",
+					"fromPath": [
+						"transportationplanningdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transportationplanningtime",
+					"fromPath": [
+						"transportationplanningtime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "proposeddeliveryroute",
+					"fromPath": [
+						"proposeddeliveryroute"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "actualdeliveryroute",
+					"fromPath": [
+						"actualdeliveryroute"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "routeschedule",
+					"fromPath": [
+						"routeschedule"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plannedgoodsissuedate",
+					"fromPath": [
+						"plannedgoodsissuedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "goodsissuetime",
+					"fromPath": [
+						"goodsissuetime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "actualgoodsmovementdate",
+					"fromPath": [
+						"actualgoodsmovementdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "actualgoodsmovementtime",
+					"fromPath": [
+						"actualgoodsmovementtime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "incotermsclassification",
+					"fromPath": [
+						"incotermsclassification"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "incotermstransferlocation",
+					"fromPath": [
+						"incotermstransferlocation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "externaltransportsystem",
+					"fromPath": [
+						"externaltransportsystem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transportationgroup",
+					"fromPath": [
+						"transportationgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "meansoftransport",
+					"fromPath": [
+						"meansoftransport"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "meansoftransporttype",
+					"fromPath": [
+						"meansoftransporttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unloadingpointname",
+					"fromPath": [
+						"unloadingpointname"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "proofofdeliverydate",
+					"fromPath": [
+						"proofofdeliverydate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "confirmationtime",
+					"fromPath": [
+						"confirmationtime"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "factorycalendarbycustomer",
+					"fromPath": [
+						"factorycalendarbycustomer"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shippinglocationtimezone",
+					"fromPath": [
+						"shippinglocationtimezone"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "receivinglocationtimezone",
+					"fromPath": [
+						"receivinglocationtimezone"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intercompanybillingdate",
+					"fromPath": [
+						"intercompanybillingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "billingdocumentdate",
+					"fromPath": [
+						"billingdocumentdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headerbillingblockreason",
+					"fromPath": [
+						"headerbillingblockreason"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "internalfinancialdocument",
+					"fromPath": [
+						"internalfinancialdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "paymentguaranteeprocedure",
+					"fromPath": [
+						"paymentguaranteeprocedure"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "depreciationpercentage",
+					"fromPath": [
+						"depreciationpercentage"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nextshippingdate",
+					"fromPath": [
+						"nextshippingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customercreditaccount",
+					"fromPath": [
+						"customercreditaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centralcreditchktecherrsts",
+					"fromPath": [
+						"centralcreditchktecherrsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "releasedcreditamount",
+					"fromPath": [
+						"releasedcreditamount"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingareacurrency",
+					"fromPath": [
+						"controllingareacurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creditblockreleasedate",
+					"fromPath": [
+						"creditblockreleasedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "soldtoparty",
+					"fromPath": [
+						"soldtoparty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customergroup",
+					"fromPath": [
+						"customergroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesdistrict",
+					"fromPath": [
+						"salesdistrict"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transactioncurrency",
+					"fromPath": [
+						"transactioncurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "statisticscurrency",
+					"fromPath": [
+						"statisticscurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallintcobillingstatus",
+					"fromPath": [
+						"overallintcobillingstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallsdprocessstatus",
+					"fromPath": [
+						"overallsdprocessstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalblockstatus",
+					"fromPath": [
+						"totalblockstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overalldelivconfstatus",
+					"fromPath": [
+						"overalldelivconfstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transportationplanningstatus",
+					"fromPath": [
+						"transportationplanningstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallpickingconfstatus",
+					"fromPath": [
+						"overallpickingconfstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallpickingstatus",
+					"fromPath": [
+						"overallpickingstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallpackingstatus",
+					"fromPath": [
+						"overallpackingstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallwarehouseactivitystatus",
+					"fromPath": [
+						"overallwarehouseactivitystatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distrstatusbydecentralizedwrhs",
+					"fromPath": [
+						"distrstatusbydecentralizedwrhs"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallgoodsmovementstatus",
+					"fromPath": [
+						"overallgoodsmovementstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overalldelivreltdbillgstatus",
+					"fromPath": [
+						"overalldelivreltdbillgstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallproofofdeliverystatus",
+					"fromPath": [
+						"overallproofofdeliverystatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "hdrgeneralincompletionstatus",
+					"fromPath": [
+						"hdrgeneralincompletionstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headerdelivincompletionstatus",
+					"fromPath": [
+						"headerdelivincompletionstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headerpickgincompletionstatus",
+					"fromPath": [
+						"headerpickgincompletionstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headerpackingincompletionsts",
+					"fromPath": [
+						"headerpackingincompletionsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "hdrgoodsmvtincompletionstatus",
+					"fromPath": [
+						"hdrgoodsmvtincompletionstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "headerbillgincompletionstatus",
+					"fromPath": [
+						"headerbillgincompletionstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrlitmgeneralincompletionsts",
+					"fromPath": [
+						"ovrlitmgeneralincompletionsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrlitmpackingincompletionsts",
+					"fromPath": [
+						"ovrlitmpackingincompletionsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrlitmpickingincompletionsts",
+					"fromPath": [
+						"ovrlitmpickingincompletionsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrlitmdelivincompletionsts",
+					"fromPath": [
+						"ovrlitmdelivincompletionsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrlitmgdsmvtincompletionsts",
+					"fromPath": [
+						"ovrlitmgdsmvtincompletionsts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalcreditcheckstatus",
+					"fromPath": [
+						"totalcreditcheckstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "findoccreditcheckstatus",
+					"fromPath": [
+						"findoccreditcheckstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "paytauthsncreditchecksts",
+					"fromPath": [
+						"paytauthsncreditchecksts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centralcreditcheckstatus",
+					"fromPath": [
+						"centralcreditcheckstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "exprtinsurcreditcheckstatus",
+					"fromPath": [
+						"exprtinsurcreditcheckstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "maxdocvaluecreditcheckstatus",
+					"fromPath": [
+						"maxdocvaluecreditcheckstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "paymenttermcreditcheckstatus",
+					"fromPath": [
+						"paymenttermcreditcheckstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shippinggroupnumber",
+					"fromPath": [
+						"shippinggroupnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pricingdocument",
+					"fromPath": [
+						"pricingdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesorgforintcobilling",
+					"fromPath": [
+						"salesorgforintcobilling"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distrchnlforintcobilling",
+					"fromPath": [
+						"distrchnlforintcobilling"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "divisionforintcobilling",
+					"fromPath": [
+						"divisionforintcobilling"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intercompanybillingtype",
+					"fromPath": [
+						"intercompanybillingtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "factorycalendarforintcobilling",
+					"fromPath": [
+						"factorycalendarforintcobilling"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intercompanybillingcustomer",
+					"fromPath": [
+						"intercompanybillingcustomer"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deliverydocumentcondition",
+					"fromPath": [
+						"deliverydocumentcondition"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalnetamount",
+					"fromPath": [
+						"totalnetamount"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencedocumentnumber",
+					"fromPath": [
+						"referencedocumentnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "deletionindicator",
+					"fromPath": [
+						"deletionindicator"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallchmlcmplncstatus",
+					"fromPath": [
+						"overallchmlcmplncstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overalldangerousgoodsstatus",
+					"fromPath": [
+						"overalldangerousgoodsstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overallsafetydatasheetstatus",
+					"fromPath": [
+						"overallsafetydatasheetstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "overalltrdcmplncembargosts",
+					"fromPath": [
+						"overalltrdcmplncembargosts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrltrdcmplncsnctndlistchksts",
+					"fromPath": [
+						"ovrltrdcmplncsnctndlistchksts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ovrltrdcmplnclegalctrlchksts",
+					"fromPath": [
+						"ovrltrdcmplnclegalctrlchksts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "iscorrectiondelivery",
+					"fromPath": [
+						"iscorrectiondelivery"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "readyforwarehouseexecstatus",
+					"fromPath": [
+						"readyforwarehouseexecstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "delivadvncdshipgrcvgrlvnce",
+					"fromPath": [
+						"delivadvncdshipgrcvgrlvnce"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "delivisqtycrrtnadvncshipgrcvg",
+					"fromPath": [
+						"delivisqtycrrtnadvncshipgrcvg"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "eu_deliveryarcstatus",
+					"fromPath": [
+						"eu_deliveryarcstatus"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intcoextactltransfofctrldtetme",
+					"fromPath": [
+						"intcoextactltransfofctrldtetme"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intcoextplndtransfofctrldtetme",
+					"fromPath": [
+						"intcoextplndtransfofctrldtetme"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intcoexttransfofctrldtetmetmzn",
+					"fromPath": [
+						"intcoexttransfofctrldtetmetmzn"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intcointactltransfofctrldtetme",
+					"fromPath": [
+						"intcointactltransfofctrldtetme"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intcointplndtransfofctrldtetme",
+					"fromPath": [
+						"intcointplndtransfofctrldtetme"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "intcointtransfofctrldtetmetmzn",
+					"fromPath": [
+						"intcointtransfofctrldtetmetmzn"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "logisticsexecutionscenario",
+					"fromPath": [
+						"logisticsexecutionscenario"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_changemode",
+					"fromPath": [
+						"odq_changemode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_entitycntr",
+					"fromPath": [
+						"odq_entitycntr"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadts",
+					"fromPath": [
+						"loadts"
+					],
+					"toType": "timestamp",
+					"fromType": "timestamp",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "counter",
+					"fromPath": [
+						"counter"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722906262011": {
+			"nodeId": "node-1722906262011",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722907194885"
+			],
+			"name": "Select_Updated_Source_Data",
+			"generatedNodeName": "Select_Updated_Source_Data_node1722906262011",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "max_timestamp = spark.sql(\"\"\"\n        SELECT MAX(loadts) AS max_load_timestamp FROM AwsDataCatalog.<your_curated_glue_catalog_db>.cds_outbound_delivery_header\n    \"\"\").collect()[0][\"max_load_timestamp\"]\nif max_timestamp is None:\n    max_timestamp = \"1970-01-01 00:00:00\"\nfiltered_data = spark.sql(f\"\"\"\n        SELECT *\n        FROM AwsDataCatalog.<your_enriched_glue_catalog_db>.cds_delivery_header\n        WHERE sddocumentcategory <> '7' and loadts > cast('{max_timestamp}'as timestamp) \"\"\")    \ndyf = DynamicFrame.fromDF(filtered_data, glueContext, \"filtered_data\")\nreturn DynamicFrameCollection({\"Select_Updated_Source_Data\": dyf}, glueContext)\n\n\n",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "deliverydocument",
+						"fullPath": [
+							"deliverydocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sddocumentcategory",
+						"fullPath": [
+							"sddocumentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliverydocumenttype",
+						"fullPath": [
+							"deliverydocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "createdbyuser",
+						"fullPath": [
+							"createdbyuser"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationtime",
+						"fullPath": [
+							"creationtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lastchangedbyuser",
+						"fullPath": [
+							"lastchangedbyuser"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lastchangedate",
+						"fullPath": [
+							"lastchangedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippingpoint",
+						"fullPath": [
+							"shippingpoint"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorganization",
+						"fullPath": [
+							"salesorganization"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesoffice",
+						"fullPath": [
+							"salesoffice"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "completedeliveryisdefined",
+						"fullPath": [
+							"completedeliveryisdefined"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ordercombinationisallowed",
+						"fullPath": [
+							"ordercombinationisallowed"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliverypriority",
+						"fullPath": [
+							"deliverypriority"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliveryblockreason",
+						"fullPath": [
+							"deliveryblockreason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliverydocumentbysupplier",
+						"fullPath": [
+							"deliverydocumentbysupplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliveryisinplant",
+						"fullPath": [
+							"deliveryisinplant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "receivingplant",
+						"fullPath": [
+							"receivingplant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "warehouse",
+						"fullPath": [
+							"warehouse"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isexportdelivery",
+						"fullPath": [
+							"isexportdelivery"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderid",
+						"fullPath": [
+							"orderid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headergrossweight",
+						"fullPath": [
+							"headergrossweight"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headernetweight",
+						"fullPath": [
+							"headernetweight"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headerweightunit",
+						"fullPath": [
+							"headerweightunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headervolume",
+						"fullPath": [
+							"headervolume"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headervolumeunit",
+						"fullPath": [
+							"headervolumeunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isdeliveryforsinglewarehouse",
+						"fullPath": [
+							"isdeliveryforsinglewarehouse"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "goodsissueorreceiptslipnumber",
+						"fullPath": [
+							"goodsissueorreceiptslipnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "warehousegate",
+						"fullPath": [
+							"warehousegate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "warehousestagingarea",
+						"fullPath": [
+							"warehousestagingarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "meansoftransportrefmaterial",
+						"fullPath": [
+							"meansoftransportrefmaterial"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "specialprocessingcode",
+						"fullPath": [
+							"specialprocessingcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "externalidentificationtype",
+						"fullPath": [
+							"externalidentificationtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliveryversion",
+						"fullPath": [
+							"deliveryversion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pickeditemslocation",
+						"fullPath": [
+							"pickeditemslocation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "documentdate",
+						"fullPath": [
+							"documentdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pickingdate",
+						"fullPath": [
+							"pickingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pickingtime",
+						"fullPath": [
+							"pickingtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalnumberofpackage",
+						"fullPath": [
+							"totalnumberofpackage"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadingpoint",
+						"fullPath": [
+							"loadingpoint"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadingdate",
+						"fullPath": [
+							"loadingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadingtime",
+						"fullPath": [
+							"loadingtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billoflading",
+						"fullPath": [
+							"billoflading"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "handlingunitinstock",
+						"fullPath": [
+							"handlingunitinstock"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shiptoparty",
+						"fullPath": [
+							"shiptoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippingtype",
+						"fullPath": [
+							"shippingtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliverydate",
+						"fullPath": [
+							"deliverydate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliverytime",
+						"fullPath": [
+							"deliverytime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippingcondition",
+						"fullPath": [
+							"shippingcondition"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shipmentblockreason",
+						"fullPath": [
+							"shipmentblockreason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transportationplanningdate",
+						"fullPath": [
+							"transportationplanningdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transportationplanningtime",
+						"fullPath": [
+							"transportationplanningtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "proposeddeliveryroute",
+						"fullPath": [
+							"proposeddeliveryroute"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "actualdeliveryroute",
+						"fullPath": [
+							"actualdeliveryroute"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "routeschedule",
+						"fullPath": [
+							"routeschedule"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plannedgoodsissuedate",
+						"fullPath": [
+							"plannedgoodsissuedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "goodsissuetime",
+						"fullPath": [
+							"goodsissuetime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "actualgoodsmovementdate",
+						"fullPath": [
+							"actualgoodsmovementdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "actualgoodsmovementtime",
+						"fullPath": [
+							"actualgoodsmovementtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermsclassification",
+						"fullPath": [
+							"incotermsclassification"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermstransferlocation",
+						"fullPath": [
+							"incotermstransferlocation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "externaltransportsystem",
+						"fullPath": [
+							"externaltransportsystem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transportationgroup",
+						"fullPath": [
+							"transportationgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "meansoftransport",
+						"fullPath": [
+							"meansoftransport"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "meansoftransporttype",
+						"fullPath": [
+							"meansoftransporttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unloadingpointname",
+						"fullPath": [
+							"unloadingpointname"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "proofofdeliverydate",
+						"fullPath": [
+							"proofofdeliverydate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "confirmationtime",
+						"fullPath": [
+							"confirmationtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factorycalendarbycustomer",
+						"fullPath": [
+							"factorycalendarbycustomer"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippinglocationtimezone",
+						"fullPath": [
+							"shippinglocationtimezone"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "receivinglocationtimezone",
+						"fullPath": [
+							"receivinglocationtimezone"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intercompanybillingdate",
+						"fullPath": [
+							"intercompanybillingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentdate",
+						"fullPath": [
+							"billingdocumentdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headerbillingblockreason",
+						"fullPath": [
+							"headerbillingblockreason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internalfinancialdocument",
+						"fullPath": [
+							"internalfinancialdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentguaranteeprocedure",
+						"fullPath": [
+							"paymentguaranteeprocedure"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "depreciationpercentage",
+						"fullPath": [
+							"depreciationpercentage"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nextshippingdate",
+						"fullPath": [
+							"nextshippingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customercreditaccount",
+						"fullPath": [
+							"customercreditaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centralcreditchktecherrsts",
+						"fullPath": [
+							"centralcreditchktecherrsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "releasedcreditamount",
+						"fullPath": [
+							"releasedcreditamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingareacurrency",
+						"fullPath": [
+							"controllingareacurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creditblockreleasedate",
+						"fullPath": [
+							"creditblockreleasedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "soldtoparty",
+						"fullPath": [
+							"soldtoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customergroup",
+						"fullPath": [
+							"customergroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdistrict",
+						"fullPath": [
+							"salesdistrict"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transactioncurrency",
+						"fullPath": [
+							"transactioncurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "statisticscurrency",
+						"fullPath": [
+							"statisticscurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallintcobillingstatus",
+						"fullPath": [
+							"overallintcobillingstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallsdprocessstatus",
+						"fullPath": [
+							"overallsdprocessstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalblockstatus",
+						"fullPath": [
+							"totalblockstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overalldelivconfstatus",
+						"fullPath": [
+							"overalldelivconfstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transportationplanningstatus",
+						"fullPath": [
+							"transportationplanningstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallpickingconfstatus",
+						"fullPath": [
+							"overallpickingconfstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallpickingstatus",
+						"fullPath": [
+							"overallpickingstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallpackingstatus",
+						"fullPath": [
+							"overallpackingstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallwarehouseactivitystatus",
+						"fullPath": [
+							"overallwarehouseactivitystatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrstatusbydecentralizedwrhs",
+						"fullPath": [
+							"distrstatusbydecentralizedwrhs"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallgoodsmovementstatus",
+						"fullPath": [
+							"overallgoodsmovementstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overalldelivreltdbillgstatus",
+						"fullPath": [
+							"overalldelivreltdbillgstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallproofofdeliverystatus",
+						"fullPath": [
+							"overallproofofdeliverystatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "hdrgeneralincompletionstatus",
+						"fullPath": [
+							"hdrgeneralincompletionstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headerdelivincompletionstatus",
+						"fullPath": [
+							"headerdelivincompletionstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headerpickgincompletionstatus",
+						"fullPath": [
+							"headerpickgincompletionstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headerpackingincompletionsts",
+						"fullPath": [
+							"headerpackingincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "hdrgoodsmvtincompletionstatus",
+						"fullPath": [
+							"hdrgoodsmvtincompletionstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "headerbillgincompletionstatus",
+						"fullPath": [
+							"headerbillgincompletionstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrlitmgeneralincompletionsts",
+						"fullPath": [
+							"ovrlitmgeneralincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrlitmpackingincompletionsts",
+						"fullPath": [
+							"ovrlitmpackingincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrlitmpickingincompletionsts",
+						"fullPath": [
+							"ovrlitmpickingincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrlitmdelivincompletionsts",
+						"fullPath": [
+							"ovrlitmdelivincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrlitmgdsmvtincompletionsts",
+						"fullPath": [
+							"ovrlitmgdsmvtincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalcreditcheckstatus",
+						"fullPath": [
+							"totalcreditcheckstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "findoccreditcheckstatus",
+						"fullPath": [
+							"findoccreditcheckstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paytauthsncreditchecksts",
+						"fullPath": [
+							"paytauthsncreditchecksts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centralcreditcheckstatus",
+						"fullPath": [
+							"centralcreditcheckstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "exprtinsurcreditcheckstatus",
+						"fullPath": [
+							"exprtinsurcreditcheckstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "maxdocvaluecreditcheckstatus",
+						"fullPath": [
+							"maxdocvaluecreditcheckstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymenttermcreditcheckstatus",
+						"fullPath": [
+							"paymenttermcreditcheckstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippinggroupnumber",
+						"fullPath": [
+							"shippinggroupnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricingdocument",
+						"fullPath": [
+							"pricingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorgforintcobilling",
+						"fullPath": [
+							"salesorgforintcobilling"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrchnlforintcobilling",
+						"fullPath": [
+							"distrchnlforintcobilling"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "divisionforintcobilling",
+						"fullPath": [
+							"divisionforintcobilling"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intercompanybillingtype",
+						"fullPath": [
+							"intercompanybillingtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factorycalendarforintcobilling",
+						"fullPath": [
+							"factorycalendarforintcobilling"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intercompanybillingcustomer",
+						"fullPath": [
+							"intercompanybillingcustomer"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deliverydocumentcondition",
+						"fullPath": [
+							"deliverydocumentcondition"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalnetamount",
+						"fullPath": [
+							"totalnetamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencedocumentnumber",
+						"fullPath": [
+							"referencedocumentnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "deletionindicator",
+						"fullPath": [
+							"deletionindicator"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallchmlcmplncstatus",
+						"fullPath": [
+							"overallchmlcmplncstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overalldangerousgoodsstatus",
+						"fullPath": [
+							"overalldangerousgoodsstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallsafetydatasheetstatus",
+						"fullPath": [
+							"overallsafetydatasheetstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overalltrdcmplncembargosts",
+						"fullPath": [
+							"overalltrdcmplncembargosts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrltrdcmplncsnctndlistchksts",
+						"fullPath": [
+							"ovrltrdcmplncsnctndlistchksts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrltrdcmplnclegalctrlchksts",
+						"fullPath": [
+							"ovrltrdcmplnclegalctrlchksts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iscorrectiondelivery",
+						"fullPath": [
+							"iscorrectiondelivery"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "readyforwarehouseexecstatus",
+						"fullPath": [
+							"readyforwarehouseexecstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "delivadvncdshipgrcvgrlvnce",
+						"fullPath": [
+							"delivadvncdshipgrcvgrlvnce"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "delivisqtycrrtnadvncshipgrcvg",
+						"fullPath": [
+							"delivisqtycrrtnadvncshipgrcvg"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eu_deliveryarcstatus",
+						"fullPath": [
+							"eu_deliveryarcstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intcoextactltransfofctrldtetme",
+						"fullPath": [
+							"intcoextactltransfofctrldtetme"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intcoextplndtransfofctrldtetme",
+						"fullPath": [
+							"intcoextplndtransfofctrldtetme"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intcoexttransfofctrldtetmetmzn",
+						"fullPath": [
+							"intcoexttransfofctrldtetmetmzn"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intcointactltransfofctrldtetme",
+						"fullPath": [
+							"intcointactltransfofctrldtetme"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intcointplndtransfofctrldtetme",
+						"fullPath": [
+							"intcointplndtransfofctrldtetme"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "intcointtransfofctrldtetmetmzn",
+						"fullPath": [
+							"intcointtransfofctrldtetmetmzn"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "logisticsexecutionscenario",
+						"fullPath": [
+							"logisticsexecutionscenario"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "timestamp",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722906721636": {
+			"nodeId": "node-1722906721636",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722906262011"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1722906721636",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722907194885": {
+			"nodeId": "node-1722907194885",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Outbound_Delivery_Header",
+			"generatedNodeName": "Outbound_Delivery_Header_node1722907194885",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "<your_enriched_glue_catalog_db>",
+			"table": "cds_delivery_header",
+			"format": "iceberg",
+			"additionalIcebergOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

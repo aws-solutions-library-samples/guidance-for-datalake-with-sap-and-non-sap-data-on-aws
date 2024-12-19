@@ -90,7 +90,7 @@ For master data objects, in the sample code the Enriched layer is not utilised. 
 
 The Curated Layer is the layer where data is stored for data consumption. Records deleted on the source are deleted physically. Any calculations (averages, time between dates, etc) or data manipulation (format changes, lookup from another table) can be stored in this layer, ready to be consumed. Data is updated in this layer using the -etoc and -rtoc AWS Glue jobs. Athena views are created on top of these tables for consumption from Quicksight or any other tools. 
 
-### Data Management
+##Data Management
 
 Data management takes care of the data propagation between the different data lake layers. [AWS Glue](https://aws.amazon.com/glue/) is the service that provides this functionality in this solution guidance and sample code. 
 The Glue Jobs provided are as follows. 
@@ -154,6 +154,6 @@ For the Transactional Data objects, the Curated Layer Tables and Views are provi
 
 ## Sample Code Functional Scope - Procure to Pay
 
-The Sample Code provides data pipelines and data models covering the Procure to Pay process. The diagram below illustrates the data flows included, covering Purchase Order Header, Purchase Order Items, Purchase Order Schedule Lines, Supplier Invoice Line Items and Master Data (see git repository for the detailed list of objects). 
+The Sample Code provides data pipelines and data models covering the Procure to Pay, Order to Cash and Record to Report processes. The diagram below illustrates the data flows included (see git repository for the detailed list of objects). Consumption Layer objects have been provided for Purchase Order and Invoice analysis within the P2P process. Additional consumption layer objects will be released in the near future for O2C and R2R. 
 
 ![alt text](assets/images/image44.jpeg)

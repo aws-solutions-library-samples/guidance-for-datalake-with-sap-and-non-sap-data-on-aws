@@ -1,0 +1,3057 @@
+{
+	"jobConfig": {
+		"name": "afsap-o2c-billing-document-item-ltor",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"jobRunQueuingEnabled": false,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-o2c-billing-document-item-ltor.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-09-06T01:47:17.818Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1711298687208": {
+			"nodeId": "node-1711298687208",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298645740"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298687208",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "json",
+			"compression": "none",
+			"path": "s3://<your_s3_raw_bucket>/raw/cds_billing_document_item/",
+			"partitionKeys": [
+				"loaddt"
+			],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": "LOG",
+				"database": "analytics-fabric-lake",
+				"table": "stg_poheader"
+			},
+			"updateCatalogOptions": "none",
+			"autoDataQuality": {
+				"isEnabled": false,
+				"evaluationContext": null
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298645740": {
+			"nodeId": "node-1711298645740",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298590194"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1711298645740",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298461484": {
+			"nodeId": "node-1711298461484",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1711298461484",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "json",
+			"paths": [
+				"s3://<your_s3_raw_bucket>/landing/cds_billing_document_item/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://<your_s3_raw_bucket>/landing/cds_billing_document_item/2024/08/29/13/50b21ee6-f0b9-3332-af86-94a5c9c0787d-2024-08-29T13:00:33/-706075376-2024-08-29T13:00:25",
+				"boundedOption": null
+			},
+			"jsonPath": "",
+			"multiline": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "billingdocument",
+						"fullPath": [
+							"billingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentitem",
+						"fullPath": [
+							"billingdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdocumentitemcategory",
+						"fullPath": [
+							"salesdocumentitemcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdocumentitemtype",
+						"fullPath": [
+							"salesdocumentitemtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "returnitemprocessingtype",
+						"fullPath": [
+							"returnitemprocessingtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumenttype",
+						"fullPath": [
+							"billingdocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentcategory",
+						"fullPath": [
+							"billingdocumentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sddocumentcategory",
+						"fullPath": [
+							"sddocumentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationtime",
+						"fullPath": [
+							"creationtime"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lastchangedate",
+						"fullPath": [
+							"lastchangedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentdate",
+						"fullPath": [
+							"billingdocumentdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentistemporary",
+						"fullPath": [
+							"billingdocumentistemporary"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationdivision",
+						"fullPath": [
+							"organizationdivision"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "division",
+						"fullPath": [
+							"division"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesoffice",
+						"fullPath": [
+							"salesoffice"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorganization",
+						"fullPath": [
+							"salesorganization"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distributionchannel",
+						"fullPath": [
+							"distributionchannel"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "material",
+						"fullPath": [
+							"material"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "product",
+						"fullPath": [
+							"product"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originallyrequestedmaterial",
+						"fullPath": [
+							"originallyrequestedmaterial"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "internationalarticlenumber",
+						"fullPath": [
+							"internationalarticlenumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricingreferencematerial",
+						"fullPath": [
+							"pricingreferencematerial"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "batch",
+						"fullPath": [
+							"batch"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "materialgroup",
+						"fullPath": [
+							"materialgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "productgroup",
+						"fullPath": [
+							"productgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalmaterialgroup1",
+						"fullPath": [
+							"additionalmaterialgroup1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalmaterialgroup2",
+						"fullPath": [
+							"additionalmaterialgroup2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalmaterialgroup3",
+						"fullPath": [
+							"additionalmaterialgroup3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalmaterialgroup4",
+						"fullPath": [
+							"additionalmaterialgroup4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalmaterialgroup5",
+						"fullPath": [
+							"additionalmaterialgroup5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "materialcommissiongroup",
+						"fullPath": [
+							"materialcommissiongroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plant",
+						"fullPath": [
+							"plant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "storagelocation",
+						"fullPath": [
+							"storagelocation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentiscancelled",
+						"fullPath": [
+							"billingdocumentiscancelled"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cancelledbillingdocument",
+						"fullPath": [
+							"cancelledbillingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentitemtext",
+						"fullPath": [
+							"billingdocumentitemtext"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicesrendereddate",
+						"fullPath": [
+							"servicesrendereddate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingquantity",
+						"fullPath": [
+							"billingquantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingquantityunit",
+						"fullPath": [
+							"billingquantityunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingquantityinbaseunit",
+						"fullPath": [
+							"billingquantityinbaseunit"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "baseunit",
+						"fullPath": [
+							"baseunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mrprequiredquantityinbaseunit",
+						"fullPath": [
+							"mrprequiredquantityinbaseunit"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingtobasequantitydnmntr",
+						"fullPath": [
+							"billingtobasequantitydnmntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingtobasequantitynmrtr",
+						"fullPath": [
+							"billingtobasequantitynmrtr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemgrossweight",
+						"fullPath": [
+							"itemgrossweight"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemnetweight",
+						"fullPath": [
+							"itemnetweight"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemweightunit",
+						"fullPath": [
+							"itemweightunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemvolume",
+						"fullPath": [
+							"itemvolume"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemvolumeunit",
+						"fullPath": [
+							"itemvolumeunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billtopartycountry",
+						"fullPath": [
+							"billtopartycountry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billtopartyregion",
+						"fullPath": [
+							"billtopartyregion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingplanrule",
+						"fullPath": [
+							"billingplanrule"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingplan",
+						"fullPath": [
+							"billingplan"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingplanitem",
+						"fullPath": [
+							"billingplanitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customerpricegroup",
+						"fullPath": [
+							"customerpricegroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricelisttype",
+						"fullPath": [
+							"pricelisttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxdeparturecountry",
+						"fullPath": [
+							"taxdeparturecountry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatregistration",
+						"fullPath": [
+							"vatregistration"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatregistrationcountry",
+						"fullPath": [
+							"vatregistrationcountry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "vatregistrationorigin",
+						"fullPath": [
+							"vatregistrationorigin"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification1",
+						"fullPath": [
+							"customertaxclassification1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification2",
+						"fullPath": [
+							"customertaxclassification2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification3",
+						"fullPath": [
+							"customertaxclassification3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification4",
+						"fullPath": [
+							"customertaxclassification4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification5",
+						"fullPath": [
+							"customertaxclassification5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification6",
+						"fullPath": [
+							"customertaxclassification6"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification7",
+						"fullPath": [
+							"customertaxclassification7"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification8",
+						"fullPath": [
+							"customertaxclassification8"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customertaxclassification9",
+						"fullPath": [
+							"customertaxclassification9"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sdpricingprocedure",
+						"fullPath": [
+							"sdpricingprocedure"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "netamount",
+						"fullPath": [
+							"netamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transactioncurrency",
+						"fullPath": [
+							"transactioncurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grossamount",
+						"fullPath": [
+							"grossamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricingdate",
+						"fullPath": [
+							"pricingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricedetnexchangerate",
+						"fullPath": [
+							"pricedetnexchangerate"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricingscalequantityinbaseunit",
+						"fullPath": [
+							"pricingscalequantityinbaseunit"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxamount",
+						"fullPath": [
+							"taxamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costamount",
+						"fullPath": [
+							"costamount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subtotal1amount",
+						"fullPath": [
+							"subtotal1amount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subtotal2amount",
+						"fullPath": [
+							"subtotal2amount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subtotal3amount",
+						"fullPath": [
+							"subtotal3amount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subtotal4amount",
+						"fullPath": [
+							"subtotal4amount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subtotal5amount",
+						"fullPath": [
+							"subtotal5amount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subtotal6amount",
+						"fullPath": [
+							"subtotal6amount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "statisticalvaluecontrol",
+						"fullPath": [
+							"statisticalvaluecontrol"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "statisticsexchangerate",
+						"fullPath": [
+							"statisticsexchangerate"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "statisticscurrency",
+						"fullPath": [
+							"statisticscurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorganizationcurrency",
+						"fullPath": [
+							"salesorganizationcurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eligibleamountforcashdiscount",
+						"fullPath": [
+							"eligibleamountforcashdiscount"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "contractaccount",
+						"fullPath": [
+							"contractaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customerpaymentterms",
+						"fullPath": [
+							"customerpaymentterms"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentmethod",
+						"fullPath": [
+							"paymentmethod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "paymentreference",
+						"fullPath": [
+							"paymentreference"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedvaluedate",
+						"fullPath": [
+							"fixedvaluedate"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalvaluedays",
+						"fullPath": [
+							"additionalvaluedays"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "payerparty",
+						"fullPath": [
+							"payerparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "companycode",
+						"fullPath": [
+							"companycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalyear",
+						"fullPath": [
+							"fiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalperiod",
+						"fullPath": [
+							"fiscalperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customeraccountassignmentgroup",
+						"fullPath": [
+							"customeraccountassignmentgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businessarea",
+						"fullPath": [
+							"businessarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitcenter",
+						"fullPath": [
+							"profitcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderid",
+						"fullPath": [
+							"orderid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "wbselementinternalid",
+						"fullPath": [
+							"wbselementinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingarea",
+						"fullPath": [
+							"controllingarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingdocument",
+						"fullPath": [
+							"accountingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitabilitysegment",
+						"fullPath": [
+							"profitabilitysegment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitabilitysegment_2",
+						"fullPath": [
+							"profitabilitysegment_2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costcenter",
+						"fullPath": [
+							"costcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originsddocument",
+						"fullPath": [
+							"originsddocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originsddocumentitem",
+						"fullPath": [
+							"originsddocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pricedetnexchangeratedate",
+						"fullPath": [
+							"pricedetnexchangeratedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "exchangeratetype",
+						"fullPath": [
+							"exchangeratetype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalyearvariant",
+						"fullPath": [
+							"fiscalyearvariant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "currency",
+						"fullPath": [
+							"currency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingexchangerate",
+						"fullPath": [
+							"accountingexchangerate"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingexchangerateisset",
+						"fullPath": [
+							"accountingexchangerateisset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencesddocument",
+						"fullPath": [
+							"referencesddocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencesddocumentitem",
+						"fullPath": [
+							"referencesddocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencesddocumentcategory",
+						"fullPath": [
+							"referencesddocumentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdocument",
+						"fullPath": [
+							"salesdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdocumentitem",
+						"fullPath": [
+							"salesdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salessddocumentcategory",
+						"fullPath": [
+							"salessddocumentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "higherlevelitem",
+						"fullPath": [
+							"higherlevelitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumentiteminpartsgmt",
+						"fullPath": [
+							"billingdocumentiteminpartsgmt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesgroup",
+						"fullPath": [
+							"salesgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalcustomergroup1",
+						"fullPath": [
+							"additionalcustomergroup1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalcustomergroup2",
+						"fullPath": [
+							"additionalcustomergroup2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalcustomergroup3",
+						"fullPath": [
+							"additionalcustomergroup3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalcustomergroup4",
+						"fullPath": [
+							"additionalcustomergroup4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalcustomergroup5",
+						"fullPath": [
+							"additionalcustomergroup5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sddocumentreason",
+						"fullPath": [
+							"sddocumentreason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemisrelevantforcredit",
+						"fullPath": [
+							"itemisrelevantforcredit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creditrelatedprice",
+						"fullPath": [
+							"creditrelatedprice"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdistrict",
+						"fullPath": [
+							"salesdistrict"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customergroup",
+						"fullPath": [
+							"customergroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "soldtoparty",
+						"fullPath": [
+							"soldtoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "country",
+						"fullPath": [
+							"country"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shiptoparty",
+						"fullPath": [
+							"shiptoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billtoparty",
+						"fullPath": [
+							"billtoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesemployee",
+						"fullPath": [
+							"salesemployee"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "responsibleemployee",
+						"fullPath": [
+							"responsibleemployee"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippingpoint",
+						"fullPath": [
+							"shippingpoint"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermsversion",
+						"fullPath": [
+							"incotermsversion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermsclassification",
+						"fullPath": [
+							"incotermsclassification"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermstransferlocation",
+						"fullPath": [
+							"incotermstransferlocation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermslocation1",
+						"fullPath": [
+							"incotermslocation1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "incotermslocation2",
+						"fullPath": [
+							"incotermslocation2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shippingcondition",
+						"fullPath": [
+							"shippingcondition"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallsdprocessstatus",
+						"fullPath": [
+							"overallsdprocessstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallbillingstatus",
+						"fullPath": [
+							"overallbillingstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingpostingstatus",
+						"fullPath": [
+							"accountingpostingstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingtransferstatus",
+						"fullPath": [
+							"accountingtransferstatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingissuetype",
+						"fullPath": [
+							"billingissuetype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "invoiceliststatus",
+						"fullPath": [
+							"invoiceliststatus"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ovrlitmgeneralincompletionsts",
+						"fullPath": [
+							"ovrlitmgeneralincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "overallpricingincompletionsts",
+						"fullPath": [
+							"overallpricingincompletionsts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1711298590194": {
+			"nodeId": "node-1711298590194",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1711298461484"
+			],
+			"name": "AddTimestampAndCounter",
+			"generatedNodeName": "AddTimestampAndCounter_node1711298590194",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "    #from pyspark.sql.functions import substring,input_file_name\n    import pyspark.sql.functions as F\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    #add load date field\n    df = df.withColumn(\"loaddt\", F.substring(F.input_file_name(),-19,10))\n    #add load timestamp\n    df = df.withColumn(\"loadts\", F.substring(F.input_file_name(),-19,19))\n    #add record counter\n    df = df.withColumn(\"counter\", F.monotonically_increasing_id())\n    sydf = DynamicFrame.fromDF(df,glueContext, \"sydf\")\n    return(DynamicFrameCollection({\"CustomTransform\": sydf}, glueContext))",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "BILLINGDOCUMENT",
+						"fullPath": [
+							"BILLINGDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTITEM",
+						"fullPath": [
+							"BILLINGDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESDOCUMENTITEMCATEGORY",
+						"fullPath": [
+							"SALESDOCUMENTITEMCATEGORY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESDOCUMENTITEMTYPE",
+						"fullPath": [
+							"SALESDOCUMENTITEMTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "RETURNITEMPROCESSINGTYPE",
+						"fullPath": [
+							"RETURNITEMPROCESSINGTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTTYPE",
+						"fullPath": [
+							"BILLINGDOCUMENTTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTCATEGORY",
+						"fullPath": [
+							"BILLINGDOCUMENTCATEGORY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SDDOCUMENTCATEGORY",
+						"fullPath": [
+							"SDDOCUMENTCATEGORY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CREATIONDATE",
+						"fullPath": [
+							"CREATIONDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CREATIONTIME",
+						"fullPath": [
+							"CREATIONTIME"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "LASTCHANGEDATE",
+						"fullPath": [
+							"LASTCHANGEDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTDATE",
+						"fullPath": [
+							"BILLINGDOCUMENTDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTISTEMPORARY",
+						"fullPath": [
+							"BILLINGDOCUMENTISTEMPORARY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORGANIZATIONDIVISION",
+						"fullPath": [
+							"ORGANIZATIONDIVISION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DIVISION",
+						"fullPath": [
+							"DIVISION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESOFFICE",
+						"fullPath": [
+							"SALESOFFICE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESORGANIZATION",
+						"fullPath": [
+							"SALESORGANIZATION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DISTRIBUTIONCHANNEL",
+						"fullPath": [
+							"DISTRIBUTIONCHANNEL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "MATERIAL",
+						"fullPath": [
+							"MATERIAL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRODUCT",
+						"fullPath": [
+							"PRODUCT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORIGINALLYREQUESTEDMATERIAL",
+						"fullPath": [
+							"ORIGINALLYREQUESTEDMATERIAL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INTERNATIONALARTICLENUMBER",
+						"fullPath": [
+							"INTERNATIONALARTICLENUMBER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRICINGREFERENCEMATERIAL",
+						"fullPath": [
+							"PRICINGREFERENCEMATERIAL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BATCH",
+						"fullPath": [
+							"BATCH"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "MATERIALGROUP",
+						"fullPath": [
+							"MATERIALGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRODUCTGROUP",
+						"fullPath": [
+							"PRODUCTGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALMATERIALGROUP1",
+						"fullPath": [
+							"ADDITIONALMATERIALGROUP1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALMATERIALGROUP2",
+						"fullPath": [
+							"ADDITIONALMATERIALGROUP2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALMATERIALGROUP3",
+						"fullPath": [
+							"ADDITIONALMATERIALGROUP3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALMATERIALGROUP4",
+						"fullPath": [
+							"ADDITIONALMATERIALGROUP4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALMATERIALGROUP5",
+						"fullPath": [
+							"ADDITIONALMATERIALGROUP5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "MATERIALCOMMISSIONGROUP",
+						"fullPath": [
+							"MATERIALCOMMISSIONGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PLANT",
+						"fullPath": [
+							"PLANT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "STORAGELOCATION",
+						"fullPath": [
+							"STORAGELOCATION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTISCANCELLED",
+						"fullPath": [
+							"BILLINGDOCUMENTISCANCELLED"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CANCELLEDBILLINGDOCUMENT",
+						"fullPath": [
+							"CANCELLEDBILLINGDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTITEMTEXT",
+						"fullPath": [
+							"BILLINGDOCUMENTITEMTEXT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SERVICESRENDEREDDATE",
+						"fullPath": [
+							"SERVICESRENDEREDDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGQUANTITY",
+						"fullPath": [
+							"BILLINGQUANTITY"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGQUANTITYUNIT",
+						"fullPath": [
+							"BILLINGQUANTITYUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGQUANTITYINBASEUNIT",
+						"fullPath": [
+							"BILLINGQUANTITYINBASEUNIT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BASEUNIT",
+						"fullPath": [
+							"BASEUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "MRPREQUIREDQUANTITYINBASEUNIT",
+						"fullPath": [
+							"MRPREQUIREDQUANTITYINBASEUNIT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGTOBASEQUANTITYDNMNTR",
+						"fullPath": [
+							"BILLINGTOBASEQUANTITYDNMNTR"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGTOBASEQUANTITYNMRTR",
+						"fullPath": [
+							"BILLINGTOBASEQUANTITYNMRTR"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ITEMGROSSWEIGHT",
+						"fullPath": [
+							"ITEMGROSSWEIGHT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ITEMNETWEIGHT",
+						"fullPath": [
+							"ITEMNETWEIGHT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ITEMWEIGHTUNIT",
+						"fullPath": [
+							"ITEMWEIGHTUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ITEMVOLUME",
+						"fullPath": [
+							"ITEMVOLUME"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ITEMVOLUMEUNIT",
+						"fullPath": [
+							"ITEMVOLUMEUNIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLTOPARTYCOUNTRY",
+						"fullPath": [
+							"BILLTOPARTYCOUNTRY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLTOPARTYREGION",
+						"fullPath": [
+							"BILLTOPARTYREGION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGPLANRULE",
+						"fullPath": [
+							"BILLINGPLANRULE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGPLAN",
+						"fullPath": [
+							"BILLINGPLAN"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGPLANITEM",
+						"fullPath": [
+							"BILLINGPLANITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERPRICEGROUP",
+						"fullPath": [
+							"CUSTOMERPRICEGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRICELISTTYPE",
+						"fullPath": [
+							"PRICELISTTYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "TAXDEPARTURECOUNTRY",
+						"fullPath": [
+							"TAXDEPARTURECOUNTRY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "VATREGISTRATION",
+						"fullPath": [
+							"VATREGISTRATION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "VATREGISTRATIONCOUNTRY",
+						"fullPath": [
+							"VATREGISTRATIONCOUNTRY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "VATREGISTRATIONORIGIN",
+						"fullPath": [
+							"VATREGISTRATIONORIGIN"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION1",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION2",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION3",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION4",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION5",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION6",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION6"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION7",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION7"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION8",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION8"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERTAXCLASSIFICATION9",
+						"fullPath": [
+							"CUSTOMERTAXCLASSIFICATION9"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SDPRICINGPROCEDURE",
+						"fullPath": [
+							"SDPRICINGPROCEDURE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "NETAMOUNT",
+						"fullPath": [
+							"NETAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "TRANSACTIONCURRENCY",
+						"fullPath": [
+							"TRANSACTIONCURRENCY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "GROSSAMOUNT",
+						"fullPath": [
+							"GROSSAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRICINGDATE",
+						"fullPath": [
+							"PRICINGDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRICEDETNEXCHANGERATE",
+						"fullPath": [
+							"PRICEDETNEXCHANGERATE"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRICINGSCALEQUANTITYINBASEUNIT",
+						"fullPath": [
+							"PRICINGSCALEQUANTITYINBASEUNIT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "TAXAMOUNT",
+						"fullPath": [
+							"TAXAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COSTAMOUNT",
+						"fullPath": [
+							"COSTAMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUBTOTAL1AMOUNT",
+						"fullPath": [
+							"SUBTOTAL1AMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUBTOTAL2AMOUNT",
+						"fullPath": [
+							"SUBTOTAL2AMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUBTOTAL3AMOUNT",
+						"fullPath": [
+							"SUBTOTAL3AMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUBTOTAL4AMOUNT",
+						"fullPath": [
+							"SUBTOTAL4AMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUBTOTAL5AMOUNT",
+						"fullPath": [
+							"SUBTOTAL5AMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SUBTOTAL6AMOUNT",
+						"fullPath": [
+							"SUBTOTAL6AMOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "STATISTICALVALUECONTROL",
+						"fullPath": [
+							"STATISTICALVALUECONTROL"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "STATISTICSEXCHANGERATE",
+						"fullPath": [
+							"STATISTICSEXCHANGERATE"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "STATISTICSCURRENCY",
+						"fullPath": [
+							"STATISTICSCURRENCY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESORGANIZATIONCURRENCY",
+						"fullPath": [
+							"SALESORGANIZATIONCURRENCY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ELIGIBLEAMOUNTFORCASHDISCOUNT",
+						"fullPath": [
+							"ELIGIBLEAMOUNTFORCASHDISCOUNT"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CONTRACTACCOUNT",
+						"fullPath": [
+							"CONTRACTACCOUNT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERPAYMENTTERMS",
+						"fullPath": [
+							"CUSTOMERPAYMENTTERMS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PAYMENTMETHOD",
+						"fullPath": [
+							"PAYMENTMETHOD"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PAYMENTREFERENCE",
+						"fullPath": [
+							"PAYMENTREFERENCE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FIXEDVALUEDATE",
+						"fullPath": [
+							"FIXEDVALUEDATE"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALVALUEDAYS",
+						"fullPath": [
+							"ADDITIONALVALUEDAYS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PAYERPARTY",
+						"fullPath": [
+							"PAYERPARTY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COMPANYCODE",
+						"fullPath": [
+							"COMPANYCODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FISCALYEAR",
+						"fullPath": [
+							"FISCALYEAR"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FISCALPERIOD",
+						"fullPath": [
+							"FISCALPERIOD"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERACCOUNTASSIGNMENTGROUP",
+						"fullPath": [
+							"CUSTOMERACCOUNTASSIGNMENTGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BUSINESSAREA",
+						"fullPath": [
+							"BUSINESSAREA"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROFITCENTER",
+						"fullPath": [
+							"PROFITCENTER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORDERID",
+						"fullPath": [
+							"ORDERID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "WBSELEMENTINTERNALID",
+						"fullPath": [
+							"WBSELEMENTINTERNALID"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CONTROLLINGAREA",
+						"fullPath": [
+							"CONTROLLINGAREA"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTINGDOCUMENT",
+						"fullPath": [
+							"ACCOUNTINGDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROFITABILITYSEGMENT",
+						"fullPath": [
+							"PROFITABILITYSEGMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PROFITABILITYSEGMENT_2",
+						"fullPath": [
+							"PROFITABILITYSEGMENT_2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COSTCENTER",
+						"fullPath": [
+							"COSTCENTER"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORIGINSDDOCUMENT",
+						"fullPath": [
+							"ORIGINSDDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ORIGINSDDOCUMENTITEM",
+						"fullPath": [
+							"ORIGINSDDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "PRICEDETNEXCHANGERATEDATE",
+						"fullPath": [
+							"PRICEDETNEXCHANGERATEDATE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "EXCHANGERATETYPE",
+						"fullPath": [
+							"EXCHANGERATETYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "FISCALYEARVARIANT",
+						"fullPath": [
+							"FISCALYEARVARIANT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CURRENCY",
+						"fullPath": [
+							"CURRENCY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTINGEXCHANGERATE",
+						"fullPath": [
+							"ACCOUNTINGEXCHANGERATE"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTINGEXCHANGERATEISSET",
+						"fullPath": [
+							"ACCOUNTINGEXCHANGERATEISSET"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "REFERENCESDDOCUMENT",
+						"fullPath": [
+							"REFERENCESDDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "REFERENCESDDOCUMENTITEM",
+						"fullPath": [
+							"REFERENCESDDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "REFERENCESDDOCUMENTCATEGORY",
+						"fullPath": [
+							"REFERENCESDDOCUMENTCATEGORY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESDOCUMENT",
+						"fullPath": [
+							"SALESDOCUMENT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESDOCUMENTITEM",
+						"fullPath": [
+							"SALESDOCUMENTITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESSDDOCUMENTCATEGORY",
+						"fullPath": [
+							"SALESSDDOCUMENTCATEGORY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "HIGHERLEVELITEM",
+						"fullPath": [
+							"HIGHERLEVELITEM"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGDOCUMENTITEMINPARTSGMT",
+						"fullPath": [
+							"BILLINGDOCUMENTITEMINPARTSGMT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESGROUP",
+						"fullPath": [
+							"SALESGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALCUSTOMERGROUP1",
+						"fullPath": [
+							"ADDITIONALCUSTOMERGROUP1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALCUSTOMERGROUP2",
+						"fullPath": [
+							"ADDITIONALCUSTOMERGROUP2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALCUSTOMERGROUP3",
+						"fullPath": [
+							"ADDITIONALCUSTOMERGROUP3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALCUSTOMERGROUP4",
+						"fullPath": [
+							"ADDITIONALCUSTOMERGROUP4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ADDITIONALCUSTOMERGROUP5",
+						"fullPath": [
+							"ADDITIONALCUSTOMERGROUP5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SDDOCUMENTREASON",
+						"fullPath": [
+							"SDDOCUMENTREASON"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ITEMISRELEVANTFORCREDIT",
+						"fullPath": [
+							"ITEMISRELEVANTFORCREDIT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CREDITRELATEDPRICE",
+						"fullPath": [
+							"CREDITRELATEDPRICE"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESDISTRICT",
+						"fullPath": [
+							"SALESDISTRICT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "CUSTOMERGROUP",
+						"fullPath": [
+							"CUSTOMERGROUP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SOLDTOPARTY",
+						"fullPath": [
+							"SOLDTOPARTY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "COUNTRY",
+						"fullPath": [
+							"COUNTRY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SHIPTOPARTY",
+						"fullPath": [
+							"SHIPTOPARTY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLTOPARTY",
+						"fullPath": [
+							"BILLTOPARTY"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SALESEMPLOYEE",
+						"fullPath": [
+							"SALESEMPLOYEE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "RESPONSIBLEEMPLOYEE",
+						"fullPath": [
+							"RESPONSIBLEEMPLOYEE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SHIPPINGPOINT",
+						"fullPath": [
+							"SHIPPINGPOINT"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INCOTERMSVERSION",
+						"fullPath": [
+							"INCOTERMSVERSION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INCOTERMSCLASSIFICATION",
+						"fullPath": [
+							"INCOTERMSCLASSIFICATION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INCOTERMSTRANSFERLOCATION",
+						"fullPath": [
+							"INCOTERMSTRANSFERLOCATION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INCOTERMSLOCATION1",
+						"fullPath": [
+							"INCOTERMSLOCATION1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INCOTERMSLOCATION2",
+						"fullPath": [
+							"INCOTERMSLOCATION2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "SHIPPINGCONDITION",
+						"fullPath": [
+							"SHIPPINGCONDITION"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "OVERALLSDPROCESSSTATUS",
+						"fullPath": [
+							"OVERALLSDPROCESSSTATUS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "OVERALLBILLINGSTATUS",
+						"fullPath": [
+							"OVERALLBILLINGSTATUS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTINGPOSTINGSTATUS",
+						"fullPath": [
+							"ACCOUNTINGPOSTINGSTATUS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ACCOUNTINGTRANSFERSTATUS",
+						"fullPath": [
+							"ACCOUNTINGTRANSFERSTATUS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "BILLINGISSUETYPE",
+						"fullPath": [
+							"BILLINGISSUETYPE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "INVOICELISTSTATUS",
+						"fullPath": [
+							"INVOICELISTSTATUS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "OVRLITMGENERALINCOMPLETIONSTS",
+						"fullPath": [
+							"OVRLITMGENERALINCOMPLETIONSTS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "OVERALLPRICINGINCOMPLETIONSTS",
+						"fullPath": [
+							"OVERALLPRICINGINCOMPLETIONSTS"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ODQ_CHANGEMODE",
+						"fullPath": [
+							"ODQ_CHANGEMODE"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ODQ_ENTITYCNTR",
+						"fullPath": [
+							"ODQ_ENTITYCNTR"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loaddt",
+						"fullPath": [
+							"loaddt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

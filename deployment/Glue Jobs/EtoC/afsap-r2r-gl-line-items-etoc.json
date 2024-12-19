@@ -1,0 +1,7481 @@
+{
+	"jobConfig": {
+		"name": "afsap-r2r-gl-line-items-etoc",
+		"description": "",
+		"role": "<your_glue_iam_role_arn>",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"jobRunQueuingEnabled": false,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "afsap-r2r-gl-line-items-etoc.py",
+		"scriptLocation": "s3://<your_glue_assets_bucket>/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [
+			{
+				"key": "--conf",
+				"value": "spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.AwsDataCatalog.warehouse=s3://<your_s3_curated_bucket>/ --conf spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.iceberg.handle-timestamp-without-timezone=true",
+				"existing": false
+			}
+		],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2024-09-27T07:42:33.666Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://<your_glue_assets_bucket>/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-disable",
+		"sparkPath": "s3://<your_glue_assets_bucket>/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1720195476327": {
+			"nodeId": "node-1720195476327",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1721075170335"
+			],
+			"name": "MergeToTarget",
+			"generatedNodeName": "MergeToTarget_node1720195476327",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1721075170335",
+					"alias": "sdf"
+				}
+			],
+			"outputSchemas": [
+				[]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "MERGE INTO AwsDataCatalog.<your_curated_glue_catalog_db>.cds_gl_line_items t\nUSING (SELECT * FROM sdf) s on s.accountingdocument = t.accountingdocument AND s.companycode = t.companycode AND s.fiscalyear = t.fiscalyear AND s.ledgergllineitem = t.ledgergllineitem AND s.sourceledger = t.sourceledger \nWHEN MATCHED AND s.odq_changemode = 'D' THEN delete\nWHEN MATCHED AND s.odq_changemode <> 'D' THEN UPDATE SET * \nWHEN NOT MATCHED AND s.odq_changemode <> 'D' THEN INSERT *",
+			"codeGenVersion": 2
+		},
+		"node-1721075170335": {
+			"nodeId": "node-1721075170335",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722906721636"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1721075170335",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "sourceledger",
+					"fromPath": [
+						"sourceledger"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "companycode",
+					"fromPath": [
+						"companycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fiscalyear",
+					"fromPath": [
+						"fiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountingdocument",
+					"fromPath": [
+						"accountingdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ledgergllineitem",
+					"fromPath": [
+						"ledgergllineitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ledgerfiscalyear",
+					"fromPath": [
+						"ledgerfiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "glrecordtype",
+					"fromPath": [
+						"glrecordtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jrnlentraltvfyconsecutiveid",
+					"fromPath": [
+						"jrnlentraltvfyconsecutiveid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "chartofaccounts",
+					"fromPath": [
+						"chartofaccounts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingarea",
+					"fromPath": [
+						"controllingarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialtransactiontype",
+					"fromPath": [
+						"financialtransactiontype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "glbusinesstransactiontype",
+					"fromPath": [
+						"glbusinesstransactiontype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businesstransactioncategory",
+					"fromPath": [
+						"businesstransactioncategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businesstransactiontype",
+					"fromPath": [
+						"businesstransactiontype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialclosingstep",
+					"fromPath": [
+						"financialclosingstep"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingbustransactype",
+					"fromPath": [
+						"controllingbustransactype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencedocumenttype",
+					"fromPath": [
+						"referencedocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "logicalsystem",
+					"fromPath": [
+						"logicalsystem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencedocumentcontext",
+					"fromPath": [
+						"referencedocumentcontext"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencedocument",
+					"fromPath": [
+						"referencedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencedocumentitem",
+					"fromPath": [
+						"referencedocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencedocumentitemgroup",
+					"fromPath": [
+						"referencedocumentitemgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transactionsubitem",
+					"fromPath": [
+						"transactionsubitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isreversal",
+					"fromPath": [
+						"isreversal"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isreversed",
+					"fromPath": [
+						"isreversed"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "reversalreferencedocumentcntxt",
+					"fromPath": [
+						"reversalreferencedocumentcntxt"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "reversalreferencedocument",
+					"fromPath": [
+						"reversalreferencedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "reversaltransactionsubitem",
+					"fromPath": [
+						"reversaltransactionsubitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "issettlement",
+					"fromPath": [
+						"issettlement"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "issettled",
+					"fromPath": [
+						"issettled"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "predecessorreferencedoctype",
+					"fromPath": [
+						"predecessorreferencedoctype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "predecessorreferencedoccntxt",
+					"fromPath": [
+						"predecessorreferencedoccntxt"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "predecessorreferencedocument",
+					"fromPath": [
+						"predecessorreferencedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "predecessorreferencedocitem",
+					"fromPath": [
+						"predecessorreferencedocitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prdcssrjournalentrycompanycode",
+					"fromPath": [
+						"prdcssrjournalentrycompanycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prdcssrjournalentryfiscalyear",
+					"fromPath": [
+						"prdcssrjournalentryfiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "predecessorjournalentry",
+					"fromPath": [
+						"predecessorjournalentry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "predecessorjournalentryitem",
+					"fromPath": [
+						"predecessorjournalentryitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sourcereferencedocumenttype",
+					"fromPath": [
+						"sourcereferencedocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sourcelogicalsystem",
+					"fromPath": [
+						"sourcelogicalsystem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sourcereferencedocumentcntxt",
+					"fromPath": [
+						"sourcereferencedocumentcntxt"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sourcereferencedocument",
+					"fromPath": [
+						"sourcereferencedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sourcereferencedocumentitem",
+					"fromPath": [
+						"sourcereferencedocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sourcereferencedocsubitem",
+					"fromPath": [
+						"sourcereferencedocsubitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "iscommitment",
+					"fromPath": [
+						"iscommitment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jrnlentryitemobsoletereason",
+					"fromPath": [
+						"jrnlentryitemobsoletereason"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "journalentryissecondaryentry",
+					"fromPath": [
+						"journalentryissecondaryentry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jrnlperiodendclosingrunloguuid",
+					"fromPath": [
+						"jrnlperiodendclosingrunloguuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "organizationalchange",
+					"fromPath": [
+						"organizationalchange"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "glaccount",
+					"fromPath": [
+						"glaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costcenter",
+					"fromPath": [
+						"costcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "profitcenter",
+					"fromPath": [
+						"profitcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "functionalarea",
+					"fromPath": [
+						"functionalarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businessarea",
+					"fromPath": [
+						"businessarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "segment",
+					"fromPath": [
+						"segment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnercostcenter",
+					"fromPath": [
+						"partnercostcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerprofitcenter",
+					"fromPath": [
+						"partnerprofitcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerfunctionalarea",
+					"fromPath": [
+						"partnerfunctionalarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerbusinessarea",
+					"fromPath": [
+						"partnerbusinessarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnercompany",
+					"fromPath": [
+						"partnercompany"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnersegment",
+					"fromPath": [
+						"partnersegment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "balancetransactioncurrency",
+					"fromPath": [
+						"balancetransactioncurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinbalancetransaccrcy",
+					"fromPath": [
+						"amountinbalancetransaccrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transactioncurrency",
+					"fromPath": [
+						"transactioncurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountintransactioncurrency",
+					"fromPath": [
+						"amountintransactioncurrency"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "companycodecurrency",
+					"fromPath": [
+						"companycodecurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountincompanycodecurrency",
+					"fromPath": [
+						"amountincompanycodecurrency"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "globalcurrency",
+					"fromPath": [
+						"globalcurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinglobalcurrency",
+					"fromPath": [
+						"amountinglobalcurrency"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "functionalcurrency",
+					"fromPath": [
+						"functionalcurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfunctionalcurrency",
+					"fromPath": [
+						"amountinfunctionalcurrency"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency1",
+					"fromPath": [
+						"freedefinedcurrency1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency1",
+					"fromPath": [
+						"amountinfreedefinedcurrency1"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency2",
+					"fromPath": [
+						"freedefinedcurrency2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency2",
+					"fromPath": [
+						"amountinfreedefinedcurrency2"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency3",
+					"fromPath": [
+						"freedefinedcurrency3"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency3",
+					"fromPath": [
+						"amountinfreedefinedcurrency3"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency4",
+					"fromPath": [
+						"freedefinedcurrency4"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency4",
+					"fromPath": [
+						"amountinfreedefinedcurrency4"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency5",
+					"fromPath": [
+						"freedefinedcurrency5"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency5",
+					"fromPath": [
+						"amountinfreedefinedcurrency5"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency6",
+					"fromPath": [
+						"freedefinedcurrency6"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency6",
+					"fromPath": [
+						"amountinfreedefinedcurrency6"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency7",
+					"fromPath": [
+						"freedefinedcurrency7"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency7",
+					"fromPath": [
+						"amountinfreedefinedcurrency7"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "freedefinedcurrency8",
+					"fromPath": [
+						"freedefinedcurrency8"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinfreedefinedcurrency8",
+					"fromPath": [
+						"amountinfreedefinedcurrency8"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fixedamountinglobalcrcy",
+					"fromPath": [
+						"fixedamountinglobalcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grpvalnfixedamtinglobcrcy",
+					"fromPath": [
+						"grpvalnfixedamtinglobcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prftctrvalnfxdamtinglobcrcy",
+					"fromPath": [
+						"prftctrvalnfxdamtinglobcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fixedamountincocodecrcy",
+					"fromPath": [
+						"fixedamountincocodecrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fixedamountintranscrcy",
+					"fromPath": [
+						"fixedamountintranscrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalpricevarcinglobalcrcy",
+					"fromPath": [
+						"totalpricevarcinglobalcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grpvalntotprcvarcinglobcrcy",
+					"fromPath": [
+						"grpvalntotprcvarcinglobcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prftctrvalntotprcvarcinglbcrcy",
+					"fromPath": [
+						"prftctrvalntotprcvarcinglbcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fixedpricevarcinglobalcrcy",
+					"fromPath": [
+						"fixedpricevarcinglobalcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grpvalnfixedprcvarcinglobcrcy",
+					"fromPath": [
+						"grpvalnfixedprcvarcinglobcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "prftctrvalnfxdprcvarcinglbcrcy",
+					"fromPath": [
+						"prftctrvalnfxdprcvarcinglbcrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingobjectcurrency",
+					"fromPath": [
+						"controllingobjectcurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountinobjectcurrency",
+					"fromPath": [
+						"amountinobjectcurrency"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grantcurrency",
+					"fromPath": [
+						"grantcurrency"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "amountingrantcurrency",
+					"fromPath": [
+						"amountingrantcurrency"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "baseunit",
+					"fromPath": [
+						"baseunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "quantity",
+					"fromPath": [
+						"quantity"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fixedquantity",
+					"fromPath": [
+						"fixedquantity"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costsourceunit",
+					"fromPath": [
+						"costsourceunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "valuationquantity",
+					"fromPath": [
+						"valuationquantity"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "valuationfixedquantity",
+					"fromPath": [
+						"valuationfixedquantity"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencequantityunit",
+					"fromPath": [
+						"referencequantityunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencequantity",
+					"fromPath": [
+						"referencequantity"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "additionalquantity1unit",
+					"fromPath": [
+						"additionalquantity1unit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "additionalquantity1",
+					"fromPath": [
+						"additionalquantity1"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "additionalquantity2unit",
+					"fromPath": [
+						"additionalquantity2unit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "additionalquantity2",
+					"fromPath": [
+						"additionalquantity2"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "additionalquantity3unit",
+					"fromPath": [
+						"additionalquantity3unit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "additionalquantity3",
+					"fromPath": [
+						"additionalquantity3"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "debitcreditcode",
+					"fromPath": [
+						"debitcreditcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fiscalperiod",
+					"fromPath": [
+						"fiscalperiod"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fiscalyearvariant",
+					"fromPath": [
+						"fiscalyearvariant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fiscalyearperiod",
+					"fromPath": [
+						"fiscalyearperiod"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "postingdate",
+					"fromPath": [
+						"postingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "documentdate",
+					"fromPath": [
+						"documentdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountingdocumenttype",
+					"fromPath": [
+						"accountingdocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountingdocumentitem",
+					"fromPath": [
+						"accountingdocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assignmentreference",
+					"fromPath": [
+						"assignmentreference"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountingdocumentcategory",
+					"fromPath": [
+						"accountingdocumentcategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "journalentryitemcategory",
+					"fromPath": [
+						"journalentryitemcategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "postingkey",
+					"fromPath": [
+						"postingkey"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transactiontypedetermination",
+					"fromPath": [
+						"transactiontypedetermination"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subledgeracctlineitemtype",
+					"fromPath": [
+						"subledgeracctlineitemtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountingdoccreatedbyuser",
+					"fromPath": [
+						"accountingdoccreatedbyuser"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "lastchangedatetime",
+					"fromPath": [
+						"lastchangedatetime"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creationdatetime",
+					"fromPath": [
+						"creationdatetime"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creationdate",
+					"fromPath": [
+						"creationdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "eliminationprofitcenter",
+					"fromPath": [
+						"eliminationprofitcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originobjecttype",
+					"fromPath": [
+						"originobjecttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "glaccounttype",
+					"fromPath": [
+						"glaccounttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "alternativeglaccount",
+					"fromPath": [
+						"alternativeglaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "countrychartofaccounts",
+					"fromPath": [
+						"countrychartofaccounts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "itemissplit",
+					"fromPath": [
+						"itemissplit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "consolidationunit",
+					"fromPath": [
+						"consolidationunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerconsolidationunit",
+					"fromPath": [
+						"partnerconsolidationunit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "company",
+					"fromPath": [
+						"company"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "consolidationchartofaccounts",
+					"fromPath": [
+						"consolidationchartofaccounts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cnsldtnfinancialstatementitem",
+					"fromPath": [
+						"cnsldtnfinancialstatementitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cnsldtnsubitemcategory",
+					"fromPath": [
+						"cnsldtnsubitemcategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cnsldtnsubitem",
+					"fromPath": [
+						"cnsldtnsubitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "invoicereference",
+					"fromPath": [
+						"invoicereference"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "invoicereferencefiscalyear",
+					"fromPath": [
+						"invoicereferencefiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "followondocumenttype",
+					"fromPath": [
+						"followondocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "invoiceitemreference",
+					"fromPath": [
+						"invoiceitemreference"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "referencepurchaseordercategory",
+					"fromPath": [
+						"referencepurchaseordercategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchasingdocument",
+					"fromPath": [
+						"purchasingdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "purchasingdocumentitem",
+					"fromPath": [
+						"purchasingdocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountassignmentnumber",
+					"fromPath": [
+						"accountassignmentnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "documentitemtext",
+					"fromPath": [
+						"documentitemtext"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesdocument",
+					"fromPath": [
+						"salesdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesdocumentitem",
+					"fromPath": [
+						"salesdocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "product",
+					"fromPath": [
+						"product"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plant",
+					"fromPath": [
+						"plant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "supplier",
+					"fromPath": [
+						"supplier"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customer",
+					"fromPath": [
+						"customer"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicesrendereddate",
+					"fromPath": [
+						"servicesrendereddate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "performanceperiodstartdate",
+					"fromPath": [
+						"performanceperiodstartdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "performanceperiodenddate",
+					"fromPath": [
+						"performanceperiodenddate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "conditioncontract",
+					"fromPath": [
+						"conditioncontract"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "exchangeratedate",
+					"fromPath": [
+						"exchangeratedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialaccounttype",
+					"fromPath": [
+						"financialaccounttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "specialglcode",
+					"fromPath": [
+						"specialglcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxcode",
+					"fromPath": [
+						"taxcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "taxcountry",
+					"fromPath": [
+						"taxcountry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "housebank",
+					"fromPath": [
+						"housebank"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "housebankaccount",
+					"fromPath": [
+						"housebankaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "isopenitemmanaged",
+					"fromPath": [
+						"isopenitemmanaged"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clearingdate",
+					"fromPath": [
+						"clearingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clearingdocfiscalyear",
+					"fromPath": [
+						"clearingdocfiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clearingaccountingdocument",
+					"fromPath": [
+						"clearingaccountingdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clearingjournalentryfiscalyear",
+					"fromPath": [
+						"clearingjournalentryfiscalyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clearingjournalentry",
+					"fromPath": [
+						"clearingjournalentry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "valuedate",
+					"fromPath": [
+						"valuedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "generalledgeragingscope",
+					"fromPath": [
+						"generalledgeragingscope"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "generalledgeragingincrement",
+					"fromPath": [
+						"generalledgeragingincrement"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assetdepreciationarea",
+					"fromPath": [
+						"assetdepreciationarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "masterfixedasset",
+					"fromPath": [
+						"masterfixedasset"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fixedasset",
+					"fromPath": [
+						"fixedasset"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assetvaluedate",
+					"fromPath": [
+						"assetvaluedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assettransactiontype",
+					"fromPath": [
+						"assettransactiontype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assetaccttransclassfctn",
+					"fromPath": [
+						"assetaccttransclassfctn"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "depreciationfiscalperiod",
+					"fromPath": [
+						"depreciationfiscalperiod"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "groupmasterfixedasset",
+					"fromPath": [
+						"groupmasterfixedasset"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "groupfixedasset",
+					"fromPath": [
+						"groupfixedasset"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assetclass",
+					"fromPath": [
+						"assetclass"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnermasterfixedasset",
+					"fromPath": [
+						"partnermasterfixedasset"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerfixedasset",
+					"fromPath": [
+						"partnerfixedasset"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costestimate",
+					"fromPath": [
+						"costestimate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryspecialstockvalntype",
+					"fromPath": [
+						"inventoryspecialstockvalntype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "issupplierstockvaluation",
+					"fromPath": [
+						"issupplierstockvaluation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryspecialstocktype",
+					"fromPath": [
+						"inventoryspecialstocktype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryspclstksalesdocument",
+					"fromPath": [
+						"inventoryspclstksalesdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryspclstksalesdocitm",
+					"fromPath": [
+						"inventoryspclstksalesdocitm"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "invtryspclstockwbselmntintid",
+					"fromPath": [
+						"invtryspclstockwbselmntintid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryspclstockwbselement",
+					"fromPath": [
+						"inventoryspclstockwbselement"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryspecialstocksupplier",
+					"fromPath": [
+						"inventoryspecialstocksupplier"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "inventoryvaluationtype",
+					"fromPath": [
+						"inventoryvaluationtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "valuationarea",
+					"fromPath": [
+						"valuationarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "materialledgerprocesstype",
+					"fromPath": [
+						"materialledgerprocesstype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "materialledgercategory",
+					"fromPath": [
+						"materialledgercategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "slspriceamountincocodecrcy",
+					"fromPath": [
+						"slspriceamountincocodecrcy"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "productpricecontrol",
+					"fromPath": [
+						"productpricecontrol"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sendercompanycode",
+					"fromPath": [
+						"sendercompanycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "senderglaccount",
+					"fromPath": [
+						"senderglaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "senderaccountassignment",
+					"fromPath": [
+						"senderaccountassignment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "senderaccountassignmenttype",
+					"fromPath": [
+						"senderaccountassignmenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingobject",
+					"fromPath": [
+						"controllingobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costorigingroup",
+					"fromPath": [
+						"costorigingroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originsenderobject",
+					"fromPath": [
+						"originsenderobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingdebitcreditcode",
+					"fromPath": [
+						"controllingdebitcreditcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originctrlgdebitcreditcode",
+					"fromPath": [
+						"originctrlgdebitcreditcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingobjectdebittype",
+					"fromPath": [
+						"controllingobjectdebittype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "quantityisincomplete",
+					"fromPath": [
+						"quantityisincomplete"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "offsettingaccount",
+					"fromPath": [
+						"offsettingaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "offsettingaccounttype",
+					"fromPath": [
+						"offsettingaccounttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "offsettingchartofaccounts",
+					"fromPath": [
+						"offsettingchartofaccounts"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "lineitemiscompleted",
+					"fromPath": [
+						"lineitemiscompleted"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "personnelnumber",
+					"fromPath": [
+						"personnelnumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingobjectclass",
+					"fromPath": [
+						"controllingobjectclass"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnercompanycode",
+					"fromPath": [
+						"partnercompanycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnercontrollingobjectclass",
+					"fromPath": [
+						"partnercontrollingobjectclass"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originprofitcenter",
+					"fromPath": [
+						"originprofitcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originorder",
+					"fromPath": [
+						"originorder"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "origincostctractivitytype",
+					"fromPath": [
+						"origincostctractivitytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "origincostcenter",
+					"fromPath": [
+						"origincostcenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originproduct",
+					"fromPath": [
+						"originproduct"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "varianceoriginglaccount",
+					"fromPath": [
+						"varianceoriginglaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountassignment",
+					"fromPath": [
+						"accountassignment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accountassignmenttype",
+					"fromPath": [
+						"accountassignmenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costctractivitytype",
+					"fromPath": [
+						"costctractivitytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "orderid",
+					"fromPath": [
+						"orderid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ordercategory",
+					"fromPath": [
+						"ordercategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "wbselementinternalid",
+					"fromPath": [
+						"wbselementinternalid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "wbselement",
+					"fromPath": [
+						"wbselement"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerwbselementinternalid",
+					"fromPath": [
+						"partnerwbselementinternalid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerwbselement",
+					"fromPath": [
+						"partnerwbselement"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "projectinternalid",
+					"fromPath": [
+						"projectinternalid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "project",
+					"fromPath": [
+						"project"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerprojectinternalid",
+					"fromPath": [
+						"partnerprojectinternalid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerproject",
+					"fromPath": [
+						"partnerproject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "operatingconcern",
+					"fromPath": [
+						"operatingconcern"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "projectnetwork",
+					"fromPath": [
+						"projectnetwork"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "relatednetworkactivity",
+					"fromPath": [
+						"relatednetworkactivity"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businessprocess",
+					"fromPath": [
+						"businessprocess"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costobject",
+					"fromPath": [
+						"costobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "billablecontrol",
+					"fromPath": [
+						"billablecontrol"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costanalysisresource",
+					"fromPath": [
+						"costanalysisresource"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customerservicenotification",
+					"fromPath": [
+						"customerservicenotification"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicedocumenttype",
+					"fromPath": [
+						"servicedocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicedocument",
+					"fromPath": [
+						"servicedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicedocumentitem",
+					"fromPath": [
+						"servicedocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerservicedocumenttype",
+					"fromPath": [
+						"partnerservicedocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerservicedocument",
+					"fromPath": [
+						"partnerservicedocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerservicedocumentitem",
+					"fromPath": [
+						"partnerservicedocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicecontracttype",
+					"fromPath": [
+						"servicecontracttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicecontract",
+					"fromPath": [
+						"servicecontract"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "servicecontractitem",
+					"fromPath": [
+						"servicecontractitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businesssolutionorder",
+					"fromPath": [
+						"businesssolutionorder"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "businesssolutionorderitem",
+					"fromPath": [
+						"businesssolutionorderitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "providercontract",
+					"fromPath": [
+						"providercontract"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "providercontractitem",
+					"fromPath": [
+						"providercontractitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "revenueaccountingcontract",
+					"fromPath": [
+						"revenueaccountingcontract"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "performanceobligation",
+					"fromPath": [
+						"performanceobligation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "timesheetovertimecategory",
+					"fromPath": [
+						"timesheetovertimecategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partneraccountassignment",
+					"fromPath": [
+						"partneraccountassignment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partneraccountassignmenttype",
+					"fromPath": [
+						"partneraccountassignmenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "workpackage",
+					"fromPath": [
+						"workpackage"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "workitem",
+					"fromPath": [
+						"workitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnercostctractivitytype",
+					"fromPath": [
+						"partnercostctractivitytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerorder",
+					"fromPath": [
+						"partnerorder"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerordercategory",
+					"fromPath": [
+						"partnerordercategory"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnersalesdocument",
+					"fromPath": [
+						"partnersalesdocument"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnersalesdocumentitem",
+					"fromPath": [
+						"partnersalesdocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerprojectnetwork",
+					"fromPath": [
+						"partnerprojectnetwork"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerprojectnetworkactivity",
+					"fromPath": [
+						"partnerprojectnetworkactivity"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerbusinessprocess",
+					"fromPath": [
+						"partnerbusinessprocess"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnercostobject",
+					"fromPath": [
+						"partnercostobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "controllingdocumentitem",
+					"fromPath": [
+						"controllingdocumentitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "varianceorigingroup",
+					"fromPath": [
+						"varianceorigingroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "billingdocumenttype",
+					"fromPath": [
+						"billingdocumenttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesorganization",
+					"fromPath": [
+						"salesorganization"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distributionchannel",
+					"fromPath": [
+						"distributionchannel"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "organizationdivision",
+					"fromPath": [
+						"organizationdivision"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "soldproduct",
+					"fromPath": [
+						"soldproduct"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "soldproductgroup",
+					"fromPath": [
+						"soldproductgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customergroup",
+					"fromPath": [
+						"customergroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customersuppliercountry",
+					"fromPath": [
+						"customersuppliercountry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customersupplierindustry",
+					"fromPath": [
+						"customersupplierindustry"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "salesdistrict",
+					"fromPath": [
+						"salesdistrict"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "billtoparty",
+					"fromPath": [
+						"billtoparty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shiptoparty",
+					"fromPath": [
+						"shiptoparty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "customersuppliercorporategroup",
+					"fromPath": [
+						"customersuppliercorporategroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cashledgercompanycode",
+					"fromPath": [
+						"cashledgercompanycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cashledgeraccount",
+					"fromPath": [
+						"cashledgeraccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialmanagementarea",
+					"fromPath": [
+						"financialmanagementarea"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fundscenter",
+					"fromPath": [
+						"fundscenter"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fundedprogram",
+					"fromPath": [
+						"fundedprogram"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fund",
+					"fromPath": [
+						"fund"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grantid",
+					"fromPath": [
+						"grantid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "budgetperiod",
+					"fromPath": [
+						"budgetperiod"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerfund",
+					"fromPath": [
+						"partnerfund"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnergrant",
+					"fromPath": [
+						"partnergrant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerbudgetperiod",
+					"fromPath": [
+						"partnerbudgetperiod"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetaccount",
+					"fromPath": [
+						"pubsecbudgetaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetaccountcocode",
+					"fromPath": [
+						"pubsecbudgetaccountcocode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetcnsmpndate",
+					"fromPath": [
+						"pubsecbudgetcnsmpndate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetcnsmpnfsclperiod",
+					"fromPath": [
+						"pubsecbudgetcnsmpnfsclperiod"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetcnsmpnfsclyear",
+					"fromPath": [
+						"pubsecbudgetcnsmpnfsclyear"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetisrelevant",
+					"fromPath": [
+						"pubsecbudgetisrelevant"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetcnsmpntype",
+					"fromPath": [
+						"pubsecbudgetcnsmpntype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pubsecbudgetcnsmpnamttype",
+					"fromPath": [
+						"pubsecbudgetcnsmpnamttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sponsoredprogram",
+					"fromPath": [
+						"sponsoredprogram"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sponsoredclass",
+					"fromPath": [
+						"sponsoredclass"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "gteembudgetvaliditynumber",
+					"fromPath": [
+						"gteembudgetvaliditynumber"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventure",
+					"fromPath": [
+						"jointventure"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventureequitygroup",
+					"fromPath": [
+						"jointventureequitygroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventurecostrecoverycode",
+					"fromPath": [
+						"jointventurecostrecoverycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventurepartner",
+					"fromPath": [
+						"jointventurepartner"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventurebillingtype",
+					"fromPath": [
+						"jointventurebillingtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventureequitytype",
+					"fromPath": [
+						"jointventureequitytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventureproductiondate",
+					"fromPath": [
+						"jointventureproductiondate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventurebillingdate",
+					"fromPath": [
+						"jointventurebillingdate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventureoperationaldate",
+					"fromPath": [
+						"jointventureoperationaldate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cutbackrun",
+					"fromPath": [
+						"cutbackrun"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jointventureaccountingactivity",
+					"fromPath": [
+						"jointventureaccountingactivity"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerventure",
+					"fromPath": [
+						"partnerventure"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerequitygroup",
+					"fromPath": [
+						"partnerequitygroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sendercostrecoverycode",
+					"fromPath": [
+						"sendercostrecoverycode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cutbackaccount",
+					"fromPath": [
+						"cutbackaccount"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cutbackcostobject",
+					"fromPath": [
+						"cutbackcostobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rebusinessentity",
+					"fromPath": [
+						"rebusinessentity"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "realestatebuilding",
+					"fromPath": [
+						"realestatebuilding"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "realestateproperty",
+					"fromPath": [
+						"realestateproperty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rerentalobject",
+					"fromPath": [
+						"rerentalobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "realestatecontract",
+					"fromPath": [
+						"realestatecontract"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "reservicechargekey",
+					"fromPath": [
+						"reservicechargekey"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "resettlementunitid",
+					"fromPath": [
+						"resettlementunitid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "settlementreferencedate",
+					"fromPath": [
+						"settlementreferencedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "repartnerbusinessentity",
+					"fromPath": [
+						"repartnerbusinessentity"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "realestatepartnerbuilding",
+					"fromPath": [
+						"realestatepartnerbuilding"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "realestatepartnerproperty",
+					"fromPath": [
+						"realestatepartnerproperty"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "repartnerrentalobject",
+					"fromPath": [
+						"repartnerrentalobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "realestatepartnercontract",
+					"fromPath": [
+						"realestatepartnercontract"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "repartnerservicechargekey",
+					"fromPath": [
+						"repartnerservicechargekey"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "repartnersettlementunitid",
+					"fromPath": [
+						"repartnersettlementunitid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnersettlementreferencedate",
+					"fromPath": [
+						"partnersettlementreferencedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualobjecttype",
+					"fromPath": [
+						"accrualobjecttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualobjectlogicalsystem",
+					"fromPath": [
+						"accrualobjectlogicalsystem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualobject",
+					"fromPath": [
+						"accrualobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualsubobject",
+					"fromPath": [
+						"accrualsubobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualitemtype",
+					"fromPath": [
+						"accrualitemtype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualreferenceobject",
+					"fromPath": [
+						"accrualreferenceobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "accrualvaluedate",
+					"fromPath": [
+						"accrualvaluedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialvaluationobjecttype",
+					"fromPath": [
+						"financialvaluationobjecttype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialvaluationobject",
+					"fromPath": [
+						"financialvaluationobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "financialvaluationsubobject",
+					"fromPath": [
+						"financialvaluationsubobject"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "netduedate",
+					"fromPath": [
+						"netduedate"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "creditriskclass",
+					"fromPath": [
+						"creditriskclass"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "workcenterinternalid",
+					"fromPath": [
+						"workcenterinternalid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "orderoperation",
+					"fromPath": [
+						"orderoperation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "orderitem",
+					"fromPath": [
+						"orderitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partnerorderitem",
+					"fromPath": [
+						"partnerorderitem"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ordersuboperation",
+					"fromPath": [
+						"ordersuboperation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "equipment",
+					"fromPath": [
+						"equipment"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "functionallocation",
+					"fromPath": [
+						"functionallocation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "assembly",
+					"fromPath": [
+						"assembly"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "maintenanceactivitytype",
+					"fromPath": [
+						"maintenanceactivitytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "maintenanceorderplanningcode",
+					"fromPath": [
+						"maintenanceorderplanningcode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "maintprioritytype",
+					"fromPath": [
+						"maintprioritytype"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "maintpriority",
+					"fromPath": [
+						"maintpriority"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "superiororder",
+					"fromPath": [
+						"superiororder"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "productgroup",
+					"fromPath": [
+						"productgroup"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "maintenanceorderisplanned",
+					"fromPath": [
+						"maintenanceorderisplanned"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "originorderoperation",
+					"fromPath": [
+						"originorderoperation"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "jrnlentryitemmigrationsource",
+					"fromPath": [
+						"jrnlentryitemmigrationsource"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_changemode",
+					"fromPath": [
+						"odq_changemode"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "odq_entitycntr",
+					"fromPath": [
+						"odq_entitycntr"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "loadts",
+					"fromPath": [
+						"loadts"
+					],
+					"toType": "timestamp",
+					"fromType": "timestamp",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "counter",
+					"fromPath": [
+						"counter"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722906262011": {
+			"nodeId": "node-1722906262011",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722907194885"
+			],
+			"name": "Select_Updated_Source_Data",
+			"generatedNodeName": "Select_Updated_Source_Data_node1722906262011",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "max_timestamp = spark.sql(\"\"\"\n        SELECT MAX(loadts) AS max_load_timestamp FROM AwsDataCatalog.<your_curated_glue_catalog_db>.cds_gl_line_items\n    \"\"\").collect()[0][\"max_load_timestamp\"]\nif max_timestamp is None:\n    max_timestamp = \"1970-01-01 00:00:00\"\nfiltered_data = spark.sql(f\"\"\"\n        SELECT *\n        FROM AwsDataCatalog.<your_enriched_glue_catalog_db>.cds_gl_line_items\n        WHERE loadts > cast('{max_timestamp}'as timestamp) \"\"\")    \ndyf = DynamicFrame.fromDF(filtered_data, glueContext, \"filtered_data\")\nreturn DynamicFrameCollection({\"Select_Updated_Source_Data\": dyf}, glueContext)\n\n\n",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "sourceledger",
+						"fullPath": [
+							"sourceledger"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "companycode",
+						"fullPath": [
+							"companycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalyear",
+						"fullPath": [
+							"fiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingdocument",
+						"fullPath": [
+							"accountingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ledgergllineitem",
+						"fullPath": [
+							"ledgergllineitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ledgerfiscalyear",
+						"fullPath": [
+							"ledgerfiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "glrecordtype",
+						"fullPath": [
+							"glrecordtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jrnlentraltvfyconsecutiveid",
+						"fullPath": [
+							"jrnlentraltvfyconsecutiveid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "chartofaccounts",
+						"fullPath": [
+							"chartofaccounts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingarea",
+						"fullPath": [
+							"controllingarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialtransactiontype",
+						"fullPath": [
+							"financialtransactiontype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "glbusinesstransactiontype",
+						"fullPath": [
+							"glbusinesstransactiontype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businesstransactioncategory",
+						"fullPath": [
+							"businesstransactioncategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businesstransactiontype",
+						"fullPath": [
+							"businesstransactiontype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialclosingstep",
+						"fullPath": [
+							"financialclosingstep"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingbustransactype",
+						"fullPath": [
+							"controllingbustransactype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencedocumenttype",
+						"fullPath": [
+							"referencedocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "logicalsystem",
+						"fullPath": [
+							"logicalsystem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencedocumentcontext",
+						"fullPath": [
+							"referencedocumentcontext"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencedocument",
+						"fullPath": [
+							"referencedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencedocumentitem",
+						"fullPath": [
+							"referencedocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencedocumentitemgroup",
+						"fullPath": [
+							"referencedocumentitemgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transactionsubitem",
+						"fullPath": [
+							"transactionsubitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isreversal",
+						"fullPath": [
+							"isreversal"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isreversed",
+						"fullPath": [
+							"isreversed"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "reversalreferencedocumentcntxt",
+						"fullPath": [
+							"reversalreferencedocumentcntxt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "reversalreferencedocument",
+						"fullPath": [
+							"reversalreferencedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "reversaltransactionsubitem",
+						"fullPath": [
+							"reversaltransactionsubitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "issettlement",
+						"fullPath": [
+							"issettlement"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "issettled",
+						"fullPath": [
+							"issettled"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "predecessorreferencedoctype",
+						"fullPath": [
+							"predecessorreferencedoctype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "predecessorreferencedoccntxt",
+						"fullPath": [
+							"predecessorreferencedoccntxt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "predecessorreferencedocument",
+						"fullPath": [
+							"predecessorreferencedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "predecessorreferencedocitem",
+						"fullPath": [
+							"predecessorreferencedocitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "prdcssrjournalentrycompanycode",
+						"fullPath": [
+							"prdcssrjournalentrycompanycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "prdcssrjournalentryfiscalyear",
+						"fullPath": [
+							"prdcssrjournalentryfiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "predecessorjournalentry",
+						"fullPath": [
+							"predecessorjournalentry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "predecessorjournalentryitem",
+						"fullPath": [
+							"predecessorjournalentryitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sourcereferencedocumenttype",
+						"fullPath": [
+							"sourcereferencedocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sourcelogicalsystem",
+						"fullPath": [
+							"sourcelogicalsystem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sourcereferencedocumentcntxt",
+						"fullPath": [
+							"sourcereferencedocumentcntxt"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sourcereferencedocument",
+						"fullPath": [
+							"sourcereferencedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sourcereferencedocumentitem",
+						"fullPath": [
+							"sourcereferencedocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sourcereferencedocsubitem",
+						"fullPath": [
+							"sourcereferencedocsubitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iscommitment",
+						"fullPath": [
+							"iscommitment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jrnlentryitemobsoletereason",
+						"fullPath": [
+							"jrnlentryitemobsoletereason"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "journalentryissecondaryentry",
+						"fullPath": [
+							"journalentryissecondaryentry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jrnlperiodendclosingrunloguuid",
+						"fullPath": [
+							"jrnlperiodendclosingrunloguuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationalchange",
+						"fullPath": [
+							"organizationalchange"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "glaccount",
+						"fullPath": [
+							"glaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costcenter",
+						"fullPath": [
+							"costcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "profitcenter",
+						"fullPath": [
+							"profitcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "functionalarea",
+						"fullPath": [
+							"functionalarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businessarea",
+						"fullPath": [
+							"businessarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segment",
+						"fullPath": [
+							"segment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnercostcenter",
+						"fullPath": [
+							"partnercostcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerprofitcenter",
+						"fullPath": [
+							"partnerprofitcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerfunctionalarea",
+						"fullPath": [
+							"partnerfunctionalarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerbusinessarea",
+						"fullPath": [
+							"partnerbusinessarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnercompany",
+						"fullPath": [
+							"partnercompany"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnersegment",
+						"fullPath": [
+							"partnersegment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "balancetransactioncurrency",
+						"fullPath": [
+							"balancetransactioncurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinbalancetransaccrcy",
+						"fullPath": [
+							"amountinbalancetransaccrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transactioncurrency",
+						"fullPath": [
+							"transactioncurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountintransactioncurrency",
+						"fullPath": [
+							"amountintransactioncurrency"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "companycodecurrency",
+						"fullPath": [
+							"companycodecurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountincompanycodecurrency",
+						"fullPath": [
+							"amountincompanycodecurrency"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "globalcurrency",
+						"fullPath": [
+							"globalcurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinglobalcurrency",
+						"fullPath": [
+							"amountinglobalcurrency"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "functionalcurrency",
+						"fullPath": [
+							"functionalcurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfunctionalcurrency",
+						"fullPath": [
+							"amountinfunctionalcurrency"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency1",
+						"fullPath": [
+							"freedefinedcurrency1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency1",
+						"fullPath": [
+							"amountinfreedefinedcurrency1"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency2",
+						"fullPath": [
+							"freedefinedcurrency2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency2",
+						"fullPath": [
+							"amountinfreedefinedcurrency2"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency3",
+						"fullPath": [
+							"freedefinedcurrency3"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency3",
+						"fullPath": [
+							"amountinfreedefinedcurrency3"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency4",
+						"fullPath": [
+							"freedefinedcurrency4"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency4",
+						"fullPath": [
+							"amountinfreedefinedcurrency4"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency5",
+						"fullPath": [
+							"freedefinedcurrency5"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency5",
+						"fullPath": [
+							"amountinfreedefinedcurrency5"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency6",
+						"fullPath": [
+							"freedefinedcurrency6"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency6",
+						"fullPath": [
+							"amountinfreedefinedcurrency6"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency7",
+						"fullPath": [
+							"freedefinedcurrency7"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency7",
+						"fullPath": [
+							"amountinfreedefinedcurrency7"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "freedefinedcurrency8",
+						"fullPath": [
+							"freedefinedcurrency8"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinfreedefinedcurrency8",
+						"fullPath": [
+							"amountinfreedefinedcurrency8"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedamountinglobalcrcy",
+						"fullPath": [
+							"fixedamountinglobalcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grpvalnfixedamtinglobcrcy",
+						"fullPath": [
+							"grpvalnfixedamtinglobcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "prftctrvalnfxdamtinglobcrcy",
+						"fullPath": [
+							"prftctrvalnfxdamtinglobcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedamountincocodecrcy",
+						"fullPath": [
+							"fixedamountincocodecrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedamountintranscrcy",
+						"fullPath": [
+							"fixedamountintranscrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalpricevarcinglobalcrcy",
+						"fullPath": [
+							"totalpricevarcinglobalcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grpvalntotprcvarcinglobcrcy",
+						"fullPath": [
+							"grpvalntotprcvarcinglobcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "prftctrvalntotprcvarcinglbcrcy",
+						"fullPath": [
+							"prftctrvalntotprcvarcinglbcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedpricevarcinglobalcrcy",
+						"fullPath": [
+							"fixedpricevarcinglobalcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grpvalnfixedprcvarcinglobcrcy",
+						"fullPath": [
+							"grpvalnfixedprcvarcinglobcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "prftctrvalnfxdprcvarcinglbcrcy",
+						"fullPath": [
+							"prftctrvalnfxdprcvarcinglbcrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingobjectcurrency",
+						"fullPath": [
+							"controllingobjectcurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountinobjectcurrency",
+						"fullPath": [
+							"amountinobjectcurrency"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grantcurrency",
+						"fullPath": [
+							"grantcurrency"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "amountingrantcurrency",
+						"fullPath": [
+							"amountingrantcurrency"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "baseunit",
+						"fullPath": [
+							"baseunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "quantity",
+						"fullPath": [
+							"quantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedquantity",
+						"fullPath": [
+							"fixedquantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costsourceunit",
+						"fullPath": [
+							"costsourceunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "valuationquantity",
+						"fullPath": [
+							"valuationquantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "valuationfixedquantity",
+						"fullPath": [
+							"valuationfixedquantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencequantityunit",
+						"fullPath": [
+							"referencequantityunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencequantity",
+						"fullPath": [
+							"referencequantity"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalquantity1unit",
+						"fullPath": [
+							"additionalquantity1unit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalquantity1",
+						"fullPath": [
+							"additionalquantity1"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalquantity2unit",
+						"fullPath": [
+							"additionalquantity2unit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalquantity2",
+						"fullPath": [
+							"additionalquantity2"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalquantity3unit",
+						"fullPath": [
+							"additionalquantity3unit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "additionalquantity3",
+						"fullPath": [
+							"additionalquantity3"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "debitcreditcode",
+						"fullPath": [
+							"debitcreditcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalperiod",
+						"fullPath": [
+							"fiscalperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalyearvariant",
+						"fullPath": [
+							"fiscalyearvariant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fiscalyearperiod",
+						"fullPath": [
+							"fiscalyearperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "postingdate",
+						"fullPath": [
+							"postingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "documentdate",
+						"fullPath": [
+							"documentdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingdocumenttype",
+						"fullPath": [
+							"accountingdocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingdocumentitem",
+						"fullPath": [
+							"accountingdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assignmentreference",
+						"fullPath": [
+							"assignmentreference"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingdocumentcategory",
+						"fullPath": [
+							"accountingdocumentcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "journalentryitemcategory",
+						"fullPath": [
+							"journalentryitemcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "postingkey",
+						"fullPath": [
+							"postingkey"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transactiontypedetermination",
+						"fullPath": [
+							"transactiontypedetermination"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subledgeracctlineitemtype",
+						"fullPath": [
+							"subledgeracctlineitemtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountingdoccreatedbyuser",
+						"fullPath": [
+							"accountingdoccreatedbyuser"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lastchangedatetime",
+						"fullPath": [
+							"lastchangedatetime"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationdatetime",
+						"fullPath": [
+							"creationdatetime"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creationdate",
+						"fullPath": [
+							"creationdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eliminationprofitcenter",
+						"fullPath": [
+							"eliminationprofitcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originobjecttype",
+						"fullPath": [
+							"originobjecttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "glaccounttype",
+						"fullPath": [
+							"glaccounttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "alternativeglaccount",
+						"fullPath": [
+							"alternativeglaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "countrychartofaccounts",
+						"fullPath": [
+							"countrychartofaccounts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "itemissplit",
+						"fullPath": [
+							"itemissplit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "consolidationunit",
+						"fullPath": [
+							"consolidationunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerconsolidationunit",
+						"fullPath": [
+							"partnerconsolidationunit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "company",
+						"fullPath": [
+							"company"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "consolidationchartofaccounts",
+						"fullPath": [
+							"consolidationchartofaccounts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cnsldtnfinancialstatementitem",
+						"fullPath": [
+							"cnsldtnfinancialstatementitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cnsldtnsubitemcategory",
+						"fullPath": [
+							"cnsldtnsubitemcategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cnsldtnsubitem",
+						"fullPath": [
+							"cnsldtnsubitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "invoicereference",
+						"fullPath": [
+							"invoicereference"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "invoicereferencefiscalyear",
+						"fullPath": [
+							"invoicereferencefiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "followondocumenttype",
+						"fullPath": [
+							"followondocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "invoiceitemreference",
+						"fullPath": [
+							"invoiceitemreference"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "referencepurchaseordercategory",
+						"fullPath": [
+							"referencepurchaseordercategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchasingdocument",
+						"fullPath": [
+							"purchasingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "purchasingdocumentitem",
+						"fullPath": [
+							"purchasingdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountassignmentnumber",
+						"fullPath": [
+							"accountassignmentnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "documentitemtext",
+						"fullPath": [
+							"documentitemtext"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdocument",
+						"fullPath": [
+							"salesdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdocumentitem",
+						"fullPath": [
+							"salesdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "product",
+						"fullPath": [
+							"product"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plant",
+						"fullPath": [
+							"plant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "supplier",
+						"fullPath": [
+							"supplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customer",
+						"fullPath": [
+							"customer"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicesrendereddate",
+						"fullPath": [
+							"servicesrendereddate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "performanceperiodstartdate",
+						"fullPath": [
+							"performanceperiodstartdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "performanceperiodenddate",
+						"fullPath": [
+							"performanceperiodenddate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "conditioncontract",
+						"fullPath": [
+							"conditioncontract"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "exchangeratedate",
+						"fullPath": [
+							"exchangeratedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialaccounttype",
+						"fullPath": [
+							"financialaccounttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "specialglcode",
+						"fullPath": [
+							"specialglcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxcode",
+						"fullPath": [
+							"taxcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "taxcountry",
+						"fullPath": [
+							"taxcountry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "housebank",
+						"fullPath": [
+							"housebank"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "housebankaccount",
+						"fullPath": [
+							"housebankaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "isopenitemmanaged",
+						"fullPath": [
+							"isopenitemmanaged"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clearingdate",
+						"fullPath": [
+							"clearingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clearingdocfiscalyear",
+						"fullPath": [
+							"clearingdocfiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clearingaccountingdocument",
+						"fullPath": [
+							"clearingaccountingdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clearingjournalentryfiscalyear",
+						"fullPath": [
+							"clearingjournalentryfiscalyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clearingjournalentry",
+						"fullPath": [
+							"clearingjournalentry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "valuedate",
+						"fullPath": [
+							"valuedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "generalledgeragingscope",
+						"fullPath": [
+							"generalledgeragingscope"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "generalledgeragingincrement",
+						"fullPath": [
+							"generalledgeragingincrement"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assetdepreciationarea",
+						"fullPath": [
+							"assetdepreciationarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "masterfixedasset",
+						"fullPath": [
+							"masterfixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fixedasset",
+						"fullPath": [
+							"fixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assetvaluedate",
+						"fullPath": [
+							"assetvaluedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assettransactiontype",
+						"fullPath": [
+							"assettransactiontype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assetaccttransclassfctn",
+						"fullPath": [
+							"assetaccttransclassfctn"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "depreciationfiscalperiod",
+						"fullPath": [
+							"depreciationfiscalperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "groupmasterfixedasset",
+						"fullPath": [
+							"groupmasterfixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "groupfixedasset",
+						"fullPath": [
+							"groupfixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assetclass",
+						"fullPath": [
+							"assetclass"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnermasterfixedasset",
+						"fullPath": [
+							"partnermasterfixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerfixedasset",
+						"fullPath": [
+							"partnerfixedasset"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costestimate",
+						"fullPath": [
+							"costestimate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryspecialstockvalntype",
+						"fullPath": [
+							"inventoryspecialstockvalntype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "issupplierstockvaluation",
+						"fullPath": [
+							"issupplierstockvaluation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryspecialstocktype",
+						"fullPath": [
+							"inventoryspecialstocktype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryspclstksalesdocument",
+						"fullPath": [
+							"inventoryspclstksalesdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryspclstksalesdocitm",
+						"fullPath": [
+							"inventoryspclstksalesdocitm"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "invtryspclstockwbselmntintid",
+						"fullPath": [
+							"invtryspclstockwbselmntintid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryspclstockwbselement",
+						"fullPath": [
+							"inventoryspclstockwbselement"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryspecialstocksupplier",
+						"fullPath": [
+							"inventoryspecialstocksupplier"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "inventoryvaluationtype",
+						"fullPath": [
+							"inventoryvaluationtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "valuationarea",
+						"fullPath": [
+							"valuationarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "materialledgerprocesstype",
+						"fullPath": [
+							"materialledgerprocesstype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "materialledgercategory",
+						"fullPath": [
+							"materialledgercategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "slspriceamountincocodecrcy",
+						"fullPath": [
+							"slspriceamountincocodecrcy"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "productpricecontrol",
+						"fullPath": [
+							"productpricecontrol"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sendercompanycode",
+						"fullPath": [
+							"sendercompanycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "senderglaccount",
+						"fullPath": [
+							"senderglaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "senderaccountassignment",
+						"fullPath": [
+							"senderaccountassignment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "senderaccountassignmenttype",
+						"fullPath": [
+							"senderaccountassignmenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingobject",
+						"fullPath": [
+							"controllingobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costorigingroup",
+						"fullPath": [
+							"costorigingroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originsenderobject",
+						"fullPath": [
+							"originsenderobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingdebitcreditcode",
+						"fullPath": [
+							"controllingdebitcreditcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originctrlgdebitcreditcode",
+						"fullPath": [
+							"originctrlgdebitcreditcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingobjectdebittype",
+						"fullPath": [
+							"controllingobjectdebittype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "quantityisincomplete",
+						"fullPath": [
+							"quantityisincomplete"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "offsettingaccount",
+						"fullPath": [
+							"offsettingaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "offsettingaccounttype",
+						"fullPath": [
+							"offsettingaccounttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "offsettingchartofaccounts",
+						"fullPath": [
+							"offsettingchartofaccounts"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lineitemiscompleted",
+						"fullPath": [
+							"lineitemiscompleted"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "personnelnumber",
+						"fullPath": [
+							"personnelnumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingobjectclass",
+						"fullPath": [
+							"controllingobjectclass"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnercompanycode",
+						"fullPath": [
+							"partnercompanycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnercontrollingobjectclass",
+						"fullPath": [
+							"partnercontrollingobjectclass"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originprofitcenter",
+						"fullPath": [
+							"originprofitcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originorder",
+						"fullPath": [
+							"originorder"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origincostctractivitytype",
+						"fullPath": [
+							"origincostctractivitytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origincostcenter",
+						"fullPath": [
+							"origincostcenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originproduct",
+						"fullPath": [
+							"originproduct"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "varianceoriginglaccount",
+						"fullPath": [
+							"varianceoriginglaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountassignment",
+						"fullPath": [
+							"accountassignment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accountassignmenttype",
+						"fullPath": [
+							"accountassignmenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costctractivitytype",
+						"fullPath": [
+							"costctractivitytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderid",
+						"fullPath": [
+							"orderid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ordercategory",
+						"fullPath": [
+							"ordercategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "wbselementinternalid",
+						"fullPath": [
+							"wbselementinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "wbselement",
+						"fullPath": [
+							"wbselement"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerwbselementinternalid",
+						"fullPath": [
+							"partnerwbselementinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerwbselement",
+						"fullPath": [
+							"partnerwbselement"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "projectinternalid",
+						"fullPath": [
+							"projectinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "project",
+						"fullPath": [
+							"project"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerprojectinternalid",
+						"fullPath": [
+							"partnerprojectinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerproject",
+						"fullPath": [
+							"partnerproject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "operatingconcern",
+						"fullPath": [
+							"operatingconcern"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "projectnetwork",
+						"fullPath": [
+							"projectnetwork"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "relatednetworkactivity",
+						"fullPath": [
+							"relatednetworkactivity"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businessprocess",
+						"fullPath": [
+							"businessprocess"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costobject",
+						"fullPath": [
+							"costobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billablecontrol",
+						"fullPath": [
+							"billablecontrol"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costanalysisresource",
+						"fullPath": [
+							"costanalysisresource"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customerservicenotification",
+						"fullPath": [
+							"customerservicenotification"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicedocumenttype",
+						"fullPath": [
+							"servicedocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicedocument",
+						"fullPath": [
+							"servicedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicedocumentitem",
+						"fullPath": [
+							"servicedocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerservicedocumenttype",
+						"fullPath": [
+							"partnerservicedocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerservicedocument",
+						"fullPath": [
+							"partnerservicedocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerservicedocumentitem",
+						"fullPath": [
+							"partnerservicedocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicecontracttype",
+						"fullPath": [
+							"servicecontracttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicecontract",
+						"fullPath": [
+							"servicecontract"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "servicecontractitem",
+						"fullPath": [
+							"servicecontractitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businesssolutionorder",
+						"fullPath": [
+							"businesssolutionorder"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "businesssolutionorderitem",
+						"fullPath": [
+							"businesssolutionorderitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "providercontract",
+						"fullPath": [
+							"providercontract"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "providercontractitem",
+						"fullPath": [
+							"providercontractitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "revenueaccountingcontract",
+						"fullPath": [
+							"revenueaccountingcontract"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "performanceobligation",
+						"fullPath": [
+							"performanceobligation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "timesheetovertimecategory",
+						"fullPath": [
+							"timesheetovertimecategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partneraccountassignment",
+						"fullPath": [
+							"partneraccountassignment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partneraccountassignmenttype",
+						"fullPath": [
+							"partneraccountassignmenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "workpackage",
+						"fullPath": [
+							"workpackage"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "workitem",
+						"fullPath": [
+							"workitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnercostctractivitytype",
+						"fullPath": [
+							"partnercostctractivitytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerorder",
+						"fullPath": [
+							"partnerorder"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerordercategory",
+						"fullPath": [
+							"partnerordercategory"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnersalesdocument",
+						"fullPath": [
+							"partnersalesdocument"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnersalesdocumentitem",
+						"fullPath": [
+							"partnersalesdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerprojectnetwork",
+						"fullPath": [
+							"partnerprojectnetwork"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerprojectnetworkactivity",
+						"fullPath": [
+							"partnerprojectnetworkactivity"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerbusinessprocess",
+						"fullPath": [
+							"partnerbusinessprocess"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnercostobject",
+						"fullPath": [
+							"partnercostobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "controllingdocumentitem",
+						"fullPath": [
+							"controllingdocumentitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "varianceorigingroup",
+						"fullPath": [
+							"varianceorigingroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billingdocumenttype",
+						"fullPath": [
+							"billingdocumenttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesorganization",
+						"fullPath": [
+							"salesorganization"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distributionchannel",
+						"fullPath": [
+							"distributionchannel"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "organizationdivision",
+						"fullPath": [
+							"organizationdivision"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "soldproduct",
+						"fullPath": [
+							"soldproduct"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "soldproductgroup",
+						"fullPath": [
+							"soldproductgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customergroup",
+						"fullPath": [
+							"customergroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customersuppliercountry",
+						"fullPath": [
+							"customersuppliercountry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customersupplierindustry",
+						"fullPath": [
+							"customersupplierindustry"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "salesdistrict",
+						"fullPath": [
+							"salesdistrict"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "billtoparty",
+						"fullPath": [
+							"billtoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shiptoparty",
+						"fullPath": [
+							"shiptoparty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "customersuppliercorporategroup",
+						"fullPath": [
+							"customersuppliercorporategroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cashledgercompanycode",
+						"fullPath": [
+							"cashledgercompanycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cashledgeraccount",
+						"fullPath": [
+							"cashledgeraccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialmanagementarea",
+						"fullPath": [
+							"financialmanagementarea"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fundscenter",
+						"fullPath": [
+							"fundscenter"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fundedprogram",
+						"fullPath": [
+							"fundedprogram"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fund",
+						"fullPath": [
+							"fund"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grantid",
+						"fullPath": [
+							"grantid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "budgetperiod",
+						"fullPath": [
+							"budgetperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerfund",
+						"fullPath": [
+							"partnerfund"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnergrant",
+						"fullPath": [
+							"partnergrant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerbudgetperiod",
+						"fullPath": [
+							"partnerbudgetperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetaccount",
+						"fullPath": [
+							"pubsecbudgetaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetaccountcocode",
+						"fullPath": [
+							"pubsecbudgetaccountcocode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetcnsmpndate",
+						"fullPath": [
+							"pubsecbudgetcnsmpndate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetcnsmpnfsclperiod",
+						"fullPath": [
+							"pubsecbudgetcnsmpnfsclperiod"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetcnsmpnfsclyear",
+						"fullPath": [
+							"pubsecbudgetcnsmpnfsclyear"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetisrelevant",
+						"fullPath": [
+							"pubsecbudgetisrelevant"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetcnsmpntype",
+						"fullPath": [
+							"pubsecbudgetcnsmpntype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pubsecbudgetcnsmpnamttype",
+						"fullPath": [
+							"pubsecbudgetcnsmpnamttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sponsoredprogram",
+						"fullPath": [
+							"sponsoredprogram"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sponsoredclass",
+						"fullPath": [
+							"sponsoredclass"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "gteembudgetvaliditynumber",
+						"fullPath": [
+							"gteembudgetvaliditynumber"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventure",
+						"fullPath": [
+							"jointventure"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventureequitygroup",
+						"fullPath": [
+							"jointventureequitygroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventurecostrecoverycode",
+						"fullPath": [
+							"jointventurecostrecoverycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventurepartner",
+						"fullPath": [
+							"jointventurepartner"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventurebillingtype",
+						"fullPath": [
+							"jointventurebillingtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventureequitytype",
+						"fullPath": [
+							"jointventureequitytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventureproductiondate",
+						"fullPath": [
+							"jointventureproductiondate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventurebillingdate",
+						"fullPath": [
+							"jointventurebillingdate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventureoperationaldate",
+						"fullPath": [
+							"jointventureoperationaldate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cutbackrun",
+						"fullPath": [
+							"cutbackrun"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jointventureaccountingactivity",
+						"fullPath": [
+							"jointventureaccountingactivity"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerventure",
+						"fullPath": [
+							"partnerventure"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerequitygroup",
+						"fullPath": [
+							"partnerequitygroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sendercostrecoverycode",
+						"fullPath": [
+							"sendercostrecoverycode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cutbackaccount",
+						"fullPath": [
+							"cutbackaccount"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cutbackcostobject",
+						"fullPath": [
+							"cutbackcostobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rebusinessentity",
+						"fullPath": [
+							"rebusinessentity"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestatebuilding",
+						"fullPath": [
+							"realestatebuilding"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestateproperty",
+						"fullPath": [
+							"realestateproperty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rerentalobject",
+						"fullPath": [
+							"rerentalobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestatecontract",
+						"fullPath": [
+							"realestatecontract"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "reservicechargekey",
+						"fullPath": [
+							"reservicechargekey"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "resettlementunitid",
+						"fullPath": [
+							"resettlementunitid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "settlementreferencedate",
+						"fullPath": [
+							"settlementreferencedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "repartnerbusinessentity",
+						"fullPath": [
+							"repartnerbusinessentity"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestatepartnerbuilding",
+						"fullPath": [
+							"realestatepartnerbuilding"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestatepartnerproperty",
+						"fullPath": [
+							"realestatepartnerproperty"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "repartnerrentalobject",
+						"fullPath": [
+							"repartnerrentalobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "realestatepartnercontract",
+						"fullPath": [
+							"realestatepartnercontract"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "repartnerservicechargekey",
+						"fullPath": [
+							"repartnerservicechargekey"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "repartnersettlementunitid",
+						"fullPath": [
+							"repartnersettlementunitid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnersettlementreferencedate",
+						"fullPath": [
+							"partnersettlementreferencedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualobjecttype",
+						"fullPath": [
+							"accrualobjecttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualobjectlogicalsystem",
+						"fullPath": [
+							"accrualobjectlogicalsystem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualobject",
+						"fullPath": [
+							"accrualobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualsubobject",
+						"fullPath": [
+							"accrualsubobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualitemtype",
+						"fullPath": [
+							"accrualitemtype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualreferenceobject",
+						"fullPath": [
+							"accrualreferenceobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "accrualvaluedate",
+						"fullPath": [
+							"accrualvaluedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialvaluationobjecttype",
+						"fullPath": [
+							"financialvaluationobjecttype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialvaluationobject",
+						"fullPath": [
+							"financialvaluationobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "financialvaluationsubobject",
+						"fullPath": [
+							"financialvaluationsubobject"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "netduedate",
+						"fullPath": [
+							"netduedate"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "creditriskclass",
+						"fullPath": [
+							"creditriskclass"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "workcenterinternalid",
+						"fullPath": [
+							"workcenterinternalid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderoperation",
+						"fullPath": [
+							"orderoperation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "orderitem",
+						"fullPath": [
+							"orderitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partnerorderitem",
+						"fullPath": [
+							"partnerorderitem"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ordersuboperation",
+						"fullPath": [
+							"ordersuboperation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "equipment",
+						"fullPath": [
+							"equipment"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "functionallocation",
+						"fullPath": [
+							"functionallocation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "assembly",
+						"fullPath": [
+							"assembly"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "maintenanceactivitytype",
+						"fullPath": [
+							"maintenanceactivitytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "maintenanceorderplanningcode",
+						"fullPath": [
+							"maintenanceorderplanningcode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "maintprioritytype",
+						"fullPath": [
+							"maintprioritytype"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "maintpriority",
+						"fullPath": [
+							"maintpriority"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superiororder",
+						"fullPath": [
+							"superiororder"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "productgroup",
+						"fullPath": [
+							"productgroup"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "maintenanceorderisplanned",
+						"fullPath": [
+							"maintenanceorderisplanned"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "originorderoperation",
+						"fullPath": [
+							"originorderoperation"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "jrnlentryitemmigrationsource",
+						"fullPath": [
+							"jrnlentryitemmigrationsource"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_changemode",
+						"fullPath": [
+							"odq_changemode"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "odq_entitycntr",
+						"fullPath": [
+							"odq_entitycntr"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "loadts",
+						"fullPath": [
+							"loadts"
+						],
+						"type": "timestamp",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "counter",
+						"fullPath": [
+							"counter"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722906721636": {
+			"nodeId": "node-1722906721636",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1722906262011"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1722906721636",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1722907194885": {
+			"nodeId": "node-1722907194885",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "GL_Line_Items",
+			"generatedNodeName": "GL_Line_Items_node1722907194885",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "<your_enriched_glue_catalog_db>",
+			"table": "cds_gl_line_items",
+			"format": "iceberg",
+			"additionalIcebergOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}

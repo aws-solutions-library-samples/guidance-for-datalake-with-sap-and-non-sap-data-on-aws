@@ -98,11 +98,51 @@ The Data Lake Solution Guidance Sample utilises SAP Standard Delta Enabled CDS v
 |Unit of Measure|I_UNITOFMEASURE|IUNITOFMEASURE$P|
 |Unit of Measure Text|I_UNITOFMEASURETEXT|IUNITOFMEASTEXT$T|
 |Invoice document status|I_SUPPLIERINVCSTATUSTXTAPI01|ISUPLRINVSTSTAPI$T|
-
+|Purchase Order Account Assignment|C_PURORDACCOUNTASSIGNMENTDEX|CMMPURORDAADEX$F|
+|Goods Movements|I_GOODSMOVEMENTDOCUMENTDEX|IGOODSMVMTDOCDEX$F|
+|Delivery Header|I_DELIVERYDOCUMENT|ILEDELIVDOC$P|
+|Delivery Item|I_DELIVERYDOCUMENTITEM|ILEDELIVDOCITEM$P|
+|Purchase Order Confirmation|C_POSUPPLIERCONFIRMATIONDEX|CMMPOSUPCONDEX$F|
+|Purchase Requisition Item|C_PURCHASEREQUISITIONITEMDEX|CMMPRITMDEX$F|
+|Purchasing Contract Header|C_PURCHASECONTRACTDEX|CMMPURCONTRDEX$F|
+|Purchasing Contract Item|C_PURCHASECONTRACTITEMDEX|CMMPURCONTITMDEX$F|
+|Scheduling Agreement Header|C_SCHEDULEAGREEMENTHDRDEX|CMMSCHAGMTHDDEX$F|
+|Scheduling Agreement Item|C_SCHEDULEAGREEMENTITEMDEX|CMMSCHAGMTITMDEX$F|
+|SD Document Category|I_SDDOCUMENTCATEGORYTEXT|ISDDOCCATTEXT$T|
+|Controlling Area|I_CONTROLLINGAREA|IFICONTAREA$P|
+|Cost Center Attributes|I_COSTCENTER|IFICOSTCENTER$P|
+|Cost Center Text|I_COSTCENTERTEXT|IFICOSTCENTERT$T|
+|Profit Center Attributes|I_PROFITCENTER|IFIPROFITCENTER$P|
+|Profit Center Text|I_PROFITCENTERTEXT|IFIPROFITCENTERT$T|
+|Sales Organisation|I_SALESORGANIZATIONTEXT|ISDSALESORGTEXT$T|
+|Distribution Channel|I_DISTRIBUTIONCHANNELTEXT|ISDDISTRCHANNELT$T|
+|Division|I_DIVISIONTEXT|ISDDIVISIONTEXT$T|
+|Sales Group|I_SALESGROUPTEXT|ISDSALESGROUPT$T|
+|Sales Office|I_SALESOFFICETEXT|ISDSALESOFFICET$T|
+|Sales District|I_SALESDISTRICTTEXT|ISDSLSDISTRICT$P|
+|Movement Type Attributes|I_GoodsMovementType|IGDSMVTTYPE$P|
+|Movement Type Text|I_GoodsMovementTypeT|IGDSMVTTYPET$T|
+|Item Type|I_SALESDOCUMENTITEMTYPETEXT|ISDDOCITEMTYPT$T|
+|Accounting Document Type|I_ACCOUNTINGDOCUMENTTYPE|IFIACCDOCTYPET$T|
+|Customer Group|I_CUSTOMERGROUPTEXT|ISDCUSTGRPT$T|
+|DebitCredit Code|I_DEBITCREDITCODETEXT|IFIDECRECODET$T|
+|Chart of Accounts Attributes|I_CHARTOFACCOUNTS|IFICHOFACC$P|
+|Chart of Accounts Text|I_CHARTOFACCOUNTSTEXT|IFICHOFACCT$T|
+|Financial Transaction Type|I_FINANCIALTRANSACTIONTYPET|IFITRANSTYPET$T|
+|Business Transaction Category|I_BUSTRANSACTIONCATEGORYTEXT|IFIBUSTXCATT$T|
+|Business Transaction Type|I_BUSTRANSACTIONTYPETEXT|IFIBUSTXTYPET$T|
+|GL Account Attributes|I_GLACCOUNT|IFIGLACCOUNT$P|
+|GL Account Text|I_GLACCOUNTTEXTRAWDATA|IFIGLACCTTRD$T|
+|Functional Area|I_FUNCTIONALAREATEXT|IFIFUNCAREAT$T|
+|Business Area|I_BUSINESSAREATEXT|IFIBUSAREAT$T|
+|Sales Document Item|C_SalesDocumentItemDEX_1|CSDSLSDOCITMDX1$F|
+|Sales Document Schedule Line|C_SalesDocumentSchedLineDEX_1|CSDSDOCSCHDLNDX1$F|
+|Billing Document Item|C_BillingDocItemBasicDEX_1|CSDBILDOCITMBDX1$F|
+|GL Line Items|I_GLACCOUNTLINEITEMRAWDATA|IFIGLACCTLIR$F|
 
 ### 3. Create the SAP Connection in Amazon AppFlow
 
-Next we need to define the SAP system in Amazon AppFlow as a “Connection”.
+Next we need to define the SAP system in Amazon AppFlow as a “Connection”
 
 1. Go to Amazon AppFlow Service in the AWS console and go to Connections:
 
@@ -211,7 +251,7 @@ By clicking on it we can see details about it:
 
 ### 2. Run the Cloud Formation template to automatically provision the AppFlows that will extract data from the SAP system.
 
-1. Download the AppFlow Cloud Formation template “SolutionGuidanceDataLakeAppFlows.yaml” from [Git](/deployment/Appflow/SolutionGuidanceDataLakeAppFlows.yaml)
+1. Download the AppFlow Cloud Formation templates “SolutionGuidanceDataLakeAppFlows(1-to-4).yaml” from the following [Git folder](/deployment/Appflow/)
 
 2. Go to the CloudFormation Service in the AWS Console
 
@@ -230,6 +270,7 @@ Choose an existing template —> Upload a template file→ Choose file → Choos
 
 ![alt text](assets/images/image19.png)
 
+Repeat the steps for each file. 
 
 **Stack name** is the name of the Cloudformation stack you are creating, you can use anything
 
@@ -516,7 +557,8 @@ For any feedback, questions, or suggestions, please use the issues tab under thi
 
 ## Revisions
 
-1.0 - Initial Release - September 2024
+    1.0 - Initial Release - September 2024
+    1.1 - Addeditional functional scope added - P2P, O2C and R2R Curated Layer - December 2024
 
 ## Notices
 
